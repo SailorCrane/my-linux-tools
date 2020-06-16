@@ -1,0 +1,59 @@
+#! /bin/sh
+#
+# local-custom-router-and-ssh.sh
+# Copyright (C) 2019 crane <crane@gosun>
+#
+# Distributed under terms of the MIT license.
+#
+
+ssh_local_forward() {
+    local Ope='autossh -M 0 -q -f -N -o "ServerAliveInterval 15" -o "ServerAliveCountMax 3" -L'
+
+    local LocalAddr=$1       # 8081(*:8081)
+    local RemoteProxyAddr=$2 # localhost:8081
+    local UserAt=$3          # crane@ubuntu
+    local RemotePort=$3      # 7337
+
+    ProxyMap=$LocalAddr:$RemoteProxyAddr
+    # echo $ProxyMap
+
+    # if ps -ef | grep $LocalAddr | grep $RemoteProxyAddr | grep -v grep | grep $UserAt | grep $RemotePort >/dev/null ;
+    if ps -ef | grep $ProxyMap --color=no | grep -v grep | grep $UserAt | grep $RemotePort >/dev/null ;
+    then
+        echo Exist "$ProxyMap $UserAt $RemotePort"
+        return
+    fi
+
+    $Ope $ProxyMap $UserAt -p $RemotePort
+}
+
+    # ssh_local_forward 8080 localhost:8080 crane@ubuntu 7337
+
+# ssh local forward
+do_ssh_local_forward() {
+    ssh_local_forward    8081 localhost:8081    crane@ubuntu 7337 # v2ray
+    ssh_local_forward \*:6022 10.10.100.26:22   uaq@oldjump  7000 # 预发布 ssh
+    ssh_local_forward \*:6082 10.10.100.26:8082 uaq@oldjump  7000 # flink-web-ui
+}
+
+
+# ssh_remote_forward() {
+#     # 远程端口转发: 使用远程2222访问本地2222
+#     autossh -M 0 -fCNR \*:2222:localhost:2222 crane@ubuntu  -p 7337
+
+#     autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:6022:10.10.100.26:22   uaq@oldjump -p 7000 # 预发布 ssh
+#     autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:6082:10.10.100.26:8082 uaq@oldjump -p 7000 # flink-web-ui
+# }
+
+
+# if [ -z $Crane_System_Start_ssh ]; then
+#     do_ssh_local_forward
+#     ssh_remote_forward
+#     # route_table
+
+#     echo "do startup only operation, only do once"
+#     export Crane_System_Start_ssh="1"
+# else
+#     echo "local-custom-router-and-ssh.sh" already sourced
+# fi
+

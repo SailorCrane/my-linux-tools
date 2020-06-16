@@ -1,0 +1,24 @@
+1:
+安装搜狗输入法后无法切换中英文输入法, 因为可能在fcitx-config-gtk3配置中, 添加了中文输入法, 却没有添加英文输入法.
+这种事情, 在Windows中已经发生过了.
+现在在自己老电脑Ubuntu上又发生了一次.
+
+2: Ubuntu 16.10 中搜狗输入法无法开机启动, 必须退出再登入才可以.
+    解决方法1(不靠谱): 将$DashApp下的 fcitx-ui-sogou-qimpanel.desktop 放入/etc/xdg/autostart即可.
+    当然使用软链接是最好的办法:
+    ln  -s  $DashApp/fcitx-ui-sogou-qimpanel.desktop  /etc/xdg/autostart
+
+    解决方法2(非常靠谱):
+    上面这种解决方案应该不可以:要像下面这样做.
+        #在 ~/.profile添加如下内容:
+
+        export LC_ALL=zh_CN.utf8
+        export XMODIFIERS=@im=fcitx
+        export QT_IM_MODULE=xim
+        export GTK_IM_MODULE=xim
+        fcitx -d
+
+        souce ~/.profile 或者重启系统即可.
+        #解决！
+
+3:

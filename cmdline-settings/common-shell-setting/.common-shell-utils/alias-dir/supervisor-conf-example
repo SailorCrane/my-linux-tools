@@ -1,0 +1,3 @@
+[program:flink-taskmanager]
+process_name=%(program_name)s_%(process_num)02d              ;多进程名称肯定不能相同，匹配多个
+numprocs=4                                                   ;启动N个进程

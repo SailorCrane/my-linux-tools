@@ -1,0 +1,30 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# kube-proxy 相关:
+# https://kubernetes.io/blog/2018/07/09/ipvs-based-in-cluster-load-balancing-deep-dive/
+
+
+# 显示
+# sudo ipvsadm -Ln
+
+
+# 添加 service, 往service 添加server
+# -r real server
+# -t tcp-service
+# -u udp-service
+# -m masq(nat), (还支持ipip(-i), dr/gateway(-g))
+# -s scheduler-mode
+#     rr: round-robin
+#     wrr: weight round-robin
+#     lc: least connection
+#     dh: destination hashing
+#     sh: source hashing
+#     sed: shortest expected delay
+#     nq: never queue
+
+
+## nat 模式, rs(real-server)必须让dr(director)作为网关(dr模式则没有这个要求)
+sudo ipvsadm -A -t 10.248.8.73:80 -s rr     # 算法使用 round-robin
+sudo ipvsadm -a -t 10.248.8.73:80 -r 172.17.0.2:7777 -m -w 1
+sudo ipvsadm -a -t 10.248.8.73:80 -r 172.17.0.3:7777 -m -w 1
+

@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+echo $1 | tr '[:lower:]' '[:upper:]'        # 小写转大写
+
+echo ',a-[)' | tr  '[:punct:]' -            # 标点转"-"

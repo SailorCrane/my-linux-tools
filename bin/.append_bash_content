@@ -1,0 +1,7 @@
+for file in ~/.common-shell-utils/*sh ; do
+    source $file
+done
+
+for file in ~/.bash-utils/*sh ; do
+    source $file
+done

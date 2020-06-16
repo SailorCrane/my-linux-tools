@@ -1,0 +1,13 @@
+# vim: set filetype=sh  foldlevel=0:
+
+## 客户端
+# 命令
+mount -t nfs 10.10.25.50:/data/nfs-export /data/nfs-mount
+
+# /etc/fstab
+[server_address]:/home /mnt/home nfs rw,hard,intr,rsize=8192,wsize=8192,timeo=14 0 0
+
+
+## 服务端
+# /etc/exportfs
+/data/nfs-export 10.10.25.0/24(rw,async,no_root_squash)

@@ -1,0 +1,15 @@
+#! /bin/sh
+# edit python module(quick)
+# 可以被Pyimport 所替代
+
+
+edit_p() {
+    file_name=$(__show_mod_file__.py $*)
+
+    if [ -n "$file_name" ]; then
+        echo "edit $file_name"
+        vi $file_name
+    fi
+}
+
+edit_p  $*

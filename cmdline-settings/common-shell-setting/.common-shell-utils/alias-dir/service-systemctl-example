@@ -1,0 +1,31 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+
+systemctl list-unit-files | grep iptables
+
+systemctl get-default
+# systemctl set-default graphical.target
+# systemctl isolate multi-user.target
+
+# 所有target
+systemctl list-units --type target
+systemctl list-units --type socket
+systemctl list-units --type service
+systemctl list-units --type path
+
+# 静态
+systemctl list-unit-files --state=enabled
+systemctl list-unit-files --type service --state enabled,generated      # 逗号是"or" 关系
+
+
+# 动态概念
+systemctl list-units --type=service --state=running
+systemctl list-units --type=service --state=running
+systemctl list-units --type service --state running,failed
+
+
+
+
+# =================== influxdb目录 =====================
+# 关于influxdb删除/var/lib/influxdb目录后, 无法启动的问题
+# 要保证"influxdb"用户可以在"/var/lib/"下创建"influxdb/"目录, 或者创建目录后, 手动chown为"influxdb"用户

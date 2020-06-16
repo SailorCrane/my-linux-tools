@@ -1,0 +1,62 @@
+# vim: set ft=sh :vim
+
+# :Author: crane
+# :Email: crane@crane-pc
+# :Date: 2017-12-23 22:17
+
+# conky gui
+sudo apt-add-repository -y ppa:teejee2008/ppa
+sudo apt-get update
+sudo apt-get install conky-manager
+
+
+# ss-qt5 client
+sudo add-apt-repository  ppa:hzwhuang/ss-qt5
+sudo apt-get update
+sudo  apt-get install  shadowsocks-qt5
+
+
+# 一些指示器程序: indicator
+sudo apt-add-repository ppa:yktooo/ppa  # 音量指示器
+sudo apt update
+sudo apt install indicator-sound-switcher
+
+
+# simplescreenrecorder: 屏幕录像软件
+sudo add-apt-repository ppa:maarten-baert/simplescreenrecorder
+sudo apt-get update
+sudo apt-get install simplescreenrecorder
+
+
+# 软件快速开启启动, 不过Ubuntu14之后, 都自带软件开机自动启动设置了
+# slingscold
+sudo add-apt-repository ppa:noobslab/apps
+sudo apt-get update
+sudo apt-get install slingscold
+
+
+#vim 8.0(for Ubuntu 16)
+sudo add-apt-repository ppa:jonathonf/vim
+sudo apt-get update
+sudo apt-get install vim
+
+
+# 白噪音, 提高工作效率
+sudo add-apt-repository ppa:costales/anoise
+sudo apt-get update
+sudo apt-get install anoise
+
+# anoise list
+# anoise
+# anoise-media
+# anoise-gui
+# anoise-community-extension1
+# anoise-community-extension2
+# anoise-community-extension3
+# anoise-community-extension4
+# anoise-community-extension5
+
+# peek( screen 2 gif )
+sudo add-apt-repository ppa:peek-developers/stable
+sudo apt-get update
+sudo apt-get install peek

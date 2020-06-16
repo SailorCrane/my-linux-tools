@@ -1,0 +1,25 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 只看监听端口
+netstat -ltnp  | grep 9000
+
+
+# 查看establi 状态
+netstat -tnp  | grep 9000 | grep -i establi
+# NOTE: 带进程号的是ESTABLISHED, 并且已经被accept的
+# NOTE: 不带进程号的是ESTABLISHED, 还没有被accept的, 只能看到客户端的进程号, 看不到服务端进程号
+
+# tcp        0      0 127.0.0.1:40792         127.0.0.1:9000          ESTABLISHED 29657/nc
+# tcp        0      0 127.0.0.1:40794         127.0.0.1:9000          ESTABLISHED 29658/nc
+
+# tcp6       0      0 127.0.0.1:9000          127.0.0.1:40802         ESTABLISHED -
+# tcp6       0      0 127.0.0.1:9000          127.0.0.1:40800         ESTABLISHED -
+
+# tcp        0      0 127.0.0.1:40802         127.0.0.1:9000          ESTABLISHED 30123/nc
+# tcp6       0      0 127.0.0.1:9000          127.0.0.1:40802         ESTABLISHED -
+
+
+# ------------------- ss ---------------------
+ss -l       # 所有监听
+ss -lt       # tcp监听
+ss -lu       # udp监听?

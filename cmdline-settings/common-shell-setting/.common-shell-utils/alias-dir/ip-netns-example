@@ -1,0 +1,10 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+ip netns list
+ip netns add  myn1
+
+# 每个进程, 都有一个netns/net目录
+ls /proc/{pid}/netns/net
+ln -s /proc/{pid}/netns/net /var/run/netns/mynet-ln
+
+ip netns exec

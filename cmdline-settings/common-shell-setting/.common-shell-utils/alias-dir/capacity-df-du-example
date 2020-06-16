@@ -1,0 +1,8 @@
+# vim: set filetype=sh  foldlevel=0:
+
+# 当前路径文件系统: capacity filesystem
+df -h           # 查看分区磁盘使用容量
+df -i   -h      # 查看 inode 信息
+
+
+du -hs ./       # 统计某个目录或者文件

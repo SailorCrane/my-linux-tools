@@ -1,0 +1,679 @@
+#  vim: set ft=sh  :vim modeline
+# 使用 vim set filetype=sh, 只是为了可以更好的看清注释!!! 别无他意.
+
+
+# Ubuntu apt-get安装软件后, 包都备份在如下目录:
+# 可以使用sudo apt-get clean 清除
+# apt-get/aptitude download  packageName 可以将deb包下载到本地
+# /var/cache/apt/archives
+
+# 包相关
+aptitude
+gdebi       # (安装本地deb包, 并解决依赖): (dpgk -i 安装本地包, 不会自动解决依赖)
+alien       # 在rpm/deb/slackware/tagz 等之间转换工具.
+
+dos2unix    # dos <---> unix, mac <---> unix, (间接通过unix: mac <---> dos)
+
+
+# 这些都依赖于build-essential ,直接安装build-essential即可
+#gcc
+#g++, make,  develop-essential
+#git            # 默认安装
+git-svn         # 使用git svn 命令来操作svn 仓库, 有些版本是git-svn 命令(类似git-branch ), 已废弃
+gitk            # git 图形化客户端 tcl
+gitg            # git 图形化客户端 gtk+
+qgit            # git              qt
+
+git-doc         # git help  commit -w, 支持html查看: git hw is myalias
+
+colordiff       # 设置svn 的 diff-cmd
+build-essential
+cgdb            # gdb 终端ui
+valgrind        # 检测内存泄漏.
+                #valgrind --log-file=.algrind_report.log  \
+                         #--leak-check=full               \
+                         #--show-leak-kinds=all           \
+                         #--show-reachable=no             \
+                         #--track-origins=yes             \
+                         #[progm]
+
+# perf命令
+linux-tools-`uname -r`        # perf top -p 查看进程系统调用!
+
+
+distcc          # 分布式编译
+
+# valgrind --tool=callgrind --separate-threads=yes ./YouProgram
+# valgrind --tool=callgrind -v --dump-every-bb=10000000 ./test/debug/get-node-53
+kcachegrind     # 结合valgrind, 分析程序性能瓶颈.apt-get可以安装
+
+
+
+vim
+vim-gnome       # Ubuntu默认不安装vim, 和 gvim, 使用的是vi
+eclipse         # eclipse platform
+
+
+cmake
+#cmake-curses-gui   # cmake 终端ui, 不需要
+cmake-qt-gui
+
+
+#python相关
+python-pip      # 提供python2版本的pip
+python3-pip     # 提供python3 版本的pip
+python-dev      # 开发相关
+
+python-tk       # tkinter for python2
+python3-tk      # tkinter for python2
+
+python-setuptools   # easy_install
+python3-setuptools  # easy_install3
+
+python3.6-gdbm      # 当更新了python3.6, 需要gdbm库时这样安装
+
+# Qt
+qt5-default        # qt basic
+qttools5-dev-tools # qt designer
+
+# python qt: PyQt4, PyQt5
+python-qt4         # (qt4, python2)
+python-pyqt5       # (qt5, python2)
+python3-pyqt4      # (qt4, python3)
+python3-pyqt5      # (qt5, python3)
+
+pyqt4-dev-tools    # pyqt4 ui/qrc compiler
+pyqt5-dev-tools    # pyqt5 ui/qrc compiler
+
+virtualenv      # python2: virtualenv
+python3-venv    # python3: pyvenv
+
+pylint          # 语法检测
+pylint3
+flake8          # flake8语法checker
+
+ipython
+ipython3
+
+# golang
+golang-go             # Ubuntu16.04 go-1.6
+golang-golang-x-tools # godoc, go doc或许不需要这个包
+go-dep                # dep ensure -add "go.mongodb.org/mongo-driver/mongo@~1.0.0" (类似于go get)
+
+# how to install go-1.9
+# sudo add-apt-repository ppa:gophers/archive
+# sudo apt update
+# sudo apt-get install golang-1.9-go
+# cd /usr/bin/
+# mv /usr/bin/go /usr/bin/go-back
+# ln -s /usr/lib/go-1.9/bin/go
+
+# C/C++ Ide
+codeblocks
+
+# 终端复用
+tmux
+#byobu   # 可选, 事tmux的后端, 移到非必备软件.txt中
+#screen  # gnu screen, 似乎比tmux更好用
+#dtach   # 可选, 不用安装.
+
+
+
+mono-complete       # 运行 mono 格式的exe
+minicom             # 串口连接(hypercommand) :可以管理交换机
+
+
+
+# Ubuntu16.04 nautilus已经自带nautilus-open-terminal这个工具, 但是Ubuntu14要单独安装
+# 安装后, 注销登录才会生效
+#nautilus-open-terminal
+
+# 可是最后还是没有装成功easy-union-nautilus, 压根search不到, apt-get update时, fetch 网址错误, 打开网址, 发现没有trusty以上版本.
+# 最高版本为natty 11.04
+# sudo add-apt-repository ppa:zanko/daemontux-stuff
+# sudo apt-get update
+# sudo apt-get install easy-union-nautilus
+# nautilus -q
+#union插件       # 可以在单个目录中, 查看多个目录
+
+
+
+# ( 可以考虑卸载amazon, Ubuntu默认安装)
+
+# 代码相关
+#idle    # Python IDE, 不好用, 没什么用
+qtcreator           # 注意名字, 只有使用qtcreator, apt库中才能找到
+qt-sdk              # 可能类似与build-essential. 仅仅是依赖. 也可能是一个安装界面.
+
+
+# 翻墙专用浏览器, firefox用来非翻墙使用
+chromium-browser      # ss-qt5 + switcy-omega
+chromium-chromedriver # chromedriver: sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/
+# libnss3-tools       # NOTE: 安装这个包后, chrome普通用户可以导入根证书(否则只能root运行chrome导入根证书)
+
+
+# 分享, 通信(udp, tcp格式兼容"飞秋", "飞鸽")
+iptux
+
+#openssh-server      # ssh服务器 (让其他人可以登录自己的主机), openssh-client默认安装
+# 也是为了安全, 所以默认不安装openssh-server
+#putty  ssh 客户端: 公钥秘钥都使用本地已经配置好的.
+autossh             # 断后可以自动重连(用于反向代理)
+
+
+# 工作
+meld                #  diff view, 还有一款beyond
+#wireshark
+hping3               # 可以发送任意tcp包等:
+dia                  # dia editor
+#dia-gnome           # Diagram editor (GNOME version), UML图工具
+
+# 高效系统小工具
+unity-tweak-tool    # 禁止dash搜索推荐, 设置主题
+gnome-tweak-tool    # gnome桌面的twea
+
+dconf-editor        # gsetting命令的图形前端
+                    # 设置gedit支持的字体, 设置顶部时间(显示日期等)
+                        # gsettings set org.gnome.gedit.preferences.encodings auto-detected "['UTF-8', 'GBK', 'CURRENT', 'ISO-8859-15', 'UTF-16']"
+                        # gedit --version 3.2 键值key: auto-detected
+                        # gsettings set org.gnome.gedit.preferences.encodings candidate-encodings "['UTF-8', 'GBK', 'CURRENT', 'ISO-8859-15', 'UTF-16']"
+                        # gedit --version  3.18.3 键值key: candidate-encodings
+
+                    # 设置fcitx 不要覆盖xmodmap设置.
+                        # gsettings set org.gnome.settings-daemon.plugins.keyboard active false
+
+                    # 设置侧边栏位置: Left首字母大写.
+                        # gsettings set com.canonical.Unity.Launcher launcher-position Left
+
+# 娱乐/Music
+smplayer         # 视频播放器
+vlc              # 视频播放器
+gnash            # swf视频播放器, 使用gnash-gtk-launcher命令播放. ( 注意和gcash区别 )
+clementine       # 很好, 还不知道用来干嘛的, 似乎可以听音乐
+tomahawk         # 音乐播放器
+audacious        # music player
+
+
+# 词典  在software center中搜索 dict, 有很多软件发现, 有些需要收费
+# stardict官网是: http://stardict.sourceforge.net/Dictionaries_zh_CN.php
+stardict  # 星际译王, 支持apt-get 安装 (具体字典需要自行安装)
+
+
+wordnet  # 英文词典, 仅仅能查英文: aptitude install, 基于Princeton普林斯顿认知学的词典
+
+
+# ftp
+#nautilus   # 本身可以连接ftp服务器
+#filezilla  # 也是一个不错的客户端, 同时可以连接ssh启动的sftp服务端(可以方便的传输文件)
+
+
+# 非必要
+#leafpad    # 相对于notepad, 可以自动识别文件编码(utf-8)
+
+# 电子书阅读
+#okular     # pdf阅读区, Ubuntu默认安装 evince, 所以不需要了, 但是okular可以添加书签
+            # okular 支持kindle的mobi格式阅读
+evince      # ubuntu默认,习惯了
+xreader     # mint默认
+okular
+
+calibre     # 支持mobi
+fbreader    # 支持mobi
+
+# lucidor   # no center( support epub )
+
+
+# 截图软件/录屏
+shutter            # 截图软件, 截图后可以编辑 screenshot
+gnome-screenshot
+libgoo-canvas-perl # 解决mint下shutter截图后, 无法edit的问题
+
+
+
+# dock软件: 非必要
+plank
+
+
+# 图片处理
+gimp
+krita       # like gimp
+
+
+# 财务软件
+#gnucash
+
+# 下载工具
+#uget        # 比自带的种子下载工具好
+
+# 软件管理工具
+#synaptic    # 新立德
+
+# 星空模拟软件
+stellarium
+
+# guake-terminal
+# 在 Startup Applications 中添加guake -f, 开机时自动启动guake
+# 在 /usr/share/applications/guake.desktop 中修改Exec为 guake -f, 这样每次dash搜索中打开guake, 就是全屏了(省的按F11)
+guake               # 有时候会慢: 不知道是tmux还是guake原因
+tilda               # like guake, 支持快捷键定义(preference), 但有一些bug, 非常影响使用.
+xfce4-terminal      # 不太好用: 配置shortcut <F8>: xfce4-terminal --drop-down
+
+
+# 电源管理
+#laptop-mode-tools
+
+# 视频处理/转换格式
+#ffmpeg          # 命令行工具
+
+# 密码管理
+keepassx
+
+# top 的更友好版本
+htop
+iotop       # io 监控
+
+
+# 压缩相关
+#p7zip      # 7zip 工具, 非必须
+zip
+rar
+
+
+# 清理软件, 清理垃圾文件, 浏览历史等
+bleachbit
+
+
+gstm  # ssh tunnel
+proxychains # 设置代理
+
+
+# 桌面相关
+#xfce4   # xfce4 安装后, 自动安装gnome
+#gnome-session-flashback             # gnome2
+#ubuntu-gnome-desktop                # gnome3
+#compizconfig-settings-manager       # 设置compize 3D效果
+compizconfig-settings-manager        # Win+D show desktop(显示桌面快捷键): 搜索unity plugin ------> Ubuntu unity plugin 然后设置show-desktop的快捷键
+
+
+# tags
+ctags
+cscope
+
+
+# 分区工具, 必备神器
+gparted
+
+
+# 文件管理相关
+ranger          # ranger也有相关书签
+
+statemtap       # cpu view
+sar
+
+
+# 网络相关: 监控, 流量分析, socket
+nethogs     # nethogs :Linux下按进程实时统计网络带宽利用率, 显示使用网络的进程, 非常有用!!!: sudo nethogs
+            # 可以测试某进程, 是否有读写网络流量等.
+
+iftop       # 不同于ntop
+#ntop
+#ntopng
+ifstat
+slurm       # slurm -i  lo/<网卡名>  # 网卡名是使用ifconfig -a查看到的网卡, 主要用于查看负载均衡.
+
+#glances    # 我也不知道干啥的, 系统监控用
+
+#socat      # 更方便连接socket, 猜测类似于nc
+#nc         # net cat, 默认安装.可以用来调试tcp服务端和客户端.
+            # nc hostIp Port
+rlwrap      # readline-wrap包装nc, 可以使用箭头翻页: rlwrap nc www.baidu.com 443
+
+nmap        # 可以测试局域网启动主机.默认不安装.
+
+# 系统监控工具
+# vmstat seconds也很好用,不过vmstat是系统自带, 位于procps包中
+
+
+# 日志多窗口查看, 颜色过滤
+multitail       # multi tail
+
+
+# web载入测试工具, 都没有用过
+siege
+#tsung
+
+
+# 游戏
+sl                  # 可以运行LS执行, 跑火车. 没啥.
+gbrainy             # 智力游戏, 大学上课消遣用
+nethack-console     # 依赖nethack-common, 终端游戏
+slashem             # nethack的新版
+
+
+# C/C++库: 注意这些lib库, 既可以使用apt安装, 也可以手动编译安装
+#libqt4-dev          # qt库
+#libboost-dev        # boost库
+#libgoogle-glog-dev  # glob库
+#libdb-dev           # berkeley db库
+libboost-python-dev  # wrap c++ to expose ------> python
+
+
+# 输入法
+fcitx                       # fcitx framework
+fcitx-config-gtk            # 管理界面
+fcitx-googlepinyin          # google-pinyin, 安装完毕后, logout, 再login
+                            # 就可以使用了. 不需要在fcitx-config中配置.
+fcitx-rime                  # 鼠须毫
+fcitx-table-wubi            # 五笔
+
+# 自动交互
+expect                  # 自动输入ssh密码之类
+
+# scheme compiler
+chicken-bin         # csi command
+#tinyscheme          # tiny scheme implements
+#racket              # scheme
+
+mutt    # 邮件阅读客户端
+
+
+#
+fakeroot        # 模拟root用户. 测试安装程序等可以使用.
+
+#thunar         # xfce file manager, like nautilus
+                # 可以批量重命名, 选中多个文件, 点击F2, 或者右键rename, 可以添加日期, 或者替换通用字符串.
+
+iozone3         # 文件系统性能测试工具: 可以测试tmpfs 和 ext4性能对比.
+
+pyrenamer       # 重命名
+
+# vnc 服务器 + 客户端
+#vnc4server
+#remmina
+
+# 程序诊断工具
+valgrind
+
+# shell
+zsh             # hack shell
+autojump        # 需要先使用安apt-get 安装, 再安装zsh插件
+command-not-found
+command-not-found-data
+
+# 内核源码, 但是似乎是平台相关的
+linux-source    # depends linux-source 可以看到它的依赖.
+
+
+# 屏幕录制工具
+kazam           # 直接软件源安装
+vokoscreen      # 录屏软件
+#  simplescreenrecorder     Ubuntu17软件源直接安装, 17以下需要如下安装(按照官网提示)
+#sudo add-apt-repository ppa:maarten-baert/simplescreenrecorder
+#sudo apt-get update
+#sudo apt-get install simplescreenrecorder
+
+
+# 代码格式化工具
+astyle          # vim, Eclipse, QtCreator, vs 可用
+
+
+# 颜色选择器 color picker
+gcolor2         # gcolor2更好用一些. 点击吸管, 即可取色.
+
+
+# 屏幕ruler测量工具 (google: Linux  screen  pixel tools/ ruler)
+kruler          # 可横放, 可竖放
+#screenruler    # 不好用, 不推荐( 只能测量横向, 并且不实时显示像素 )
+
+
+# tex/latex 相关
+#texstudio       # latex的编译GUI
+texlive         # 会安装texlive-base(texlive 是所有tex的全家桶: 包括tex, plaintex, latex宏等, live是光盘的意思)
+                # NOTE: 如果仅仅编辑公式, 配置vim使用, texlive足够了
+texlive-full    # texlive 是latex 相关插件, texlive-full包含了所有latex-live的组件, 但是巨大无比(包括汉化内容)
+                # NOTE: 如果不需要汉化, 则不需要 texlive-full
+latex-cjk-all   # NOTE: 如果汉化, 可能还需要这个
+
+
+# 系统监控
+#sudo apt-get install ganglia-monitor rrdtool gmetad ganglia-webfrontend
+gkrellm     # cpu, memory, disk 监控.
+
+
+# wall 桌面墙纸
+variety     # 切换 + 下载
+
+
+# man page
+manpages-posix-dev      # 其中pthread 的一些函数说明在其中
+
+# c++ man page
+libstdc++-5-doc         # c++函数manual page, 使用示例 man std::vector
+                        # apt-cache search libstdc++ | grep doc
+libstdc++6-4.7-doc
+
+
+#pavucontrol 设置Ubuntu 16.04 耳机没有声音问题
+#pavucontrol  # 直接Dash搜索volumn/pavu也可以搜索到: configuration == Analog stereo duplex(unplugged), output=headphone
+              # 就像查看麦克风是否有声音: 使用Dash搜索sound
+
+bijiben     # notes备份, /usr/bin/bijiben
+
+
+
+ack-grep        # alternative of grep
+
+jdownloader2   # 网盘下载器
+
+xmonad         # window manager
+
+caffeine       # 播放视频期间, 不锁屏
+
+
+# js
+nodejs    # 安裝方式curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+phantomjs # 一般用于爬虫
+
+# 科学上网
+shadowsocks # 可以apt, 或者pip安装
+privoxy     # 可以全局代理
+polipo      # global proxy
+tor         # 不会用
+
+
+ppa-purge       #  delete ppa-add
+
+
+gthumb      # image viewer
+digikam     # image viewer
+
+simple-scan   # scaner
+gscan2pdf
+
+
+libmysqld-dev       # django pip mysqlclient 驱动需要这个
+mysql-workbench     # 显示所有scheme(数据库): edit ---> preference ---> sql-editor ---> show metadata and internal schemas
+
+# 剪切板管理(copy/paste)
+diodon               # 常用
+#parcellite          #
+
+# figure/character/picture/text/figlet/art
+asciio              # asci io
+figlet              # figlet Crane, figlet Crane.Lee
+cowsay
+fortune             # random string: fortune | cowsay
+
+# =================== windows =====================
+# windows ssh client <------> linux
+lrzsz               # 提供rz, sz, rb, sb, rx, sx
+# ultraiso: 使用wine安装
+unetbootin      # 在Linux下可以制作Win系统U盘启动盘(Linux的也可以制作)
+                # 教程: https://www.addictivetips.com/windows-tips/install-windows-7-from-usb-drive-requires-2-simple-steps/
+
+# 清理工具, 类似于windows CCleaner
+bleachbit   # 比如可以清楚firefox cache等
+
+# windows 相关
+ntfs-3g     # 打开ntfs文件系统
+#samba       # 视情况而定, 不过nautilus已经有samba插件了
+#nautilus-share  # 就是nautilus Samba插件
+
+# 提供类似于windows的任务栏(安装后必须注销重新进入, 开启启动tint2最好)
+# 开机启动使用Ubuntu提供的startup程序添加( dash搜索 startup )
+tint2
+
+# https://ksaikiranr.wordpress.com/2016/05/01/run-masm-programs-on-ubuntu/
+# "mount C: ~/data"
+# 自动mount: config -writeconf /home/yourname/dosbox.conf
+# NOTE: 但是dosbox会写入配置文件到: /home/crane/.dosbox/dosbox-0.74.conf
+# NOTE: 启动时可以看到配置文件地址
+# [autoexec]
+# mount c: ~/masm
+dosbox              # 测试8086汇编, 需要masm.exe(16位系统) :
+
+xchm                # chm file
+kchmviewer          # chm file
+
+
+
+# =================== Assembly 汇编 =====================
+nasm                # 开源版本(类似于masm), 可以在Linux使用, 可以编译纯指令文件
+bochs               # 可以使用nasm生成的纯指令文件作为启动盘(mbr在前512字节)
+                    # bochs安装后就有了 bximage
+bochs-x             # bochs需要图形化支持
+
+
+# 使用16进制编辑文件: https://www.tecmint.com/best-hex-editors-for-linux/
+ghex                # 图形化使用16进制编辑文件
+bless               # 图形化使用16进制编辑文件
+hexedit             # 编辑2二文件: 使用16进制
+
+# bios, mbr, cmos
+cmospwd             # 恢复bios的密码, 通过修改cmos寄存器实现?
+# cmos_dump https://github.com/ColinIanKing/debug-code/tree/master/cmos_dump
+# mbr_back          # 使用dd命令备份521 byte mbr
+
+maven               # Java project manager(mvn -X | less ------> view MAVEN_HOME, global setting.xml in there)
+eclipse             # java IDE
+
+
+polipo              # service polipo restart #(http cache, 可以作为和socks之间的proxy)
+
+
+# =================== 数据库组件 =====================
+# reids
+redis-server        # redis-server
+redis-tools         # redis-cli
+# 集群配置
+# 1: dpkg -L redis-tools | ack trib # 找出redis-trib.rb
+# 2: gem install redis      # ruby连接redis的client package
+# 3: sudo cp redis-trib.rb /usr/bin
+# 4: 修改redis.conf配置文件 cluster-enabled yes, 修改dir /var/lib/redis, 修改端口
+# 5: copy 到不同的node配置运行文件中(sed修改端口和/var/lib/redis), 并启动redis
+# 6: trib.rb create
+# 7: trib.rb check
+# 另: 使用docker也是不错的选择, 直接脚本启动, 测试(查看redis-ope项目)
+
+etcd            # etcd server
+etcd-client     # etcd client
+
+# mongo
+mongodb-server         # server包含: /lib/systemd/system/mongodb.service, /etc配置, /usr/share man, /var/lib/mongodb目录, /var/run/mongodb/目录, /var/log/mongodb/
+                       # mongodb-server ====> 会导致安装mongodb-server-core(包含可执行文件)
+mongodb-clients        # mongo (client)
+
+
+# mysql
+mysql-server            # 类似于mongodb, 会导致安装mysql-server-core. 并且包含命令mysqld_safe
+                        # mysqld默认使用的credential是/etc/mysql/debian.cnf, 内含用户名密码
+                        # 1: mysql --defaults-file /etc/mysql/debian.cnf先连上, 然后修改密码
+                        # 2: 或者: mysql -uuser -ppassword      # 用户名密码在debian.cnf中
+                        # 3: service stop mysql + mysqld_safe --skip-grant-tables + mysql免密连接(设置密码)
+mysql-client
+
+
+# influxdb
+influxdb            # server
+influxdb-client     # 用来连接influxdb
+
+# 游戏
+#pacman4console
+
+julia               # 线性代数等科学计算
+
+hplip
+hplip-gui (包含hp-systray命令, 左下角托盘图标)
+                    # 惠普打印机驱动(printer)
+                    # 1: apt-get install hplip-gui hplip hplip-cups hplip-data hpijs hpijs-ppds libcupsimage2-dev printer-driver-hpcups
+                    # 2: 有可能需要: apt-get install printer-driver-hpcups
+                    # 3: 运行 hp-systray (在右下角打开惠普托盘)(并且这个命令在开机时会以"hp-sysstray -x"自动运行)
+                    #    或者 搜索 hp: 打开hplip toolsbox, 也可以
+                    # 4: HP Device Manager...
+                    # 5: 点击(+) 添加device
+                    # 6: 选择Network/Ethernet/Wireless network (这个选项是网络打印机)
+                    # 7: hide advanced options!
+                    # 8: Manual Discovery: 输入驱动地址: 192.168.1.xxx, jetdirectport: 1 不知道, 默认为1, 不用管
+                    # 9: 需要等一会才能添加完毕(完毕后会在列表中同时出现: fax和printer两个设备)
+                    # 10: 点击printer设备 ==> 点击"print control"选项卡 ==> "printer queue control" ==> "set as default"
+                    #      不设置为"default"也没关系
+                    # 11: chrome中打印时, 选择添加的打印机即可.
+                    # 另: lpr 命令可以打印时, 会使用默认打印机(lpr ~/.test.txt)
+
+
+
+
+# 手势 fusuma
+# sudo apt-get install libinput-tools
+# sudo apt-get install xdotool
+# gem install fusuma
+
+# how to run
+# 1/
+# touch ~/.config/fusuma/config.yml
+
+# 2/
+# paste the sample config in "config.yml" and save
+
+# 3/
+# start fusuma with sudo
+
+# 4/
+# Add fusuma to startup programs.
+
+jq      # 命令行json处理工具 :Command-line JSON processor
+
+# note 笔记软件
+tomboy
+tusk        #  印象笔记
+
+# loadbalance
+ipvsadm     # config ipvs at user-space
+
+
+# security
+fail2ban
+ipset       #  提高iptables 过滤性能(利用集合)
+
+
+# http server
+nginx
+apache2
+
+
+# mail/email/邮件
+thunderbird     # 邮件客户端
+kdocker         # put "thunderbird/any sofware" to tray
+
+
+# screen annotation/dray/desktop/画图/涂鸦/屏幕
+gromit-mpx      # gromit 不起作用(mint 19.3)
+                # F9:        toggle painting
+                # SHIFT-F9:  clear screen
+                # CTRL-F9:   toggle visibility
+                # ALT-F9:    quit Gromit-MPX
+                # F10:       undo last stroke
+                # SHIFT-F10: redo last undone stroke
+
+vym     # 思维导图工具
+墨刀    # 原型图

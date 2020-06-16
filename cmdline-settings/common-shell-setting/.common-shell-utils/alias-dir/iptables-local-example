@@ -1,0 +1,11 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- input ---------------------
+sudo iptables -A INPUT -p tcp -m state --state ESTABLISHED,RELATED -j ACCEPT # 放在最前面, 这种数据包最多, 提高效率
+sudo iptables -A INPUT -p tcp --dport 2222 -j ACCEPT                         # ssh
+sudo iptables -A INPUT -i lo  -j ACCEPT                                      # 接收 loopback 的流量
+sudo iptables -A INPUT -p udp --sport 53   -j ACCEPT                         # dns入口流量(服务端返回)
+sudo iptables -A INPUT -m multiport -p udp --sports 67,68 -j ACCEPT          # dhcp入口流量(服务端返回)
+sudo iptables -A INPUT -p icmp -j ACCEPT                                     # 允许互相ping
+
+sudo iptables -P INPUT DROP

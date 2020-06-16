@@ -1,0 +1,51 @@
+#!/bin/bash
+
+True=0
+False=1
+
+TestArgs() {
+    echo TestArgs 1 $1
+}
+
+IsBash() {
+    local ShellName=$(ps -o comm= -p $$)
+    # echo $ShellName
+    if [ $ShellName = 'bash' ] ;then
+        return 0
+    else
+        return -1
+    fi
+}
+
+IsZsh() {
+    local ShellName=$(ps -o comm= -p $$)
+    if [ $ShellName = 'zsh' ] ;then
+        return 0
+    else
+        return -1
+    fi
+}
+
+
+FileHasNotRuned() {
+    local DirName=$(basename -s .sh $0)        # 用路径名, 作为变量名(有点嵌套的意思)
+
+    # OnceName=$1
+    local OnceName=$(echo $DirName | sed -r 's/[^a-zA-Z0-9\-]+/_/g' |  tr '-'  '_' ) # "-" 替换为"_"
+
+    local Ret=$True
+    echo "before expand $OnceName"
+
+    # NOTE: 变量展开, 只支持bash, zsh不支持这种写法.
+    if [ -z ${!OnceName} ]; then
+        Ret=$True
+
+        export $OnceName="Runned"
+        # echo variable value ${!OnceName}               # Debug/调试 用
+    else
+        # echo variable value ${!OnceName} already exist # Debug/调试 用
+        Ret=$False
+    fi
+
+    return $Ret
+}

@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+grub-mkpasswd-pbkdf2        # 设置grub密码
+
+update-grub, update-grub2 - stub for grub-mkconfig      # 更新grub 配置

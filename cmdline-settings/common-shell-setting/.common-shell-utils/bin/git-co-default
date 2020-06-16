@@ -1,0 +1,14 @@
+#! /bin/sh
+#
+# git-co-default.sh
+# Copyright (C) 2017 crane <crane@crane-pc>
+#
+# Distributed under terms of the MIT license.
+#
+
+# 目的是为了解决: detached HEAD的问题, 顺利切换到默认分线
+# env是为了禁止grep的颜色
+# \K时 perl re的零宽断言
+
+# 主要是git sm foreach git-co-default使用(自动化)
+git co `git branch -a  |env grep 'origin/HEAD' |env grep -oPe '->\s+origin/\K.*'`

@@ -1,0 +1,321 @@
+# vim:set ft=gitconfig fdm=marker fdl=0 :vim modeline
+
+[credential]
+    helper = store      # 保存远程git仓库的用户名和密码 [默认保存到.git-credentials]
+
+[user]
+    name  = Crane
+    email = myemail@gmail.com
+
+[alias]
+
+    in = init
+
+    # =================== config =====================
+    # edit =  config -e
+    ed   =  config -e
+    edg  =  config -e --global    # ~/.gitconfig
+    eds  =  config -e --system    # /etc/.gitconfig
+    cl   =  config --list          # 既然"cl"作为config --list缩写, 注意不要作为clone的缩写了
+
+    # =================== commit =====================
+    ci  = commit -v
+    cm  = commit -m
+    cem = commit --allow-empty -m # 提交一个空提交
+
+    ca  = commit -a -v
+    cam = commit -am
+    cb  = commit --amend -v       # b代表back, 这也是经常要用的一个功能: 经常修改log, 或者逐步修复log
+
+    # =================== clean =====================
+    # clean untracked file and dir
+    cle  = clean             # delete untracked file, but no delete ignored file
+    cln  = clean -n          # removed non( dry-run, just for list will removing file name )
+    clf  = clean -f          # clear non dir file(regular file)
+    cld  = clean -d -f       # clean dir
+
+    # clean ignored file and dir
+    clx  = clean -X -f       # removed ignored file
+    cldx = clean -d -x -f    # clear ignored dir
+    clr  = clean -d -f -f    # clean repo. -f twice to clean untraced sub git repo
+
+    # =================== add =====================
+    ad  = add
+    adf = add -f            # 强制添加 f stand for force
+    adc = add .             # adc stand for "add current dir, 本想用add, 但add本来就是git命令"
+    adu = add -u            # add 所有已经被add过的, 也就是在cache/stage中的文件
+
+    ui  = update-index  --assume-unchanged  # 可以忽略文件修改(ignore), 但是依旧保存一份不变的在仓库中.
+                                            # 这样每个不同主机, 不同用户, 根据自己需求. 自己修改这份文件.
+
+    # =================== push/pull =====================
+    ps  = push
+    pss = push --set-upstream
+    pst = push --tag        # push tag to remote repo
+    psa = push --all        # push all branch to remote
+    psf = push -f           # 强制push, 及时behind remote(reset/delete "remote" push)
+
+    # pl  = pull
+    pl  = pull --rebase                        # 默认使用pull --rebase
+    plr = pull --rebase                        # git fetch + git rebase
+    plf = pull --ff                            # HINT: if no conflict, do not create merge commit
+    plh = pull --allow-unrelated-histories -ff # HINT: 从另一个不相干的repo pull(合并两个仓库):
+                                               # git add remote local /path.git && git plh local dev/master
+
+    ft  = fetch             # fetch from remote(but not merge/rebase)
+
+    # =================== find  =====================
+    find = log --all --full-history --
+
+    # =================== filter-branch  =====================
+    # 一定要加 --ignore-unmatch, 使得遍历commit不匹配时还可以继续下去
+    fa  = filter-branch --tree-filter  # git fa 'git rmdangerous -f  --ignore-unmatch test_file.sqlite3'   # 在所有树中执行命令
+
+    # =================== merge =====================
+    me  = merge
+    men = merge --no-ff     # anyway: create a merge commit
+
+    # =================== rebase =====================
+    rb   = rebase            # rebased a branch(another branch, or remote fetched branch)
+    rba  = rebase --abort
+    rbc  = rebase --continue
+
+    # =================== cherry-pick =====================
+    cp = cherry-pick        # 将某个提交(的修改)再次应用:一般是分支之间对于公共bug修复的应用
+
+    # =================== diff =====================
+    df  = diff --ws-error-highlight=old          # local  ------> stategd/cache: --ws-error-highlight=old diff时显示空白
+    dc  = diff --cached --ws-error-highlight=old # staged ------> repo
+    dh  = diff HEAD --ws-error-highlight=old     # local  ------> repo(df + dc)
+
+    di  = diff --no-index                        # 对磁盘文件上两个文件的比较,而不是历史版本的比较. 和git版本库无关
+    db  = diff --binary                          # 比较二进制文件区别
+    dw  = diff --word-diff
+
+    # =================== log =====================
+    l  = log
+    l1 = log --oneline
+    lt = log --stat             # --stat 查看每次提交的文件变更统计, 主要是统计
+    lf = log --follow           # show a file's log history(vs blame)
+
+    # =================== ls-files/ls-tree =====================
+    ls  = ls-files               # ls all git files
+    lsi = ls-files --ignored --exclude-standard
+    #lsi = ls-files --other --ignored --exclude-standard
+
+    ll = ls-tree -l  HEAD       # 查看目录树
+    lr = ls-tree -lr HEAD       # 递归查看
+
+    # =================== rm =====================
+    # 当按下rm时, 依旧代表rm --cached, 这个只是为了控制风险
+    # 平时使用时, 还是要加上rm --cached, 不然养成这个习惯, 在其它地方可能倒大霉
+    # 虽然rmcache和rmdangerous比较长, 但是相对于安全性和来说, 很值得
+    # rmcache 和 rmdangerous 一目了然
+    # rm           = status                # 这个不起作用, git不支持对已存在的命令alias
+    rmcache      = rm --cached -r        # 相对于rmdangerous, 仅仅删除暂存区, 本地文件还在,比较安全
+    #rmdsupress   = rm --cached -r           # 仅仅是为了创建和rmdangerous相同的前缀, 放置误按
+    rmdangerous  = rm
+
+    # =================== status =====================
+    st  = status
+    stp = status  --porcelain
+
+    # =================== checkout =====================
+    co      = checkout              # checkout from stage/cache
+    co-     = checkout -            # last(previous) branch
+    coc     = checkout .            # checkout current dir from state(cache)
+    com     = checkout master       # checkout current dir from state(cache)
+
+    cc      = checkout -b           # NOTE: checkout + create branch
+    ch      = checkout HEAD         # checkout from HEAD(git-repo)
+    cours   = checkout --ours       # 合并发生冲突后, 也可以直接恢复我方目录
+    ctheirs = checkout --theirs     # 合并发生冲突后, 可以直接恢复对方文件和目录
+
+    # =================== branch =====================
+    br   = branch
+    brc  = symbolic-ref --short -q HEAD  # 仅显示当前分支名, 没有其他任意额外信息
+    bra  = branch -a
+    brd  = branch -d
+    brdd = branch -D
+    brdr = push --delete        # 删除远程"某指定"仓库中的"某分支": git brdr origin dev
+    brdo = push --delete origin # 删除远程origin仓库中的"某分支"  : git brdo dev
+    brv  = branch -vv           # 显示local branch对应的远程branch
+    bru  = branch -u            # 设置upstream分支 (git brv  origin/dev)
+
+    # =================== remote =====================
+    re  = remote
+    rev = remote -v
+
+    # =================== reset =====================
+    # 针对当前HEAD, 不改变HEAD指向, 不像up
+    # reset HEAD --soft, 没有意义, 因为soft既不改变缓冲区, 又不改变local文件. 仅仅当索引指向非HEAD, 例如HEAD^时, 才有意义
+    # git alias 不区分大小写, 所以backHard, backhard都一样.
+    # reset 默认HEAD + --mixed
+    backhard  = reset --hard           # 恢复 "缓冲区 + 本地文件" 和当次提交一模一样, = reset HEAD --hard
+    backcache = reset                  # 恢复 "缓冲区" 和当次提交一模一样, = reset HEAD --mixed
+    bh        = reset --hard
+    bc        = reset
+
+    up  = reset HEAD^           # up same with up1
+    uph = reset HEAD^ --hard    # up to previous commit
+    up1 = reset HEAD^           # same with  HEAD~1
+    up2 = reset HEAD~2          # same with  HEAD^^
+    up3 = reset HEAD~3
+
+    # =================== clone =====================
+    ce  = clone          # 因为cl 已经被config --list使用了, 所以使用ce
+    cer = clone --recursive
+
+    # =================== ignored =====================
+    ig      = status --ignored   # 显示git项目中, 被ignored的文件
+    ignored = status --ignored   # 显示git项目中, 被ignored的文件
+    igv     = check-ignore -v    # 显示某个文件在哪行配置定义, 导致被ignore. "git igv *", "git igv a"
+                                 # git ig  **/* : 显示所有忽略文件
+                                 # git igv **/* : 显示所有忽略文件 原因
+
+    # =================== stash =====================
+    # stash push, pop, list, clear
+    ss = stash                      # 将工作区缓存起来: 相当于stash push
+    ssi = stash save --keep-index   # 将工作区中"modified的但还未staged的"stash下来
+                                    # 不缓存已经staged的文件(用来提交), 注意也不缓存untracked新添加的文件
+
+    ssf = stash push    # stash 特定文件(specific file): git ssf <file>
+    sp = stash pop      # stash 恢复
+    pop = stash pop     # stash 恢复
+    sl = stash list
+    sc = stash clear
+
+    # =================== help =====================
+    he = help
+    hw = help -w        # 如果安装了git-doc, 就可以使用web浏览器, 查看git帮助: git hw  commit
+
+    dir  = rev-parse --show-toplevel    # dir stand for dir top-level: 顶级目录
+    dirg = rev-parse --git-dir          # show .git/ directory, wherever you are: git数据存放目录
+    dirr = rev-parse --show-prefix      # dirr stand for dir relative: 相对于顶级目录
+
+    # =================== tag =====================
+    ta  = tag                   # general tag
+    taa = tag -a                # annoted tag
+    tad = tag -d                # delete
+
+    rename = mv         # 重命名文件
+
+    # =================== submodule =====================
+    # HINT: NOTE: 如何更新子目录的最新状态
+    # 1-1: git smdm + git smp + 一次提交
+    # 更新所有子目录到各自的最新状态
+    # 1-2: 在自己的vim中, 更好的做法是使用:Plug update, 可以并行更新(速度非常可观)
+
+    # 2: HINT: NOTE git sr(在update时等同于git smu, 建议使用git sr)
+    # 更新子目录到父目录中记录的状态
+    # NOTE: 但子目录只是checkout到相应的提交(master可能还滞后)
+    # NOTE: 这时候应该再执行git smdm
+
+    # submodule
+
+    sr = submodule update --init --recursive # 前提提交 .gitmodule文件中必须也有相应的项才可以使用 git sr
+                                             # 功能1: 把当前项目中包含.git/目录的子目录, 注册为 submodule(加入.gitsubmodule)
+                                             # 功能2: 此命令可以clone和更新 submodule(或者异地同步子项目)
+                                             # 功能3: 相当于"git init" + "git update"
+
+    sm = submodule                           # 如果不添加参数, 等同于git sm statue
+    sa = submodule add                       # HINT: 如果新add一个submodule
+                                             # 1: 会添加到.gitsubmodule文件中
+                                             # 2: 并同时clone下来
+
+    smr  = submodule status --recursive      # ch查看所有子项目状态(NOTE: 注册已经在.gitsubmodule中的子模块)
+
+    smf  = submodule foreach
+    smu  = submodule update --recursive      # NOTE: 递归更新: sm: submod update(把子项目的提交调到上层git记录的那次提交)
+    smg  = submodule foreach git fetch       # fetch + merge = pull(smg stand for: submodule get)
+    smp  = submodule foreach git pull        # NOTE: 更新所有子项目(结果git smdm使用): ATTENTION: git smdm + git smp
+    sms  = submodule sync                    # 如果.gitsubmodule中的submod url修改后, 使用sync同步即可
+
+    smi  = submodule init
+    smdi = submodule deinit
+
+    smd  = submodule foreach  git-co-default  # 切换到默认分支, 即origin/HEAD 指向的分支
+                                              # git-co-default放置在 bash-setting/subdir/bin/下
+                                              # 这个命令, 主要是为了对付detached HEAD情况
+    smm  = submodule foreach git merge    # when submod "behind" remote: use git merge
+    #smdm = submodule foreach git-co-default && git merge # smd + smm
+    smdm = submodule foreach  git-co-and-merge-default    # smd + smm
+
+    # update to correct branch
+    # git pull
+    # git submodule sync    # Ensure the submodule points to the right place
+    # git submodule update  # Update the submodule
+    # git submodule foreach git checkout master  # Ensure subs are on master branch
+    # git submodule foreach git pull origin master # Pull the latest master
+
+    # git submodule update --init --recursive # what's this do?
+    # git pull --recurse-submodules    # what's this do?
+
+    # diff-patch and apply(patch only content)
+    ap  = apply
+    apc = apply --check     # check but not real apply
+
+    # git-patch and am(patch content and commit)
+    # am: apply mailbox (apply git patch)
+    fp  = format-patch      # generate git patch
+    amb = am --abort        # git am  *patch 一次性应用所有的patch, 一次提交是一个format-patch patch
+
+    ar  = archive           # archive tree to zip/gzip
+
+    # bisect about
+    bis = bisect start
+    bir = bisect reset      # exit bisect
+
+    big = bisect good
+    bib = bisect bad
+
+    bil = bisect log        #  > bisect.log
+    bip = bisect replay     # re play(by log)
+
+[core]
+    # 可以显示汉字, 不会使用"\"转义
+    quotepath = false
+
+    # 全局过滤文件
+    excludesfile = ~/.gitignore
+    editor  = vi
+
+    # pager = less  # 分页器默认使用less
+
+[color]
+    ui = always     # 如果使用了 color always, 使用 管道符 | less -R 也可以看到颜色了 -R stand for raw
+
+# [color "diff"]
+#     whitespace = red reverse
+
+[push]
+    # default = matching
+    default = current           # push 到同名远程分支
+    #default = nothing
+    #default = current
+    #default = upstream
+    #default = simple
+    #default = matching
+
+
+    # nothing  - push操作无效，除非显式指定远程分支，例如git push origin develop（我觉得。。。可以给那些不愿学git的同事配上此项）。
+    # current  - push当前分支到远程同名分支( 这里没有说清楚: 远程? 是哪个远程? 是origin吧 ), 如果远程同名分支不存在则自动创建同名分支。
+    # upstream - push当前分支到它的upstream分支上(这里的upstream是显示--set-upstream了的upstream)
+    # simple   - simple和upstream是相似的，只有一点不同，simple必须保证本地分支和它的远程upstream分支同名，否则会拒绝push操作。
+    # matching - push所有本地和远程两端都存在的同名分支。
+
+# [helper/record]
+# 1 fork and upstream sync(local ------> origin ------> upstrem)
+# {{{
+
+# fork出来的项目, 如何和上游同步.
+# 1: git remote add upstream
+# 2: git remote update upstream # fetch upstream所有分支 (git fetch upstream:只fetch当前分支)
+# 3: git rebase upstream/master # 不要用merge(因为以后还要继续fetch and rebase)
+#                               # 或者2,3合并为1步: git pull --rebase upstream
+# 4: git push  [origin] -f      # 注意提交到origin remote不成功时, 可以使用--force强制将本地提交覆盖上去
+
+# }}}
+
+# 2 clone local + depth
+# git clone file:////mySaved/tools-setting-linux --depth 1  dot-tools

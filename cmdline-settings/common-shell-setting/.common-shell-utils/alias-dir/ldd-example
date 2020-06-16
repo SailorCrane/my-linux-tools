@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0:
+
+ldd $(env which ssh)
+
+ldd $(env which ssh) | grep pam

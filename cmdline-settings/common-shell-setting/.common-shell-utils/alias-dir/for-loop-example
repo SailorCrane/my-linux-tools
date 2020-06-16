@@ -1,0 +1,31 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- bash ---------------------
+## example 1: 顺序遍历数字
+for num in {0..10} ; do
+    echo $num
+done
+
+
+## example 2: 遍历数组
+ips=(50 51 52 53 54 22 24 25 26)
+PORT=7777
+
+for ip in ${ips[@]} ; do
+    echo $ip
+done
+
+
+## example3: 遍历文件内容的每行
+for line in $(cat /etc/passwd) ;do
+    echo hi $line
+done
+
+
+## example4: 遍历stdout输出结果
+jobId=$(cat file | grep filter | awk '{print $4}')
+for id in ${jobId}; do
+    echo $id
+done
+
+# ------------------- zsh ---------------------

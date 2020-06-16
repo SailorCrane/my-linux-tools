@@ -1,0 +1,9 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+apt-get install -y xfreerdp
+
+xfreerdp -u itom -p itom 10.10.21.46
+
+xfreerdp -u backwin01 -p 123123 10.10.25.110        # 乐清环境的windows
+xfreerdp -u backwin01 -p 123123 10.10.25.110        # 乐清环境的windows
+xfreerdp -u backwin01 -p 123123 localhost           # 做了本地3389端口转发之后

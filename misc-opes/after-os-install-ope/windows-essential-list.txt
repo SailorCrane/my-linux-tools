@@ -1,0 +1,9 @@
+windows-essential-list.txt
+
+:Author: crane
+:Email: crane@crane-pc
+:Date: 2017-09-14 01:47
+
+
+clover      # tab file explorer
+tim(qq)

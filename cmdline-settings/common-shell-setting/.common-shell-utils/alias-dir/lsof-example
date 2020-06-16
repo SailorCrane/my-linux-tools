@@ -1,0 +1,26 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# TYPE 说明
+# cwd  工作目录: current work dir
+# txt 应用程序路径?
+# 0r 0文件描述符具有read权限
+# 3w 3文件描述符具有write权限
+# 4u 0文件描述符具有read, write权限
+
+
+# 查看process cwd/工作目录
+lsof -p <PID> | grep cwd         # 查看进程工作目录
+pwdx <PID>
+
+
+# ------------------- 查看进程打开的文件 ---------------------
+lsof -p 1       # 列出进程1打开的所有文件, HINT: 尤其在接收别人服务时, 不知道程序日志所在, 可以用这个工具
+lsof -p 1234 | grep log         # 查找进程打开的日志文件
+lsof -p 123,456,789     # 多个进程
+lsof -p ^123    # 除了123, 其它进程打开的文件
+
+
+# ------------------- 查看用户打开的文件 ---------------------
+lsof -u root       # 列出进程1打开的
+lsof -u 1
+lsof -u ^1          # 除了1, 其它用户打开的文件

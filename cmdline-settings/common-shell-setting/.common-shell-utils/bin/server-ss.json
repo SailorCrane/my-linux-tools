@@ -1,0 +1,13 @@
+{
+    "remark" : "my_mark1",
+
+    "_comment_server" : "对于client是(server监听的server具体地址: a.b.c.d), 对于server是本地监听地址(0.0.0.0/127.0.0.1)",
+    "server": "0.0.0.0",
+    "_server_port": 443,
+    "server_port": 8080,
+
+    "password": "",
+    "method":"aes-256-cfb",
+
+    "timeout":300
+}

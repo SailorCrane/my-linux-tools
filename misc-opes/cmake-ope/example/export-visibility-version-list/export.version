@@ -1,0 +1,14 @@
+
+# {
+# global:
+#   extern "C++" {
+#     Test*;
+#     A*;
+#   };
+# local: *;
+# };
+
+ADD {
+    global : add; my_add;        # export
+    local  : *;           # hide everything else
+};

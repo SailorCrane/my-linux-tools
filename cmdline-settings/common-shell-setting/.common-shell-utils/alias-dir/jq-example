@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+jq  -r '.type'  json_path       # 处理文件
+
+cat json_path | jq  -r  '.type'     # 处理标准输入

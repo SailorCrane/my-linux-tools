@@ -1,0 +1,43 @@
+global
+    maxconn      60000
+    daemon
+defaults
+    mode        http
+    log         global
+    option      httplog
+    timeout http-request        15s
+    timeout queue               1m
+    timeout connect             15s
+    timeout client              15s
+    timeout server              15s
+
+
+listen router
+    bind 0.0.0.0:19999
+    mode tcp
+    option tcplog
+    log 127.0.0.1 local3
+    server router1 10.10.25.51:9999 check inter 6s
+    server router2 10.10.25.53:9999 check inter 6s
+    server router3 10.10.25.54:9999 check inter 6s
+
+listen dbmanager
+    bind 0.0.0.0:8090
+    mode tcp
+    option tcplog
+    log 127.0.0.1 local3
+    server dbmanager1 10.10.25.50:30013 check inter 6s
+    server dbmanager2 10.10.25.51:30013 check inter 6s
+    server dbmanager3 10.10.25.53:30013 check inter 6s
+    server dbmanager4 10.10.25.54:30013 check inter 6s
+frontend http-in
+    bind *:80
+    log 127.0.0.1 local0
+    mode http
+    stats enable
+    stats realm DCOS\Haproxy
+    stats auth :
+    stats uri /haproxy
+    default_backend servers
+backend servers
+    server server1 10.10.25.54:80 maxconn 32

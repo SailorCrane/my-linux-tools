@@ -1,0 +1,11 @@
+[Desktop Entry]
+# position ~/.config/autostart/
+Type=Application
+Exec=tint2
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=tint2
+Name=tint2
+Comment[en_US]=tint2
+Comment=tint2

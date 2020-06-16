@@ -1,0 +1,1 @@
+../shell-learn/oh-my-zsh-record.txt

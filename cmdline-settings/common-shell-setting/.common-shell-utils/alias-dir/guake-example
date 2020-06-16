@@ -1,0 +1,46 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# WARNING
+# 不适用apt install(版本太老了: 有些不支持guake -s获取当前index, 有些不支持tab拖动)
+# WARNING: apt版本和pip版本不要并存
+
+# HINT install
+# sudo pip3 install guake   # 安装完毕后在 /usr/local/bin/ 中
+# pip3 install --user guake # 安装完毕后在 $HOME/.local/bin 中(已经在系统启动时, 通过~/.profile添加到PATH)
+# NOTE: 系统的startup启动在~/.profile执行之后
+# WARNING: pip3 install --user 安装的guake可行, pip3 install guake在全局的不可行
+
+
+# NOTE: 修改bug, 多屏幕显示placement.
+# /home/crane/.local/lib/python3.6/site-packages/guake/utils.py
+# class RectCalculator set_final_window_rect()
+
+# if width_percents == 100 and height_percents == 100:
+#     log.debug("MAXIMIZING MAIN WINDOW")
+#     window.maximize()
+# elif not FullscreenManager(settings, window).is_fullscreen():
+#     log.debug("RESIZING MAIN WINDOW TO THE FOLLOWING VALUES:")
+#     window.unmaximize()
+#     log.debug("  window_rect.x: %s", window_rect.x)
+#     log.debug("  window_rect.y: %s", window_rect.y)
+#     log.debug("  window_rect.height: %s", window_rect.height)
+#     log.debug("  window_rect.width: %s", window_rect.width)
+#     # Note: move_resize is only on GTK3
+#     window.resize(window_rect.width, window_rect.height)
+#     window.move(window_rect.x, window_rect.y)
+#     log.debug("Updated window position: %r", window.get_position())
+# window.resize(window_rect.width, window_rect.height)      // === 新加
+# window.move(window_rect.x, window_rect.y)                 // === 新加
+
+
+# 用过的比较好的版本是如下, 但是需要修复如上bug!
+# Guake Terminal: 3.6.3
+# VTE: 0.42.5
+# VTE runtime: 0.42.5
+# Gtk: 3.18.9
+
+alias guakev='guake -V'
+alias guakep='guake -p'     # --preference
+alias gua='nohup guake -f &'   # run background
+
+# =================== mint 19 自带的版本是guake 3.0, 但是不能拖拽 =====================

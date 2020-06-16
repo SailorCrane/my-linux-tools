@@ -1,0 +1,21 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# nginx www html目录, 和apache目录一致
+/var/www/html
+
+sudo sh -c 'echo "hello 1" > /var/www/html/index.html'
+
+
+
+# /etc/nginx/nginx.conf: 下面是一个tcp loadbalancer
+stream {
+    upstream backend_servers {
+        server localhost:3333;
+        server localhost:4444;
+    }
+
+    server {
+        listen 1111;
+        proxy_pass backend_servers;
+    }
+}

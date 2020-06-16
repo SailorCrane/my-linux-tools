@@ -1,0 +1,18 @@
+Applications: tbm=app
+Blogs:        tbm=blg
+Books:        tbm=bks
+Discussions:  tbm=dsc
+Images:       tbm=isch
+News:         tbm=nws
+Patents:      tbm=pts
+Places:       tbm=plcs
+Recipes:      tbm=rcp
+Shopping:     tbm=shop
+Video:        tbm=vid
+
+
+# image
+http://www.google.com/search?q=%s&tbm=isch
+
+# news
+http://www.google.com/search?q=%s&tbm=nws

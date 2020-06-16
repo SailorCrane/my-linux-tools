@@ -1,0 +1,95 @@
+#! /bin/sh
+
+# 服务器和客户端可以用同一个配置文件
+
+# 服务器: ssserver -c config.json       # -c 指定配置文件
+
+## TODO: config as systemd service
+
+BASE_PROG=sslocal
+prog_name=ss_client
+#config_name=ss.json
+#config_name=huihui-ss.json
+config_name=client-ss.json
+
+# scriptPath=$(env which ${prog_name})
+# DIR_NAME=$(dirname $scriptPath)
+DIR_NAME=$(dirname $0)          # perfect to get path of current file when run
+LOG_FILE="${HOME}/ss_client.out"
+
+show_info() {
+    echo "DIR_NAME [$DIR_NAME]"
+    echo "LOG_FILE [$LOG_FILE]"
+    echo "CON_FILE [$DIR_NAME/$config_name]"
+
+    echo '------------------- config ---------------------'
+    cat ${DIR_NAME}/${config_name}
+}
+
+ss_pid() {
+    if ps -ef | grep -v grep | grep  ${BASE_PROG} > /dev/null 2>&1 ;  then
+        ps -ef | grep -v grep | grep ${BASE_PROG}  | awk '{print $2}'
+    else
+        return 1
+    fi
+}
+
+stop_ss_client() {
+    if ss_pid; then
+        echo 'stoping sslocal...'
+        pkill sslocal
+    else
+        echo 'sslocal already stoped...'
+    fi
+}
+
+start_ss_client() {
+    if ss_pid; then
+        echo 'sslocal alread in running: logging... '
+        echo "=================== log contents:  ====================="
+        tail $LOG_FILE
+    else
+        echo 'starting sslocal...'
+        nohup sslocal -c ${DIR_NAME}/${config_name} > $LOG_FILE  &
+        return
+    fi
+}
+
+restart_ss_client() {
+    stop_ss_client
+    start_ss_client
+}
+
+main() {
+    show_info
+
+    #sslocal -c ${DIR_NAME}/${config_name}
+    if [ $# -eq 1 ]
+    then
+        cmd=$1
+
+        # start
+        if [ "$cmd" = 'start' ]; then
+            start_ss_client
+            return
+        fi
+
+        # stop
+        if [ "$cmd" = 'stop' ]; then
+            stop_ss_client
+            return
+        fi
+
+        # restart
+        if [ "$cmd" = 'restart' ]; then
+            restart_ss_client
+            return
+        fi
+
+    else
+        start_ss_client
+        return
+    fi
+}
+
+main $*

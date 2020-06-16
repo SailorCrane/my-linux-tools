@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/crane/.local/bin/guake -f
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=guake
+Comment[en_US]=开机全屏启动guake
+X-GNOME-Autostart-Delay=0

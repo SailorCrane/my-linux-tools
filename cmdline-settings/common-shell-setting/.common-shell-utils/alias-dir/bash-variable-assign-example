@@ -1,0 +1,12 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 如果var1为空, 就使用default_value. (否则使用原值)
+# NOTE: 用在需要default_value, default_value优先级最低的情况下.
+# NOTE: 尤其是环境变量有默认值的情况下.
+VAR1=${VAR1-default_value}      # 等同于: VAR1=${VAR1:-default_value}
+echo $VAR1
+
+# 有值, 则不使用defaule_value
+VAR1="has_value"
+VAR1=${VAR1-default_value}
+echo $VAR1

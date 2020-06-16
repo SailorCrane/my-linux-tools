@@ -1,0 +1,20 @@
+#! /bin/sh
+# vim: set fdm=marker fdl=1: vim modeline( set )
+
+# NOTE 将新添加的$JAVE_HOME/bin 和 $JRE_HOME/bin放在前面
+# NOTE 这样Linux中即使有默认安装的java, 因为自己的路径在前, 也会优先使用自己的Java版本
+# NOTE 这里只是sample, 真正内容还是放到 ./local-custom-no-git.sh 中, 不要影响git
+
+# JavaBase=/usr           # 子命令不需要这个变量, 所以没必要export去污染环境
+# JdkVersion='1.8.0_121'     # 仅仅在这里使用, 不需要export
+# JdkVersion=""     # 仅仅在这里使用, 不需要export
+# export JAVA_HOME=$JavaBase/$JdkVersion
+# export JRE_HOME=$JAVA_HOME/jre
+# export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
+# export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH      # WARNING: if JdkVersion in empty, JAVA_HOME will be /usr/
+
+# NOTE: 简单版本
+# export JAVA_HOME="/usr/local/bin/"
+# export JRE_HOME=$JAVA_HOME/jre
+# export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
+# export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH      # WARNING: if JdkVersion in empty, JAVA_HOME will be /usr/

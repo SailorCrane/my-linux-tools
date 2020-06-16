@@ -1,0 +1,12 @@
+# vim: set filetype=sh  foldlevel=0:
+
+
+# ps -C python3 -o pid,args,%cpu
+
+sudo mkdir  /sys/fs/cgroup/cpu/{one,two}
+
+sudo bash -c "echo 16331 > /sys/fs/cgroup/cpu/one/tasks"
+sudo bash -c "echo 16411 > /sys/fs/cgroup/cpu/two/tasks"
+
+sudo bash -c "echo 2048 > /sys/fs/cgroup/cpu/one/cpu.shares"
+sudo bash -c "echo 512 >  /sys/fs/cgroup/cpu/two/cpu.shares"

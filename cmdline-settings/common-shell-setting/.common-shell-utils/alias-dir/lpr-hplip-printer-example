@@ -1,0 +1,24 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- hplip: 添加打印机 ---------------------
+sudo apt-get install hplip hplip-gui
+
+hp-setup                    # NOTE: 或者系统Menu搜索"hp", 在gui添加打印机
+hplip -i 192.168.1.17       # 在命令行添加打印机(如果在gui添加失败的话)
+
+
+# ------------------- lpr 命令行打印: 可以直接指定打印机ip ---------------------
+lpr 192.168.1.17:[9900]  ~/text.txt # 指定打印机
+lpr ~/text.txt                      # 使用默认打印机
+lpr -#3 myfile.txt                  # 打印3份
+
+lpr 打印
+lp — Print a file on the System V operating system.
+lpc — Control line printers.
+lprm — Remove requests from the print queue.
+
+查看打印任务
+lpq — List the status of available printers.
+
+查看打印机
+lpstat — List the status of the LP print services.

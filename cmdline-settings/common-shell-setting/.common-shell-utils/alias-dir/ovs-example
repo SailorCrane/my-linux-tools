@@ -1,0 +1,12 @@
+# vim: set filetype=sh  foldlevel=0:
+
+
+apt-get install -y openvswitch-switch
+
+sudo ovs-vsctl show
+sudo ovs-vsctl add-br mybr0
+sudo ovs-vsctl add-port mybr0  eth0     #　添加1个port
+
+sudo ovs-vsctl del-br mybr0             # 删除bridge
+
+ovsdb-client

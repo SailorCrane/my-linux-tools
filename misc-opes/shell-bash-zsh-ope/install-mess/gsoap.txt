@@ -1,0 +1,5 @@
+gsoap 安装依赖列表:
+
+bison
+flex
+libssl-dev      # openssl

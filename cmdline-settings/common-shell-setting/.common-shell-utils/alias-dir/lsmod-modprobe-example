@@ -1,0 +1,8 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+modprobe openvswitch        # 没有返回错误码, 就表示ok.
+
+depmod -av                  # 列出所有ko模块
+
+lsmod                       # 列出所有模块
+lsmod | grep macvlan

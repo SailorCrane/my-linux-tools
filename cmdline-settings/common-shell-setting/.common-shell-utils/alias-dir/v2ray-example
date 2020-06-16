@@ -1,0 +1,7 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+/usr/bin/v2ray/v2ray -test -config  config.json
+
+
+# docker 运行v2ray
+sudo docker run -d --name v2ray -v /etc/v2ray:/etc/v2ray -p 8888:8888 v2ray/official  v2ray -config=/etc/v2ray/config.json

@@ -1,0 +1,46 @@
+# 关于远程终端
+
+
+# 1: 非clone默认仓库, 手动设置远程仓库
+# 注意remote add的是远程仓库(分支属于仓库)
+# remote add 和分支没有关系
+# 这样origin 代表远程仓库
+git remote add origin https://git.oschina.net/CraneAgain/push-by-add-remote-test.git
+
+
+# 2: 设置上游分支: 上游分支和 default.push 区别 !!!!
+# 注意是分支
+# git status 查看状态: 显示领先远程分支多少: 显示的就是上游分支
+# origin/mydetach 本地mydetach分支的上游
+
+git branch --set-upstream-to=origin/mydetach mydetach
+# 或者 git push --set-upstream origin develop, 和git branch --set-upstream-to 相同
+# Branch mydetach set up to track remote branch mydetach from origin.
+# 注意这里显示的track 关键字, 非常形象
+
+git branch --set-upstream-to=origin/master master
+# Branch master set up to track remote branch master from origin.
+
+
+# 3: push 指定push 的远程分支( 完整参数 )
+# 将当前分支push 到 origin的mydetach
+# 如果设置了上游分支:并且push.default设置OK.(在当前分支和上游分支不同名时.)
+# 仅仅git push就可以push了
+git push origin mydetach
+
+git push -u origin mydetach  # push 的同时, 设置upstream
+
+
+# 4: pull 详细参数版: 和git push类似
+# 将origin 的master分支拉下来
+git pull origin master
+
+# git pull 的第一步, git fetch 会将所有远程仓库所有分支中的代码拉下来
+# git pull 的第二步, 会merge, merge时, 就涉及到upstream
+# 参考 https://segmentfault.com/a/1190000002783245
+
+
+# 5: 关于远程仓库
+可以添加多个远程仓库 git  remote  add
+可以删除远程仓库     git  remote  remove
+可以重命名远程仓库   git  remote  rename  lab  origin (删除origin仓库之后, 将自己的lab仓库作为自己的默认仓库)

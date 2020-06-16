@@ -1,0 +1,27 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ===================  mysql =====================
+# run docker  mysql in default port, passwd 123456
+#     connect mysql
+c_sql_port=3307      # crane mysql port
+c_sql_passwd=passwd_13579  # crane mysql passwd
+
+# dmysql: d表示 detached run
+# mysql 使用--pid host创建, 这样可以在本地ps进程中看到mysql
+# sudo unshare --pid --uts --ipc --mount -f chroot rootfs /bin/sh
+
+# NOTE: 使用 和 busy相同的net和container
+# docker run --pid=container:busy --net=container:busy --name mybusy -itd busybox
+
+sudo docker run --name first-mysql --pid host -p ${c_sql_port}:3306 -e MYSQL\_ROOT\_PASSWORD=${c_sql_passwd} -d mysql
+
+
+# v2ray
+sudo docker run -itd --name v2ray        \
+    -v /etc/v2ray:/etc/v2ray             \
+    -p 8080:8080                         \
+    -p 8081:8081                         \
+    v2ray/official                       \
+    v2ray -config=/etc/v2ray/config.json
+
+sudo docker port  [container_id/name]       # 查看端口映射

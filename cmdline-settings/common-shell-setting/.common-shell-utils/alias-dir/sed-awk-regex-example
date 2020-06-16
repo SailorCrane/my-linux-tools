@@ -1,0 +1,39 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- sed ---------------------
+# 对目录所有文件执行sed替换
+sed -i -r  "s/(Bundle\s+)([\"'])([^\"]*)([\"'])/\1\"\3.git\"/"   $(find . -name  "*.vim")
+
+# # 对文件进行替换
+sed -i -r 's/"([a-zA-Z]+)=/\1="/'  shell-setting/myAlias.sh
+
+## 替换"/"时, 使用'@'分隔符
+sed -i -r  "s@github.com\/beego\/bee\/logger@influx-cluster\/dbmanager\/utils/log@g"   $(find . -name  "*.go")
+
+## 普通替换
+sed -i -r  "s@c\.ServeJson@c.ServeJSON@g"   $(find . -name  "*.go")
+
+
+## 执行sed脚本
+sed -f subCities.sed cities.txt -i
+
+# 以下是sed脚本内容
+s/MA/, Massachusetts/
+s/PA/, Pennsylvania/
+
+
+## import 替换
+# influx-cluster/ ===> mmtrix-itom/influx-cluster  in  go file
+sed -i -r  "s@influx-cluster\/@mmtrix-itom\/influx-cluster\/@g"   $(find . -name  "*.go")
+
+# "github.com/beego/bee/logger"
+# "influx-cluster/dbmanager/utils/log"
+
+# github.com\/beego\/bee\/logger
+# influx-cluster\/dbmanager\/utils/log
+
+
+# ------------------- awk ---------------------
+# NOTE: WARNING: awk不要写成ack
+awk -v colNum=5 '{print $colNum}' fileName            # col 2 /etc/passwd, 输出第2列
+awk '{ print substr($0, index($0,$2)) }' fileName     # 输出第2列到最后一列

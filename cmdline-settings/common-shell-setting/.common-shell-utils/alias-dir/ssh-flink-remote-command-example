@@ -1,0 +1,27 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+
+USAGE="Usage: flink-all.sh (start|status|stop|restart)"
+STARTSTOP=$1
+ARGS=("${@:2}")
+if [[ $STARTSTOP != "start" ]]  && [[ $STARTSTOP != "stop" ]] && [[ $STARTSTOP != "status" ]] && [[ $STARTSTOP != "restart" ]]; then
+    echo $USAGE
+    exit 1
+fi
+
+
+## jobmanager
+for i in `cat ../conf/masters`;
+do
+    echo -e "\033[36m==============flink-jobmanager===========$i===============================================\033[0m"
+    host=(${i//:/ })
+    ssh -p 7777 -o StrictHostKeychecking=no $host "sudo supervisorctl $STARTSTOP flink-jobmanager"
+done
+
+
+## taskmanager
+for i in `cat ../conf/slaves`;
+do
+    echo -e "\033[36m==============flink-taskmanager=========$i===============================================\033[0m"
+    ssh -p 7777 -o StrictHostKeychecking=no $i "sudo supervisorctl $STARTSTOP flink-taskmanager"
+done

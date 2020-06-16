@@ -1,0 +1,11 @@
+Win-D-show-desktop.txt
+
+:Author: crane
+:Email: crane@crane-pc
+:Date: 2017-09-07 22:21
+
+
+compizconfig-settings-manager
+
+# Win+D show desktop(显示桌面快捷键):
+compizconfig-settings-manager ------> 搜索unity plugin ------> Ubuntu unity plugin 然后设置show-desktop的快捷键

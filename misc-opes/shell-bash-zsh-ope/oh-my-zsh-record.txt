@@ -1,0 +1,47 @@
+
+第一部分:
+install 脚本做了什么.
+
+1: 检测是否已经安装了zsh, 没有安装的话install脚本退出, 并提示未安装zsh.
+2: 检测是否已经安装了oh-my-zsh, 如果已经安装的话, 退出install脚本, 提示已安装oh-my-zsh.
+3: 从github clone oh-my-zsh 项目 到本地 ~/.oh-my-zsh目录.
+4: 设置ZSH=~/.oh-my-zsh
+
+4: 备份本地的 ~/.zshrc 到 ~/.zshrc.pre-oh-my-zsh
+   mv ~/.zshrc ~/.zshrc.pre-oh-my-zsh
+
+5: 复制 ~/.oh-my-zsh/templates/zshrc.zsh-template 到 ~/.zshrc
+  cp  $ZSH/templates/zshrc.zsh-template   ~/.zshrc
+
+然后oh-my-zsh就安装完毕了.
+
+
+第二部分:
+分析 oh-my-zsh安装的 ~/.zshrc 做了什么.(注意zsh每次启动都要执行~/.zshrc脚本的内容, 就像bash启动要执行~/.bashrc一样.)
+1: ~/.zshrc 中有一行:
+    source  $ZSH/oh-my-zsh.sh      # 即执行 .oh-my-zsh/oh-my-zsh.sh
+
+2: ~/.zshrc 中有一个变量plugins=(git)   # 这个是启用~/.oh-my-zsh/plugins 下面插件用的.
+    $plugins 变量会被 .oh-my-zsh/oh-my-zsh.sh 脚本读取.
+
+3: ~/.zshrc 中定义ZSH_THEME变量, 这个变量会被 .oh-my-zsh/oh-my-zsh.sh读取.
+    ZSH_THEME="robbyrussell"
+    .oh-my-zsh/oh-my-zsh.sh 读取 ZSH_THEME 变量, source ~/.oh-my-zsh/themes/下的theme
+
+4: .oh-my-zsh/oh-my-zsh.sh 中 读取plugins变量.
+    并 source 相应的 plugins/目录下的脚本. (这样就相当与脚本功能启用了)
+
+5: 我启用的插件:
+    关于插件功能, 自行百度, 或者查看相应插件目录下脚本文件即可.
+
+    plugins=(git
+             web-search
+             encode64
+             wd
+             autojump
+             urltools
+             sudo
+             zsh-syntax-highlighting
+             command-not-found
+             thefuck
+             )

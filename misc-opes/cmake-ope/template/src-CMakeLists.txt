@@ -1,0 +1,41 @@
+# vim: set filetype=cmake : vim modeline( set )
+
+# ======================================================
+
+aux_source_directory(.  MAINSRCS)
+
+# 如果不加STATIC 和 SHARED， 默认生成静态库
+#add_library(hello SHARED  ${MAINSRCS})
+#add_library(hello STATIC  ${MAINSRCS})
+
+add_executable(main  ${MAINSRCS})
+add_custom_target(run
+                  COMMAND main)
+
+# ===========set-compile-definition-and-flags===========
+
+#add_definitions(-g -std=c++11 -Wall  -O3)   # compile flags
+
+# ======================================================
+
+set_target_properties(main  PROPERTIES COMPILE_FLAGS "-std=c++11 -g")
+
+# 安装TARGETS
+install(TARGETS   main
+        RUNTIME   DESTINATION  bin
+        LIBRARY   DESTINATION  lib
+        ARCHIVE   DESTINATION  lib )
+
+# 安装普通文件, 比如头文件
+#install(FILES     Hello.h
+        #DESTINATION  include)
+
+# ======================================================
+
+#find_library(DB_CXX
+    #NAMES  db_cxx
+    #PATHS)
+
+#target_link_libraries(create-index ${DB_CXX})
+
+# ======================================================

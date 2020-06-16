@@ -1,0 +1,15 @@
+查看某个被占用的快捷键到底被谁占用了
+
+:Author: crane
+:Email: crane@crane-pc
+:Date: 2017-09-18 09:57
+
+
+
+# example: to see which command holds "F12"(needed by guake)
+1: Open "Keyboard" settings window
+2: to the shortcuts tab.
+3: Then select any unassigned shortcut and try to assign F12 to it.
+4: In the case of conflict,  you will be warned "which" command holds this shortcut.
+
+

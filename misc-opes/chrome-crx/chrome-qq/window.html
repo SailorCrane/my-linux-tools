@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>
+            ChromeQQ
+        </title>
+    <link rel="stylesheet" type="text/css" href="lib/powerange.min.css">
+    <!--<link rel="stylesheet/less" type="text/css" href="style.less">-->
+    <link rel="stylesheet/less" type="text/css" href="style.less">
+    <!--<link rel="stylesheet" type="text/css" href="style.css">-->
+    
+    <script type="text/javascript" src="lib/sea.js?12"></script>
+    <script type="text/javascript" src="app.js?12321"></script>
+    </head>
+    <body>
+        <header style="display:none">
+            <nav><a id="a_smart_qq" href="#">SmartQQ</a>&nbsp;|&nbsp;<a id="a_web_qq" href="#">WebQQ</a><span id="s_options"><a id="a_options" href="#">❤</a></span></nav>        
+            <div id="d_options">
+                <fieldset id="f_global_options">
+                    <legend>全局设置</legend>
+                    <ul>
+                        <li>
+                            <span class="label">默认启动：</span>
+                            <span><input type="radio" name="op_global_default" value="smart_qq"/></span><span class="radio_label">SmartQQ</span>
+                            <span><input type="radio" name="op_global_default" value="web_qq"/></span><span class="radio_label">WebQQ</span>
+                        </li>
+
+                    </ul>
+                </fieldset>
+                <fieldset id="f_nv_show">
+                    <legend>导航显示方式</legend>
+                    <ul>
+                        <li>
+                            <span><input type="radio" name="op_nav_show" value="always_show"/></span>
+                            <span class="radio_label">始终显示</span>
+                        </li>
+                        <li>
+                            <span><input type="radio" name="op_nav_show" value="auto_hide"/></span>
+                            <span class="radio_label">自动隐藏</span>
+                        </li>
+                        <li>
+                            <span><input type="radio" name="op_nav_show" value="not_show"/></span>
+                            <span class="radio_label">不显示（浮动显示设置按钮）</span>
+                        </li>
+                    </ul>
+                </fieldset>
+
+                <fieldset id="f_nv_style">
+                    <legend>导航样式</legend>
+                    <ul>
+                        <li><span class="label">背景颜色：</span>
+                            <span>
+                                <input type="button" name="op_nav_style_bg_color" style="background:rgb(20,20,20)" class="color_chooser color_chooser_checked" bindConf="nav_style.bg_color"/>
+                                <input type="button" name="op_nav_style_bg_color" style="background:rgb(251, 105, 157)" class="color_chooser" bindConf="nav_style.bg_color" value=""/>
+                                <input type="button" name="op_nav_style_bg_color" style="background:rgb(255, 189, 107)" class="color_chooser" bindConf="nav_style.bg_color" value=""/>
+                                <input type="button" name="op_nav_style_bg_color" style="background:rgb(255, 239, 107)" class="color_chooser" bindConf="nav_style.bg_color" value=""/>
+                                <input type="button" name="op_nav_style_bg_color" style="background:rgb(179, 252, 105)" class="color_chooser" bindConf="nav_style.bg_color" value=""/>
+                                <input type="button" name="op_nav_style_bg_color" style="background:rgb(110, 195, 244)" class="color_chooser" bindConf="nav_style.bg_color" value=""/>
+                                <input type="button" name="op_nav_style_bg_color" style="background:rgb(166, 116, 245)" class="color_chooser" bindConf="nav_style.bg_color" value=""/>
+                                <input type="button" name="op_nav_style_bg_color" style="background:rgb(245, 103, 233)" class="color_chooser" bindConf="nav_style.bg_color" value=""/>
+                                <input type="button" name="op_nav_style_bg_color" style="background:rgb(235, 235, 235)" class="color_chooser" bindConf="nav_style.bg_color" value=""/>
+                                <input type="text" name="op_nav_style_bg_color_custom" placeholder="自定义" class="color_chooser_custom" bindConf="nav_style.bg_color">
+                            </span>
+                            <div style="height:200px;height:200px; display:none; clear:both;">
+                                <canvas></canvas>
+                            </div>                     
+                        </li>
+                        <li><span class="label">字体颜色：</span>
+                            <span>
+                                <input type="button" name="op_nav_style_fg_color" style="background:rgb(20,20,20)" class="color_chooser color_chooser_checked" bindConf="nav_style.fg_color"/>
+                                <input type="button" name="op_nav_style_fg_color" style="background:rgb(235, 235, 235)" class="color_chooser" value="" bindConf="nav_style.fg_color"/>                                
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label ranger-label" style="width:75px">透明度（%）:</span>
+                            <span class="ranger-wrapper"><input type="text" class="js-range" bindConf="nav_style.opacity.current" /></span>
+                        </li>
+                        <li>
+                            <span class="label ranger-label" style="width:75px">高度（px）:</span>
+                            <span class="ranger-wrapper"><input type="text" class="js-range" bindConf="nav_style.height.current"/></span>
+                        </li>
+                    </ul>
+                </fieldset>
+
+<!--
+                <fieldset id="f_smartqq_options">
+                    <legend>SmartQQ设置</legend>
+                    <ul>
+                        <li>
+                            <span class="label">宽度（px）：</span><span class="ranger-wrapper"><input type="text" class="js-range" bindConf="smart_qq.width.current"/></span>                            
+                        </li>
+                        <li>
+                            <span class="label">高度（px）：</span><span class="ranger-wrapper"><input type="text" class="js-range" bindConf="smart_qq.height.current"/></span>
+                        </li>
+                    </ul>
+                </fieldset>
+
+                <fieldset id="f_webqq_options">
+                    <legend>WebQQ设置</legend>
+                    <ul>
+                        <li>
+                            <span class="label">宽度（px）：</span><span class="ranger-wrapper"><input type="text" class="js-range"  bindConf="web_qq.width.current"/></span>                        
+                        </li>
+                        <li>
+                             <span class="label">高度（px）：</span><span class="ranger-wrapper"><input type="text" class="js-range"  bindConf="web_qq.height.current"/></span>
+                        </li>
+                    </ul>
+                </fieldset>
+-->
+            </div>
+        </header>
+        <div id="main">
+            <webview id="qq"></webview>
+        </div>
+    </body>
+</html>

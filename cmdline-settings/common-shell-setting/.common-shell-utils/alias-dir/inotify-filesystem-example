@@ -1,0 +1,7 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 不带时间戳
+inotifywait -mrq -e 'create,delete,close_write,attrib,moved_to' '%T %w%f %e' ./
+
+# 输出带时间戳
+inotifywait -mrq -e 'create,delete,close_write,attrib,moved_to' --timefmt '%Y-%m-%d %H:%M' --format '%T %w%f %e' ./

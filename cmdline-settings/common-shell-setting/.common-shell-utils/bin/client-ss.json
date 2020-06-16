@@ -1,0 +1,21 @@
+{
+    "_comment_server" : "对于client是(server监听的server具体地址: a.b.c.d), 对于server是本地监听地址(0.0.0.0/127.0.0.1)",
+    "_server":"ubuntu",
+    "server": "localhost",
+    "server_port":8888,
+
+
+    "_comment_local" : "本地的监听地址",
+    "_local_address": "127.0.0.1",
+    "local_address": "0.0.0.0",
+    "local_port":1080,
+
+    "password":"",
+    "_method 已经不再支持":"rc4-md5",
+    "method":"aes-256-cfb",
+
+    "timeout":300,
+
+    "fast_open": false,
+    "workers": 1
+}

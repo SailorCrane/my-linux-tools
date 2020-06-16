@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+nslookup baidu.com      # 获取ip
+ping -c 1 baidu.com     # 获取ip
+ping -s 100 baidu.com   # 指定icmp 数据包大小(windows是-l)

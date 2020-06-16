@@ -1,0 +1,55 @@
+#! /bin/sh
+#
+# local-custom-router-and-ssh.sh
+# Copyright (C) 2019 crane <crane@gosun>
+#
+# Distributed under terms of the MIT license.
+#
+
+# ssh local forward
+ssh_local_forward() {
+    # ubuntu cloud server
+    autossh -M 0 -q -f -N -o "ServerAliveInterval 15" -o "ServerAliveCountMax 3" -L 8080:localhost:8080 crane@ubuntu -p 7337
+    autossh -M 0 -q -f -N -o "ServerAliveInterval 15" -o "ServerAliveCountMax 3" -L 8081:localhost:8081 crane@ubuntu -p 7337
+    # autossh -M 0 -q -f -N -o "ServerAliveInterval 15" -o "ServerAliveCountMax 3" -L 8082:localhost:8082 crane@ubuntu -p 7337
+    # autossh -M 0 -q -f -N -o "ServerAliveInterval 15" -o "ServerAliveCountMax 3" -L 1194:localhost:1194 crane@ubuntu -p 7337
+
+    # flux50
+    autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:3032:flux51:8082 crane@flux50 -p 7777
+    autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:4032:localhost:8082 crane@flux50 -p 7777
+
+    # jump/old-jump/生产环境
+    autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:7072:10.10.100.13:8082 uaq@101.71.28.84 -p 7000
+    autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:8072:10.10.100.18:8082 uaq@101.71.28.84 -p 7000
+}
+
+ssh_remote_forward() {
+    # 远程端口转发: 使用远程2222访问本地2222
+    autossh -M 0 -fCNR \*:2222:localhost:2222 crane@ubuntu  -p 7337
+}
+
+route_table() {
+    # NOTE: 重复添加, 会报这个错误: SIOCADDRT: File exists
+
+    # NOTE: 之所以这样, 是因为如果logout,再login. 会重复执行如下代码
+    # NOTE: 如果不这样包装, 就会跳出弹窗错误, 很烦人
+    bash -c 'sudo ip route add 129.226.179.242 via 10.10.21.1 2>/dev/null'
+    bash -c 'sudo ip route add 122.228.212.146 via 10.10.21.1 2>/dev/null'
+    bash -c 'sudo ip route add 101.71.28.84    via 10.10.21.1 2>/dev/null'
+    bash -c 'sudo ip route add 115.231.103.26  via 10.10.21.1 2>/dev/null'
+
+}
+
+# route table
+
+if [ -z $Crane_System_Start_ssh ]; then
+    ssh_local_forward
+    ssh_remote_forward
+    route_table
+
+    echo "do startup only operation, only do once"
+    export Crane_System_Start_ssh="1"
+else
+    echo "local-custom-router-and-ssh.sh" already sourced
+fi
+

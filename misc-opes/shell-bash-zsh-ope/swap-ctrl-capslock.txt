@@ -1,0 +1,11 @@
+Open the following for editing:
+
+sudo vi /etc/default/keyboard
+And edit XKBOPTIONS="ctrl:swapcaps"
+
+Then, reconfigure:
+
+# to enable keyboard  key remap
+sudo dpkg-reconfigure keyboard-configuration
+or
+     /usr/bin/setxkbmap -option "ctrl:swapcaps"

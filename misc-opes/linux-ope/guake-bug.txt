@@ -1,0 +1,14 @@
+guake-bug.txt
+
+:Author: crane
+:Email: crane@crane
+:Date: 2017-05-27 12:19
+
+Ubuntu: 在compiz中, 设置 Win + D显示桌面快捷键．
+使用　Win + D显示桌面后, Guake不能再显示.
+
+设置方法:  compizconfig-settings-manager ---> General ------> General Option ------> uncheck "Hide Skip Taskbar Windows"
+即不隐藏"非taskbar窗口"
+
+解决方案from: github issue
+https://github.com/Guake/guake/issues/540#issuecomment-151403225

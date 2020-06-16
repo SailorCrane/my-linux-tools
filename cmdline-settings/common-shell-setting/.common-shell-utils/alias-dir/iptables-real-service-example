@@ -1,0 +1,43 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- 真实主机:ubuntu云服务器 ---------------------
+# NOTE: 命中率高的(响应规则包数量多的)放在前面, 提高效率. lo
+
+## filter
+sudo iptables -A INPUT -p tcp -m state --state ESTABLISHED,RELATED -j ACCEPT # 放在最前面, 这种数据包最多, 提高效率
+sudo iptables -A INPUT -m  multiport -p tcp --dports 8080,8081 -j ACCEPT     # 同时指定多端口, 提高效率
+sudo iptables -A INPUT -p tcp --dport 7337 -j ACCEPT
+sudo iptables -I INPUT 3 -p tcp --dport 8082 -j ACCEPT
+# sudo iptables -I INPUT -p tcp --dport 22 -j ACCEPT
+sudo iptables -A INPUT -p udp --sport 53  -j ACCEPT                          # udp没有状态, 只能通过端口允许进来的流量(DNS)
+sudo iptables -A INPUT -i lo  -j ACCEPT                                      # 接收 loopback 的流量
+
+sudo iptables -A INPUT -p icmp  --icmp-type echo-request -m length \
+    --length 128 -j ACCEPT \
+    -m comment --comment "accept specific-ping: length 100"                  # 可以ping通别人(放在最后, 用的最少)
+# linux ping: 指定packetsize 为100 bytes(icmp头部默认总共为28 bytes, 28 + 100 = 128)
+# ping ubuntu -s 100
+
+sudo iptables -A INPUT -p icmp  --icmp-type echo-reply -j ACCEPT \
+                -m comment --comment "in order to ping outside"                      # 可以ping通别人(放在最后, 用的最少)
+
+
+# 记录每个进来的非法流量包, 除 169.254.128.0/24(link-local地址, dhcp分配ip前, 默认使用的ip)包
+sudo iptables -A INPUT ! -s 169.254.0.0/16 -j LOG --log-prefix "iptables-log"
+sudo iptables -I FORWARD 5 -i docker0 ! -o docker0 -j LOG --log-prefix "iptables-log"
+
+sudo iptables -P INPUT DROP                                 # 其它非法流量都拒绝(包括ping)
+
+
+## forward
+sudo sysctl -w net.ipv4.ip_forward=1            # 开启内核转发
+
+sudo iptables -P FORWARD DROP                   # 默认FORWARD策略 drop
+sudo iptables -A FORWARD -i tap0 -j ACCEPT      # openvpn 设备tap0
+sudo iptables -A FORWARD -o tap0 -j ACCEPT      # openvpn 设备tap0
+
+sudo iptables -t nat -A POSTROUTING --source 10.8.0.1/16 -j MASQUERADE      # openvpn nat
+
+## save
+SAVE_FILE="/etc/iptables.rules"
+sudo bash -c 'iptables-save > $SAVE_FILE'

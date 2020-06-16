@@ -1,0 +1,5 @@
+{
+    "insecure-registries": ["172.17.0.1:5000", "61.164.142.198"],
+    "bridge": "br0",
+    "registry-mirrors": ["http://hub-mirror.c.163.com"]
+}

@@ -1,0 +1,33 @@
+# vim:set ft=gitconfig fdm=marker fdl=0 :vim modeline
+google-chrome/
+tencent-qq/
+Tusk/
+Franz/
+autostart/
+# 只保存gnome-chrome
+chromium/
+*LOG/
+*LOG
+# variety: 壁纸, 没啥用
+variety/
+
+.gitignore
+.gitignore-back
+
+gtk-3.0/bookmarks
+
+google-chrome/Default/History-journal
+google-chrome/Default/Session
+
+xed
+*GPUCache*
+dconf/user
+nemo/desktop-metadata
+
+SogouPY/*bin
+sogou-qimpanel/skin/
+SogouPY/pingback.time
+SogouPY/scdlist.ini
+SogouPY/scd/*.scel
+SogouPY/Backup/
+chromium

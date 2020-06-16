@@ -1,0 +1,47 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- "ip route" command ---------------------
+ip r
+ip route
+ip route list table local
+ip route list table main
+ip route list table default
+
+ip route add 192.168.0.0/16 dev eth0 metric 50 scope link # 局域网路由: 获取mac地址后,直接通过网线发送出去
+
+ip route replace default                                  # 更新默认路由条目?
+
+ip rule     # 所有route表
+
+
+# ------------------- "route" command ---------------------
+# 针对某个主机设置 route table
+sudo route add -host 122.228.212.146 gw 10.10.21.1
+sudo route add -host 122.228.212.146 dev eth0       #  既可以指定gw ip, 也可以指定dev [网卡名]
+
+
+# 针对某个子网设置 route table
+sudo route add -net 10.10.25.0 netmask 255.255.255.0   gw 10.10.21.1
+sudo route del -net 172.17.0.0 netmask 255.255.255.0
+
+# 设置默认
+sudo route add default gw 10.10.25.54 eno2
+sudo route add default gw 10.10.25.54   dev eno2 metric 4
+sudo route add default gw 10.10.25.54   dev eno2 metric 10
+sudo route add default gw 122.228.212.145 dev eno1 metric 5
+
+sudo route add default gw 192.168.43.1 dev wlp8s0 metric 5
+sudo route del default gw 192.168.43.1 dev wlp8s0 metric 5
+sudo route del default gw 192.168.43.1 dev wlp8s0 metric 600        # 删除默认设备metric为600的
+
+# 删除 路由器
+sudo route del default gw 10.10.25.54 eno2      #  删除设备(如果匹配多个, 删除第一个)
+sudo route del default gw 122.228.212.145
+
+## HINT: NOTE: 添加默认路由, ip和本机不在同一网段.(但是广播可达)
+sudo route add 192.168.2.1 dev eth0            # 192.168.2.1和本机不在同一网段, 但是通过dev广播可达?
+sudo route add default gw 192.168.2.1          # 现在192.168.2.1局域网可达/广播可达/直接可达. 把它作为默认路由器也是可以的
+
+
+## route 删除某局域网路由
+route del -net ip/mask dev eth0         # 是设置ip时,内核默认添加的.

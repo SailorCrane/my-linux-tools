@@ -1,0 +1,11 @@
+[Desktop Entry]
+# position ~/.config/autostart/
+Type=Application
+Exec=/usr/bin/guake
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=guake
+Name=guake
+Comment[en_US]=guake F12
+Comment=guake F12

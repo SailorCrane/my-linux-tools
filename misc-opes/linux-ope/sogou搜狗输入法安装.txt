@@ -1,0 +1,14 @@
+搜狗输入法安装.txt
+
+:Author: crane
+:Email: crane@ubuntu
+:Date: 2017-09-08 00:50
+
+
+1: 激活fcitx(设置默认框架为fcitx)
+
+    im-config  (打开选择框后, 选择fcitx)
+    或者im-config -n fcitx
+
+2: 设置Fcitx Configuration, add input-method
+   添加安装好的google-pinyin 或者搜狗输入法

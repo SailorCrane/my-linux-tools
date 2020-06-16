@@ -1,0 +1,4 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+arping -I    eth0  192.168.1.5 # 询问192.168.1.5的arp地址
+arping -U -I eth0  192.168.1.5 # 向对方更新自己的mac地址和ip对应关系?

@@ -1,0 +1,36 @@
+
+ubuntu下如何翻墙：
+下面步骤1,2,3都是必须的。4分为全局还是只有chrome浏览器翻墙。可以任选一个。建议使用4-2，即只让chrome翻墙。
+
+1)安装ss-qt5 GUI客户端:
+    这里也可以搜索: "Ubuntu ss-qt5", 查找相应的ss-qt5安装教程
+    http://www.linuxdiyf.com/linux/13155.html(其中有CentOS, Arch包链接等)
+sudo  add-apt-repository  ppa:hzwhuang/ss-qt5      # 为Ubuntu添加软件仓库(部署在官网仓库上)
+sudo  apt-get update                               # 添加仓库后, 使用apt-get update更新索引(必要步骤)
+sudo  apt-get install  shadowsocks-qt5             # 安装ss-qt5 客户端
+
+2)把FTP上的配置文件(gui-config.json)下载到本地
+这个是ss-qt5客户端的配置文件, 在当前目录下
+
+
+3）启动并载入配置文件(gui-config.json)
+3-1）命令行输入：ss-qt5
+3-2）File菜单载入配置文件。
+3-3）选中，并连接
+3-4）lock to launch(可选)
+
+
+4-1）配置全局代理服务
+System Settings ----> Network ---> Network proxy
+选择手动，并添加代理地，最后“Apply system wide”。如下图：
+
+以上方法，等于整个机器都翻墙了。有点不好就是国内网站访问变慢了。我们一般都是翻墙查找资料，所以我们只需把浏览器设置为翻墙。
+
+4-2）配置chrome代理服务
+如果只让chrome翻墙。按照以上方法，先翻了墙，打开chrome浏览器，在商店里搜索“SwitchySharp”插件。安装，然后配置。如图：
+
+名字可以任意起，我是SS。然后浏览器上方就有菜单，可以选择是否启用。如图：
+
+5) 其中 ./user-pwd/user-pwd.json 中的json存放着ss服务器ip + 密码.
+其中密码password 使用了rot13转码, 在vim中选中密码:使用g?转成正确格式
+viwg? 即可

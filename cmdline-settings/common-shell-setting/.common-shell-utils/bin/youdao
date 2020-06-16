@@ -1,0 +1,27 @@
+#! /bin/bash
+# -*- coding: utf-8 -*-
+# vim:fenc=utf-8
+#
+# Copyright © 2018 crane <crane@crane-pc>
+#
+# Distributed under terms of the MIT license.
+
+
+youdao_search() {
+    if [ $# -eq '0' ]
+    then
+        echo "usage: youdao [word-支持中文和英文英]"
+        return
+    fi
+
+    word=$1
+    pre="http://dict.youdao.com/w/eng/"
+    suf="/#keyfrom=dict2.index"
+
+    addr=${pre}${word}${suf}
+    echo addr: $addr
+
+    gnome-open $addr
+}
+
+youdao_search $*

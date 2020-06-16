@@ -1,0 +1,14 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 实现
+# strace 是借用 ptrace(2) 实现的, 用于监听target process的系统调用.
+
+
+strace -p  [processid] # stracep [processid], -p 指定[processid], 业界约定
+
+strace -f -e open ls 2>&1       # trace "open" system-call only, -f 监听child进程系统调用
+
+
+# HINT: 调试git pull没有权限
+strace -f -e execve git pull            # 查看fork系统调用(查看git pull具体执行了什么可执行程序)
+strace -f -e execve git pull >/dev/null # 查看fork系统调用, 忽略std输出, 只看stderr(stderr是strace的输出)

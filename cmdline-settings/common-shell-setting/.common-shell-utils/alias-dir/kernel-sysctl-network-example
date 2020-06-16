@@ -1,0 +1,22 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 设置rp_filter:
+# 如果开启了reverse path filter: 一个接口收到一个数据包, 会以这个包的源ip作为目的地址, 查看出口路由是否走这个接口
+# 如果不是, 就会丢弃这个数据包.
+sudo sysctl -w net.ipv4.conf.all.rp_filter=0        # 根据ip
+sudo sysctl -w net.ipv4.conf.all.arp_filter=0       # 根据arp 协议, 具体如何判断?
+
+# 同时影响ebtables和iptables
+# 使得经过bridge/docker0的广播包, 不再经过iptables(filter, nat都不经过)
+sysctl         net.bridge.bridge-nf-call-iptables
+sudo sysctl -w net.bridge.bridge-nf-call-iptables=0
+sudo sysctl -w net.bridge.bridge-nf-call-iptables=1
+
+sysctl -w net.ipv4.conf.all.send_redirects=0
+sysctl -w net.ipv4.conf.eth0.send_redirects=0
+
+# ------------------- /proc目录 ---------------------
+
+/proc/sys/net/ipv4/tcp_syncookies     # 是否开启syn cookie算法
+/proc/sys/net/ipv4/ipfrag_time        # ip 分片重组time out时间: 默认30秒
+/proc/sys/net/ipv4/ip_forward         # 启动forward功能(路由)

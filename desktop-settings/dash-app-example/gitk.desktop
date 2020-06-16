@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=gitk
+Name[vi]=Panel tint2
+Name[zh]=面板 tint2
+Comment=GUI git
+Exec=gitk
+Icon=tint2
+Terminal=false
+Categories=System;

@@ -1,0 +1,11 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+nslookup baidu.com      # 获取ip
+
+
+ nslookup github.com [dns_server_ip]        # 使用 dns_server_ip作为dns server
+ nslookup github.com 114.114.115.115
+ nslookup github.com 8.8.8.8                # 但是
+
+ nslookup google.com 114.114.115.115
+ nslookup google.com 8.8.8.8                # 但是

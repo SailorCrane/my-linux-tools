@@ -1,0 +1,6 @@
+# vim: set filetype=sh  foldlevel=0:
+
+还可以安装"dconf-editor" GUI
+
+dconf dump /org/
+

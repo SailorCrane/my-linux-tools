@@ -1,0 +1,13 @@
+#! /bin/sh
+#
+# screen.sh
+# Copyright (C) 2018 crane <crane@his-pc>
+#
+# Distributed under terms of the MIT license.
+#
+
+xrandr        # 查看显示器设置(包括显示器名字)
+PRIMARY="DP-1"
+SLAVE="VGA-1"
+sudo xrandr --output $PRIMARY --auto --primary
+sudo xrandr --output $SLAVE --left-of $PRIMARY --auto

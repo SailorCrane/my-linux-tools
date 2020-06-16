@@ -1,0 +1,44 @@
+swipe:
+  # 2:
+  #   left:
+  #     command: 'xdotool key alt+Left'
+  #   right:
+  #     command: 'xdotool key alt+Right'
+  3:
+    left:
+      command: 'xdotool key ctrl+Page_Up'   # 左标签
+    right:
+      command: 'xdotool key ctrl+Page_Down' # 右标签
+    up:
+      command: 'xdotool key ctrl+w'         #  close
+    down:
+      command: 'xdotool key ctrl+t'         # 新标签
+  4:
+    left:
+      command: 'xdotool key alt+Left'      # 后退
+    right:
+      command: 'xdotool key alt+Right'     # 前进
+    up:
+      command: 'xdotool key super+a'
+    down:
+      command: 'xdotool key super+s'
+
+pinch:
+  2:
+    in:
+      command: 'xdotool key ctrl+equal'
+    out:
+      command: 'xdotool key ctrl+minus'
+  4:
+    in:
+      command: 'xdotool key super+a'
+    out:
+      command: 'xdotool key super+s'
+
+threshold:
+  swipe: 0.3
+  pinch: 0.1
+
+interval:
+  swipe: 1
+  pinch: 1

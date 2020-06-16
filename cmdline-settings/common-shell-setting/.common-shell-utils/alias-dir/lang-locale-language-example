@@ -1,0 +1,106 @@
+#!/bin/sh
+
+# NOTE: =================== LC mean locale category =====================
+# mean: locale category?: 比如下面这些category: 是真正工作的变量
+# LANG=en_US.UTF-8
+# LC_CTYPE="en_US.UTF-8"
+# LC_NUMERIC="en_US.UTF-8"
+# LC_TIME="en_US.UTF-8"
+# LC_COLLATE="en_US.UTF-8"              # 影响排序的表现
+# LC_MONETARY="en_US.UTF-8"
+# LC_MESSAGES="en_US.UTF-8"
+# LC_PAPER="en_US.UTF-8"
+# LC_NAME="en_US.UTF-8"
+# LC_ADDRESS="en_US.UTF-8"
+# LC_TELEPHONE="en_US.UTF-8"
+# LC_MEASUREMENT="en_US.UTF-8"
+# LC_IDENTIFICATION="en_US.UTF-8"
+# LC_ALL=
+
+
+# NOTE: =================== good: 一个正常使用的locale变量设置 =====================
+# NOTE: 下面这个在/etc/environment中的设置: 系统是英文的, 终端正常显示中文, fcitx中的"搜狗"和其它"中文输入法"正常
+# LANGUAGE="en_US"              # 软界界面使用英文
+# LANG="en_US.UTF-8"            # LC_some如果不存在, 默认使用英文utf-8
+# LC_CTYPE="en_US.UTF-8"
+# unset LC_ALL      # unset表示为空, 不设置即可
+
+
+# NOTE: =================== bad: 一个非正常使用的locale变量设置 =====================
+# NOTE: 下面这个在/etc/environment中的设置: 系统是中文的, 终端不能正常显示中文, fcitx中的"搜狗"和其它"中文输入法"不正常(右下角无输入法控制面板)
+# NOTE: 猜测是LC_ALl设置错误!!!, 或者是LC_CTYPE
+# LANGUAGE="zh_CN:zh:en_US:en"      # 软界界面优先使用中文, 如果不存在, 再使用英文
+# LANGUAGE="zh_CN.UTF-8" firefox      # 软界界面优先使用中文, 如果不存在, 再使用英文
+# LANG="zh_CN.UTF-8"                # LC_some如果不存在, 默认使用中文utf-8
+# LC_CTYPE="zh_CN.UTF-8"
+# LC_ALL="zh_CN.UTF-8"
+
+
+# =================== package 包 =====================
+# language-pack-zh          # sudo apt install  language-pack-zh
+# language-pack-zh-hans
+
+
+# =================== command 命令 =====================
+# locale                                # 显示LANG, LANGUAGE, LC_ 等variable
+# locale -a                             # 显示所有支持的locale?
+# localectl set-locale LANG=en_US.UTF-8 # 立马生效吗?
+# locale-gen                            # 读取 /usr/lib/locale/locale-archive, 生成编码: Generating locales (this might take a while)...  # 只有生成字符, 才可以使用?
+# sudo dpkg-reconfigure locales         # reconfigure locales
+
+
+# =================== man/doc 文件 =====================
+# man locale                # locale命令
+# man 7 locale              # locale 相关配置等等说明文档
+# man -k locale             # 所有locale相关的ma  "https://linux.die.net/man/7/locale"
+
+
+# =================== file 文件 =====================
+# /etc/environment                  # This file is specifically meant for system-wide environment variable settings.
+                                    # It is not a "script file", but rather consists of assignment expressions, one per line.
+                                    # Specifically, this file stores the system-wide locale and path settings.
+# /etc/locale.gen
+# /etc/locale.alias
+# /var/lib/locales/                  # 应该是locales的存储
+# /var/lib/locales/locale-archive    # what?
+# /var/lib/locales/supported.d/local # 应该是执行locale-gen之后, 会有此文件, 不知道作用是什么?
+
+
+# NOTE: =================== 关于不同变量的解释 =====================
+# 1: LANGUAGE, 并且可以设置多个值
+# LANGUAGE="fr:de:en"
+# 影响的是软界的界面显示和语言配置
+# LANGUAGE is used to set messages languages (as LC_MESSAGES) to a multi-valued value.
+# e.g., setting it to "fr:de:en" will use French messages where they exist; if not, it will use German messages;
+# and will fall back to English if neither German nor French messages are available.
+
+# 2: 如果LC_some没有设置, 使用$LANG变量作为默认值(可以看出$LANG优先级较低)
+# LANG, the fallback setting, if you haven't specified a value for a category. It's indended for users to indicate their locale in a simple way.
+
+# 3: LC_ : 是各个ccategory, 是真正工作的变量
+# LC_xxx for each category (xxx can be MESSAGES, TIME, etc.).
+
+# 4: LC_ALL: LC_ALL 设置后, 覆盖所有的LC_some, 用于快速同一替换locale
+# LC_ALL overrides all settings. It's a way for applications to override all settings in order to work in a known locale (usually C, the default locale)
+# typically so that various commands produce output in a known format.
+
+
+# LC_ALL 一般只在脚本中使用, 用于设置脚本运行的环境
+# LC_ALL is used to override every LC_* and LANG and LANGUAGE. It should not be set in a normal user environment, but can be useful when you are writing a script that depend on the precise output of an internationalized command.
+
+# 比如下面的示例: 不同的LC_ALL, 程序表现不同, 猜测: 实质上是影响了LC_COLLATE
+# $ LC_ALL=en_US sort <<< $'a\nb\nA\nB'
+# a
+# A
+# b
+# B
+
+# $ LC_ALL=C sort <<< $'a\nb\nA\nB'
+# A
+# B
+# a
+# b
+
+# LC_COLLATE 实验中没有起作用
+# $ LC_COLLATE=en_US sort <<< $'a\nb\nA\nB'
+# $ LC_COLLATE=C sort <<< $'a\nb\nA\nB'

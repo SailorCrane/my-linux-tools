@@ -1,0 +1,4 @@
+# vim: set ft=sh  foldlevel=0:
+
+apt-get install mininet
+apt-get install openvswitch-switch      # mininet需要

@@ -1,0 +1,21 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- ip neith ---------------------
+ip n
+ip neigh
+ip -s -s neigh flush all
+
+ip link set arp off  dev eth0       # 禁止arp缓存
+ip link set arp on   dev eth0       # 启用arp缓存
+
+# ------------------- arp ---------------------
+
+arp -n
+sudo arp -s  192.168.1.2 02:42:c0:a8:01:02                      # -s set
+sudo arp -s  192.168.1.2 02:42:c0:a8:01:02  -i vethd7953c1      # -i 具体到设备
+
+sudo arp -s  10.10.21.1  00:74:9c:c5:33:23  -i enp2s0           # 防止arp劫持, 手动设置gateway
+
+sudo arp -d  192.168.1.2                                        # -d del
+sudo arp -d  192.168.1.2 02:42:c0:a8:01:02  -i vethd7953c1      # -d del
+

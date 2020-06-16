@@ -1,0 +1,17 @@
+#! /bin/sh
+
+# 获取本机外网ip
+
+# 通过ip.sb网站, 获取自己的ip
+# 之所以写出命令, 是为了让其支持命令行指定变量.
+# 比如: env http_proxy=http_proxy=http://127.0.0.1:8123 get_out_ip
+
+# TODO 支持 -p proxy_port: get_out_ip  8123
+curl  ip.sb
+
+# example:
+# # http_proxy variable is a special variable for linux(也支持ftp_proxy)
+# export http_proxy=http_proxy=http://127.0.0.1:8123 https_proxy=https_proxy=http://127.0.0.1:8123
+
+# # test(也支持ftp_proxy)
+# env  http_proxy=http_proxy=http://127.0.0.1:8123 https_proxy=https_proxy=http://127.0.0.1:8123  curl ip.sb

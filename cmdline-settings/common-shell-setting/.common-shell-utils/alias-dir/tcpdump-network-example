@@ -1,0 +1,56 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 指定接口interface
+tcpdump -i any          # accept any interface
+sudo tcpdump -i lo port  # 方向默认是 dst or src
+sudo tcpdump -i any port 8888        # 查看8888端口的消息
+sudo tcpdump -i any icmp        # 查看icmp
+sudo tcpdump -i any ip
+sudo tcpdump -i any tcp
+sudo tcpdump -i any udp
+sudo tcpdump -i any arp
+
+
+# 两种多端口写法都可以
+sudo tcpdump -i any port 8888 or port 9999 # 多端口
+sudo tcpdump -i any port '8888 or 9999'    # 多端口
+
+
+# 查看dhcp 和 dns服务
+sudo tcpdump -i any udp port '67 or 68' # dhcp
+sudo tcpdump -i any port 53             # dhcp
+
+
+# 端口
+sudo tcpdump -i any udp port 67
+sudo tcpdump -i any udp port 68
+sudo tcpdump -i any udp port '67 or 68'
+
+sudo tcpdump src port 67            # 源端口
+sudo tcpdump src port 67 or 68
+sudo tcpdump udp src port 67        # udp源端口
+sudo tcpdump udp src port 67 or 68
+
+
+# 指定ip
+sudo tcpdump host 10.10.21.28
+sudo tcpdump host 10.10.21.28 and udp
+sudo tcpdump host 10.10.21.28 and tcp
+sudo tcpdump host 10.10.21.28 and tcp port 7777
+
+sudo tcpdump src 1.1.1.1
+sudo tcpdump dst 1.0.0.1
+
+
+# and/or
+sudo tcpdump "(host 10.10.21.28) and ((udp port 67) or (udp port 68))" -n
+sudo tcpdump "(host 10.10.21.28) and (udp port 67 or udp port 68)" -n
+sudo tcpdump "(host 10.10.21.28) and (udp port 67 or 68)" -n
+sudo tcpdump "(host 10.10.21.28 or host 0.0.0.0) and (udp port 67 or udp port 68)" -n
+sudo tcpdump "(src 10.10.21.28 or src 0.0.0.0) and (udp port 67 or udp port 68)" -n
+sudo tcpdump "(src 10.10.21.1 or src 0.0.0.0 or src 10.10.21.1) and (udp port 67 or udp port 68)" -n
+
+
+
+# -n 选项 : number
+sudo tcpdump -i any udp port '67 or 68' -n

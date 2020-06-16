@@ -1,0 +1,9 @@
+
+efibootmgr      # 查看UEFI
+
+
+# 名词解释:
+uefi      # 平行与BIOS的主板 firmware(硬件程序)
+gpt       # uefi 使用的分区方案(同比与bios的mbr), 支持无限分区， 支持>2T硬盘
+esp/efi   # uefi的启动分区(一个专门的分区, 用来放引导程序:供window和ubuntu写入. 供uefi读取)
+          # 是uefi支持多系统的关键:

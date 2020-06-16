@@ -1,0 +1,21 @@
+# vim: set ft=sh :vim
+
+--type-set=txt:ext:txt
+
+--type-set=hh:ext:h,hpp
+--type-set=cc:ext:c,cpp,cc,cxx,m,hpp,hh,h,hxx
+#--type-set=c:ext:c,h        # don't work
+
+
+# --shell support sh,zsh,ksh,csh ...
+--type-set=sh:ext:sh
+--type-set=zsh:ext:zsh
+
+# ignore file
+--ignore-file=is:tags
+--ignore-file=match:.tmp
+
+#--ignore-dir=mydir
+
+# follow soft link dir/file
+--follow

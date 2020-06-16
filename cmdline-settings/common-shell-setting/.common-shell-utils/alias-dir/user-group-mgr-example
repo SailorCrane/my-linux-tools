@@ -1,0 +1,6 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+usermod -a -G docker crane # 把crane加入到docker group中
+                           # 必须重新登录才能生效: 比如通过: newgrp docker, sudo login crane, ssh, 在界面log out后再log in 连接
+                           # 使用: groups命令查看当前用户所在group
+                           # 或者通过搜索"user" gui 管理当前用户(可以管理用户的group)

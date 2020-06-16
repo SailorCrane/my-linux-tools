@@ -1,0 +1,25 @@
+# vim: set filetype=sh  foldlevel=0:
+
+# ------------------- 历史 ---------------------
+last        # /var/log/wtmp   查看[所有]登录历史, 所有时间的所有用户. (查看攻击)
+lastb       # /var/log/btmp   查看[所有]失败的登录日志 (查看攻击)
+
+last  -f /var/log/wtmp.1
+lastb -f /var/log/btmp.1
+lastb -f /var/log/btmp-xxxxx
+
+##
+last  | awk  '{print $3}' | sort | uniq      # 查看所有登录ip
+lastb | awk  '{print $3}' | sort | uniq      # 查看所有失败登录ip
+
+
+
+# ------------------- 最后/最近一次 ---------------------
+lastlog     # /var/log/lastlog   查看所有用户最近一次登录时间
+lastlog | grep -v 'Never logged in'
+
+
+# ------------------- 当前/current/run ---------------------
+w           # /var/run/utmp     user tmp
+who
+users

@@ -1,0 +1,47 @@
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+'''
+这个脚本, 用来生成ios outline连接使用的秘钥.
+
+示例:
+ss://YWVzLTI1Ni1jZmI6b3VyX3Nz@[ubuntu_ip]:8080
+'''
+
+# 一个找到的文档
+# http://howboring.us/archives/outline-accesskey-compatiblie-all-server.html
+
+
+
+import os
+import json
+import base64
+
+
+JSON="client-ss.json"
+
+
+def main():
+    f = os.path.abspath(__file__)
+    p = os.path.dirname(f)
+    j = p + "/" + JSON
+
+
+    prefix = "ss://"
+
+    with open(j) as json_file:
+        data = json.load(json_file)
+
+        method = data['method']
+        password = data['password']
+        me_pa = method + ":" + password
+        en = base64.b64encode( me_pa.encode('utf-8') )
+        s = en.decode('utf-8')
+        # print(s)
+        ip = data['server']
+        port = str(data['server_port'])
+        print( prefix + s + '@' + ip + ":" + port)
+
+
+if __name__ == "__main__":
+    exit(main())

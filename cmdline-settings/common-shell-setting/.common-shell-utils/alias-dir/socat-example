@@ -1,0 +1,3 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+socat -d -d -lf /var/log/socat.log TCP4-LISTEN:7777,bind=127.0.0.1,reuseaddr,fork TCP:127.0.0.1:9092

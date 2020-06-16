@@ -1,0 +1,11 @@
+
+<prefix + %>  vertical   split window create pane
+<prefix + ">  horizontal split window create pane
+<prefix + o>  next pane
+<prefix + z>  zoom toggle pane
+
+<prefix + space> vertical --> horizontal.
+                 horizontal --> vertical.
+
+<prefix + q>  show pane number
+<prefix + q num >  go to pane number

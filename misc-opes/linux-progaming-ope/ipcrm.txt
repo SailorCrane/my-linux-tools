@@ -1,0 +1,24 @@
+ipcrm.txt
+
+:Author: root
+:Email: root@crane
+:Date: 2017-05-11 10:52
+
+
+ipcrm -Q/S/M 根据key 删除内核中ipc对象
+
+但是使用IPC_PRIVATE(0) 创建的 ipc对象, 无法删除. 报 invalid key(0) 错误.
+
+然后想着自己写一个: 先通过key = IPC_PRIVATE, 获取 ipc 对象在内核中id, 然后根据id删除.
+
+但是发现, 无法根据 IPC_PRIVATE 获取 ipc_id, 因为 xxxget() 函数指定其它key, 不指定 IPC_CREATE可以获取 相应key关联的id.
+但是 IPC_PRIVATE指定后, 一定会创建IPC对象, 无法获取到相应的id.
+
+这应该也是ipcrm, 为什么无法删除IPC_PRIVATE key创建的ipc对象的原因.
+
+
+NOTES:
+    所以在程序中: 每次通过IPC_PRIVATE创建 ipc对象后, 要保存返回的id.
+    使用完毕后再删除.
+    否则程序中不删除, 在shell中看到很多. 也不知道该删除哪个.
+

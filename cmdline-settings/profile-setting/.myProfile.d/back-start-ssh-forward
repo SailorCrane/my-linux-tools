@@ -1,0 +1,44 @@
+#!/bin/bash
+
+
+# NOTE1: 注意这个文件是被"source" 执行, "命令行args参数"和进程执行方式有微妙不同.
+# NOTE2: bash和zsh在source时的 $0也不同
+
+
+# startSshForward() {
+    if IsBash; then
+        CurrentPath=${BASH_SOURCE[0]}
+    elif IsZsh; then
+        CurrentPath=$0
+    else
+        echo "shell is not [bash] either [zsh]"
+    fi
+
+    # "-" 替换为"_"
+    OnceName=$(basename $CurrentPath | sed -r 's/[^a-zA-Z0-9]+/_/g' |  tr '-'  '_' )
+    echo CurrentPath $CurrentPath
+    echo 0 $0
+    echo OnceName $OnceName
+# }
+
+
+# startSshForward
+
+
+# echo bash 0 ${BASH_SOURCE[0]}
+# echo 0 $0
+# echo 1 $1
+# # echo $CurrentPath
+# echo base $BaseSource
+
+# source $BaseSource
+# TestArgs  putin
+
+
+#VariableName=$(echo start-ssh-forward | sed -r 's/[^a-zA-Z0-9\-]+/_/g' |  tr '-'  '_' ) # "-" 替换为"_"
+##if FileHasNotRuned  $VariableName; then
+#if FileHasNotRuned ; then
+#    echo "first run [$0]"
+#else
+#    echo "[$1]" has already run
+#fi

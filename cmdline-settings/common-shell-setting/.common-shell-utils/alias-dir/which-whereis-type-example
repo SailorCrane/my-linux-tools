@@ -1,0 +1,9 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+
+# 查找path中的ssh
+# NOTE: 如果ssh没有可执行权限, 也不会显示出来(这种情况下使用whereis 会好)
+which -a  ssh
+
+
+whereis ssh

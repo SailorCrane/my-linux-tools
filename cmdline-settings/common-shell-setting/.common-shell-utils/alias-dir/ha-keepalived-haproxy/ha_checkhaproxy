@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+
+# WARNING: pkill -0 haproxy 不起作用是因为当前脚本名也包含haproxy!!!
+# env pkill -0 haproxy ; env /bin/echo 'return' $?
+
+
+if  ! ps aux | grep haproxy -w | grep -v grep | grep -v ha_checkhaproxy  ; then
+    echo "not found"
+    # 如果进程不存在, 就停止keepalived(对方端keepalived则无法再收到心跳包)
+
+    # TODO: 尝试启动一次haproxy, 如果还不行, 就停止keepalived
+    /etc/init.d/keepalived stop
+fi
+

@@ -1,0 +1,208 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+## lsns : 查看所有ns : network, pid
+
+# ------------------- 查看所有设备 ---------------------
+# ip a        # 等同于ip address
+# ip l        # 等同于ip link
+# ip r        # 等同于ip route
+# ip net      # 等同于ip netns
+
+# ------------------- 删除设备 ---------------------
+# sudo ip link del veth3439207       # 不用指定type
+# sudo ip link del veth3439207 type bridge_slave
+
+# ------------------- 指定macAddress/设置mac ---------------------
+# sudo ip link add vxlan2       \
+#     address 02:73:53:00:ca:fe \
+#     type vxlan                \
+#     id 55                     \
+#     dstport 4789
+
+# sudo ip link set veth1 address 02:73:53:00:ca:fe          # 设置虚拟设备的mac地址
+
+# ------------------- 单网卡, 多ip ---------------------
+# sudo ip addr add 3.3.3.3/24 dev lo label lo:1
+# sudo ip addr del 3.3.3.3/24 dev lo label lo:1
+
+
+# ------------------- veth pair ---------------------
+# ip 命令相关的network 设置(替代ifconfig)
+# 详细教程: https://blog.csdn.net/zhanglidn013/article/details/70241732
+# https://mp.weixin.qq.com/s/QqX1fOfxHoTDBubWKd4EAA
+
+## 创建netns: ip netns: 添加网络空间(会持久化?开机依然可以?)
+# sudo ip netns add ns1
+# ls /var/run/netns
+# ip netns exec ns1 route show
+
+
+## 创建: create veth pair : "vethA" <--> v-"vethB"
+# sudo ip link add vethA type veth peer name vethB
+
+# 指定mac address
+# sudo ip link add vethA  address 00:00:00:00:00:01 type veth \
+#     peer name vethB                                         \
+#     address 00:00:00:00:00:02
+
+## 查看interface详情
+# ip -d link show docker0       # -d  -details
+# ip -d link show br0
+# ip -d link show lo
+
+## 配置A: move "vethA" to "ns1"; up; bind ip;
+## Setup IP address of vethA.
+# ip link set vethA netns ns1
+# ip netns exec ns1 ip link set vethA up
+# ip netns exec ns1 ip addr add 10.200.1.2/24 dev vethA
+# ip netns exec ns1 route -n
+
+
+## 配置B
+# ip link set vethB up
+# ip addr add 10.200.1.1/24 dev vethB       # addr这里会在路由表中创建一个条目, 走vethB接口. route -n 的表item: /24
+# ip addr add 10.200.1.1/16 dev vethB       # addr这里会在路由表中创建一个条目, 走vethB接口. route -n 的表item: /16
+
+## 查看 veth 设备的对端interface
+# ethtool -S vethB      # 获取到设备的index
+
+
+## 查看 veth 设备的index
+# cat /sys/class/net/veth84fcf6b/ifindex
+
+alias ipe="ip netns exec"
+
+# ------------------- show interface type ---------------------
+# vlan | veth | vcan | vxcan | dummy | ifb | macvlan | macvtap |
+#           bridge | bond | team | ipoib | ip6tnl | ipip | sit | vxlan |
+#           gre | gretap | erspan | ip6gre | ip6gretap | ip6erspan |
+#           vti | nlmon | team_slave | bond_slave | ipvlan | geneve |
+#           bridge_slave | vrf | macsec
+
+# ip link show help      # NOTE: 查看所有类型
+# ip link show type veth # NOTE: 查看所有类型
+
+if_types() {
+    # if_types <ns1>
+    if_types=(vlan  veth  vcan  vxcan  dummy  ifb  macvlan  macvtap  bridge  bond  team  ipoib  ip6tnl  ipip  sit  vxlan  gre  gretap  erspan  ip6gre  ip6gretap  ip6erspan  vti  nlmon  team_slave  bond_slave  ipvlan  geneve  bridge_slave  vrf  macsec)
+
+    for t in ${if_types[@]} ; do
+
+        if  (( $#==0 )); then
+            infos=$(ip link show type $t)
+        else
+            NS_NAME=$1
+            # 查看网络空间中的设备
+            infos=$(sudo ip netns exec $NS_NAME ip link show type $t)
+        fi
+
+
+        if ! [ -z $infos ] ; then
+            echo ------------------- $t  ---------------------
+            echo $infos
+            echo
+        fi
+    done
+}
+
+# ------------------- bridge interface ---------------------
+
+## 文档
+# https://segmentfault.com/a/1190000009491002       # bridge原理, "横插一脚", 讲的很好
+
+## 查看 bridge
+# bridge link       #
+# brctl show        # 列出所有bridge 设备, sudo apt-get install bridge-utils
+
+# ------------------- 测试bridge + iptables nat ---------------------
+## 添加 bridge
+# sudo ip link add name br0 type bridge
+
+## up bridge
+# sudo ip link set br0 up
+
+## add veth into bridge
+# sudo ip link add veth0 type veth peer name veth1
+# sudo ip link set veth0 up
+# sudo ip addr add 192.168.3.101/24 dev veth0
+
+# sudo ip netns add ns1
+# sudo ip link set veth1 netns ns1
+# sudo ip netns exec ns1 ip link set veth1 up
+# sudo ip netns exec ns1 ip addr add 192.168.3.102/24 dev veth1
+
+# sudo ip link set dev veth0 master br0       # veth0 连接br0
+
+# sudo ip addr del 192.168.3.101/24 dev veth0
+# sudo ip addr add 192.168.3.101/24 dev br0
+
+# sudo ip netns exec route add default gw 192.168.3.101 veth1       # 为ns添加默认路由/gw
+## NOTE: 如果没有为netns配置dns server, 还要添加dns 到 /etc/resolv.conf中
+
+# ping -I br0 192.168.3.102
+
+## 为br0添加 nat masquerade
+# sudo sysctl -w net.ipv4.ip_forward=1      # 开启forward
+# sudo iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -j MASQUERADE
+# sudo iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -j MASQUERADE
+# sudo iptables -t nat -A POSTROUTING -s 192.168.3.0/24 ! -d  192.168.3.0/24 -j MASQUERADE
+# sudo iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -o enp2s0 -j MASQUERADE
+# sudo iptables -t nat -D POSTROUTING 2
+
+
+# ------------------- arp ---------------------
+## 清空arp cache
+# arp -an           # 查看arp
+# ip neigh          # 查看arp
+# sudo ip -s neigh flush all
+# ip neigh add 10.20.1.3 lladdr d6:d9:cd:0a:a4:28 dev vxlan0        # 添加 arp缓存
+# ip neigh add 10.20.1.4 lladdr 52:5e:55:58:9a:ab dev vxlan0        # 添加 arp缓存
+
+# ------------------- 测试vxlan ---------------------
+
+## 教程(讲解的很清楚): https://cizixs.com/2017/09/28/linux-vxlan/
+
+## 点对点vxlan: 添加 一台主机, 另一台主机类似
+# sudo ip link del vxlan0 type vxlan
+# sudo ip link add vxlan0 type vxlan id 42 dstport 4789 \
+# remote 192.168.8.101 local 192.168.8.100 dev enp2s0           # 注意 192.168.8.100 是eth0 的ip, 可以和外界通信的ip
+# sudo ip addr add 10.20.1.2/24 dev vxlan0                      # 这个ip是overlay network的ip, 自定义
+# sudo ip link set vxlan0 up
+# bridge fdb
+
+## 多播 : 多台主机同时加入相同多播vxlan vtep设备.
+# sudo ip link add vxlan1 type vxlan id 99 dstport 4789 group 239.1.1.1 dev enp2s0
+# sudo ip addr add 10.20.1.2/24 dev vxlan0        #
+# sudo ip link set vxlan0 up
+
+# ------------------- fdb添加entry ---------------------
+## NOTE: vxlan 工作方式: 根据mac, 查询发送到主机的ip, 发送出去
+## NOTE: 至于mac地址查询, 是通过arp协议广播 + 加本地arp缓存查询实现的
+## flannel 的主要工作, 就是维护fdb表和arp缓存, (还有路由表?)
+
+## 注意这里的nolearning: vxlan不要自己学习fdb entry: mac --> ip (会有专门软件维护相应的fdb entry)
+# ip link add vxlan0 type vxlan id 42 dstport 4789 dev enp0s8 nolearning
+
+## 如果不通过多播(性能差, 导致网络太多包), 可以使用flannel添加fdb entry的方式.
+# 如果找不到对方mac, 就发往 192.168.8.101, 或者192.168.8.102
+# bridge fdb append 00:00:00:00:00:00 dev vxlan0 dst 192.168.8.101
+# bridge fdb append 00:00:00:00:00:00 dev vxlan0 dst 192.168.8.102
+
+# bridge fdb append 52:5e:55:58:9a:ab dev vxlan0 dst 192.168.8.101
+# bridge fdb append d6:d9:cd:0a:a4:28 dev vxlan0 dst 192.168.8.102
+
+# ------------------- 手动维护ARP表 ---------------------
+# sudo ip link add vxlan0 type vxlan id 42 \
+# dstport 4789 dev enp2s0 \
+# nolearning proxy              # proxy 代理arp(可以代理容器的arp), 这样只用在本地节点维护arp就好了.
+
+
+## 通知
+# ip link add vxlan0 type vxlan
+#         id 42
+#             dstport 4789
+#                 dev enp0s8
+#                     nolearning
+#                         proxy
+#                             l2miss
+#                                 l3miss

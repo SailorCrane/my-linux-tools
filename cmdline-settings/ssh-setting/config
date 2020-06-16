@@ -1,0 +1,51 @@
+IdentitiesOnly false
+
+Host *
+    ServerAliveInterval 10
+
+
+# 可以使用ssh u登录
+Host ubuntu
+    HostName ubuntu
+    Port 7337
+    User crane
+    IdentityFile /mySaved/work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa
+
+    ServerAliveInterval 30
+
+Host oldjump
+    HostName oldjump
+    Port 7000
+    User uaq
+    IdentityFile /mySaved/work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa
+
+    ServerAliveInterval 30
+
+
+Host pre26
+    HostName localhost
+    Port 6022
+    User uaq
+    IdentityFile /mySaved/work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa
+
+    ServerAliveInterval 30
+
+Host localhost
+    HostName localhost
+    Port 6022
+    User uaq
+    IdentityFile /mySaved/work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa
+
+    ServerAliveInterval 30
+
+Host gitee.com
+    HostName gitee.com
+    PreferredAuthentications publickey
+
+    IdentityFile /mySaved/work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa
+
+Host github.com
+    HostName github.com
+    PreferredAuthentications publickey
+
+    IdentityFile /mySaved/work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa

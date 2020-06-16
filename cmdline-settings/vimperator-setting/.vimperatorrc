@@ -1,0 +1,41 @@
+" vim: set filetype=vim  foldlevel=2: vim modeline( set )
+
+inoremap  jk     <ESC>
+inoremap  <C-[>  <ESC>
+nnoremap  jk     <ESC>
+
+noremap j <C-d>
+noremap k <C-u>
+
+noremap h <C-p>
+noremap l <C-n>
+
+nnoremap ;  :
+inoremap <C-w>  <ESC>:tabclose<CR>
+
+nnoremap  qq  :qall<CR>
+
+let mapleader = ","
+nnoremap  <Leader>sv  :source  ~/.vimperatorrc<CR>
+
+nnoremap  mb   :bmark<CR>
+nnoremap  md   :delbmarks<CR>
+nnoremap  mp   :dialog print<CR>
+
+" 直接按 =, 不用shift, 就可以调整页面大小.
+nnoremap = +
+
+" 历史记录back, forward
+nnoremap  mb  :back<CR>
+nnoremap  mf  :forward<CR>
+
+" search
+nnoremap  ms  :open www.baidu.com<CR>
+
+nnoremap  mm   :bmark<CR>
+nnoremap  md   :delbmarks<CR>
+nnoremap  mp   :dialog print<CR>
+
+" hits use letters, not num.
+" keyboard hit letters, more quickly(vimim use letters)
+set hintchars=abcdefghijklmnopqrstuvwxyz

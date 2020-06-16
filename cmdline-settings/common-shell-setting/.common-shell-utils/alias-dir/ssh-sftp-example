@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# nautilus/nemo address:  "sftp://crane@ubuntu:2222/"
+
+sftp asdf

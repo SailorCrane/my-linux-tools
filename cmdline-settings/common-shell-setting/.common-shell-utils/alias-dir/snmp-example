@@ -1,0 +1,16 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- snmpd 配置文件 ---------------------
+# 去掉 public 后的 -V Systemonly                # 使snmp客户端可以通过public 访问
+
+# ------------------- snmpwalk/客户端 ---------------------
+snmpwalk -v 2c -c public localhost .1.3.6.1.4.1.2021.10.1.3 # 查看cpu信息
+snmpwalk -v 2c -c public localhost .1.3.6.1.2.1.25.2.2      # 系统内存
+
+snmpwalk -v 2c -c public localhost NET-SNMP-EXTEND-MIB::nsExtendObjects     # 不懂啥玩意
+
+snmpwalk -v 2c -c public localhost .1.3.6.1.2.1.4.20  | sort
+snmpwalk -v 2c -c public localhost 1.3.6.1.2.1.2.2.1.1  | sort          # ifindex
+
+snmpwalk -v 2c -c public localhost 1.3.6.1.2.1.2.2.1.2                  # ifindex
+#snmpwalk -Os -v 2c -c public localhost 1.3.6.1.2.1.2.2.1.2

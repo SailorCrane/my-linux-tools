@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0:
+
+git clone  <url> --single-branch        # 仅仅clone master
+
+git clone  <url> <--branch> <branch>  --single-branch        # clond 指定<branch>

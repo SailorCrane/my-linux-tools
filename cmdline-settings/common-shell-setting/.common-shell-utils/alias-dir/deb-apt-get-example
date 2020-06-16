@@ -1,0 +1,3 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+sudo apt autoremove     # 自动删除不再使用的包

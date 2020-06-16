@@ -1,0 +1,11 @@
+{
+    "configs": [ {
+            "method": "rc4-md5",
+            "password": "",
+            "remarks": "",
+            "server": "",
+            "server_port": 443
+        } ],
+    "localPort": 1080,
+    "shareOverLan": false
+}

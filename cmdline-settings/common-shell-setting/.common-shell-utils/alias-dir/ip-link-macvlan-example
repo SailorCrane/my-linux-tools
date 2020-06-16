@@ -1,0 +1,4 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# mode vepa/bridge/passthru
+ip link add link DEVICE name "mymacvlan0" type {macvlan/macvtap} mode "private"

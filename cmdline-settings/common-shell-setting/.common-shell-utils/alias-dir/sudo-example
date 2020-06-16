@@ -1,0 +1,4 @@
+# vim: set filetype=sh  foldlevel=0:
+
+sudo -u#0     id -u          # 作为0(root)用户执行"id"命令
+sudo -u#1002  id -u       # 作为1002用户执行"id"命令

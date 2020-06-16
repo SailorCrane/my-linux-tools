@@ -1,0 +1,20 @@
+
+有时候在终端输出一些东西, 尤其是二进制, 或者打包直接内容输出到终端, 或者直接打印html等网络内容.
+这些乱码, 会使得终端僵死.
+
+解决步骤:
+1: <C-c>, <C-\> 都不能正常关闭程序.
+2: <C-d> 不能正常关闭终端. (如果可以, 那么这一步就可以结束了.)
+3: 如果仅仅是一个 gnome-terminal或者guake的tab, 可以直接关闭tab.
+   当然如果知道终端运行bash进程号, 也可以 kill  <pid> 杀掉进程. 终端也会退出.
+
+4: 注意: tmux 的终端, 都运行在pane之下, 一个pane对应一个terminal.
+
+   如果当前终端是一个tmux  session的 其中一个pane, 那么就不能关闭terminal的tab了.
+   这时候使用tmux的 <prefix + x> 关掉 pane即可让乱码终端退出.
+
+   如果当前窗口只有一个pane, 也可以<prefix + &> 关闭当前窗口.(如果一个乱码pane所在窗口含有多于1个pane, 那么不能直接退出窗口.)
+   注意是<prefix + &> , 而不是 <prefix + 7> 关闭tmux的当前窗口.就是说按&时, 不要忘记shift
+
+   Ctrl + b x (我的本机配置是ctrl + space x)
+   Close current pane.

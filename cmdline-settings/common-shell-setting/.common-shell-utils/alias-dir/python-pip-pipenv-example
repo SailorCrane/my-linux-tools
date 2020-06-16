@@ -1,0 +1,81 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- Common:常用示例  ---------------------
+## 首次安装pip3
+sudo yum     -y install python3-pip
+sudo apt-get -y install python3-pip
+
+
+## 安装在当前用户目录
+pip install --user
+
+
+## 更新python包
+sudo pip3 install --upgrade pip     # 更新pip3
+sudo pip3 install --upgrade pipenv  # 更新pipenv
+
+
+## 强制重新安装
+sudo pip install --upgrade --no-deps --force-reinstall [packagename]
+# 或者
+sudo pip install -I [package]
+sudo pip install --ignore-installed [package]
+
+
+# ------------------- json包安装失败 ---------------------
+## 关于某json包安装失败, Python.h 找不到的解决方案.
+sudo apt-get install python3-dev(python-dev)
+sudo yum  install python3-devel(python-devel)
+
+
+# ------------------- pip3命令不可用(出错) ---------------------
+## 使用pip3 更新 pip3后(sudo pip3 install --upgrade), 执行pip3命令, 发生如下异常
+## 本质原因是apt-get 安装的python3-pip 和 通过pip3升级的pip, 二者之间版本差异, 导致/usr/local/bin/pip3不可用.
+
+# NOTE: 解决方案1(暂时性): 使用python3 -m pip
+# NOTE: 解决方案2(永久性): python3 -m pip install --upgrade --no-deps --force-reinstall pip
+#                          使得 新安装的pip3命令, 覆盖/usr/local/bin/pip3. (--no-deps 不重新安装依赖的包.)
+# NOTE: 解决方案3(永久性): python3 -m pip install --user pip; sudo ~/.local/bin/pip3 install --upgrade --no-deps --force-reinstall pip
+#                          或者一致使用~/.local/bin/pip3
+
+# Traceback (most recent call last):
+#   File "/usr/local/bin/pip3", line 10, in <module>
+#       sys.exit(main())
+#       TypeError: 'module' object is not callable
+
+## 不能运行的pip版本源码(/usr/local/bin/pip3)
+# import re
+# import sys
+
+# from pip._internal import main
+
+# if __name__ == '__main__':
+#         sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+#             sys.exit(main())
+
+## HINT: 可以运行的pip版本(HINT:主要差在import) (/home/crane/.local/bin/pip3)
+# import re
+# import sys
+
+# from pip._internal.main import main
+
+# if __name__ == '__main__':
+#         sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+#             sys.exit(main())
+
+
+# ------------------- pipenv: 安装, 使用过程, 出错处理 ---------------------
+## Common
+pip3 install pipenv      # 安装pipenv
+pipenv install           # 在项目目录下执行(创建pipenv环境), 如果已经有了Pipfile, Pipfile.lock(会自动下载依赖)
+pipenv shell             # 在项目目录下执行(进入pipenv环境)
+pipenv install [package] # 在项目下安装包(HINT: 不需要进入pipenv shell), 并记录依赖至Pipfile.lock
+
+## pipenv install [package] 出错
+#解决尝试1 pipenv run pip install pip==18.0     # 更换pipenv项目环境下的pip版本
+#解决尝试2 pip3 install --upgrade pipenv        # 在主机上更新pipenv
+
+## pipenv 修改pypi源
+# 修改Pipfile中的url 为 ~/.config/pip/pip.conf 中的url
+# 修改Pipfile.lock中的source url 为 ~/.config/pip/pip.conf 中的url
+# verify_ssl 可以改为false(但是不安全)

@@ -1,0 +1,89 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# https://docs.nginx.com/nginx/admin-guide/high-availability/ha-keepalived-nodes/
+# https://www.cnblogs.com/zhangan/p/10930570.html
+
+vrrp_script chk_nginx_service {
+    script   "/usr/lib/keepalived/nginx-ha-check"
+    interval 3
+    weight   50
+}
+
+vrrp_instance VI_1 {
+    interface         eth0
+    state             BACKUP
+    priority          101
+    virtual_router_id 51
+    advert_int        1
+    accept
+    unicast_src_ip    192.168.10.10
+
+    unicast_peer {
+        192.168.10.11
+        192.168.10.12
+        192.168.10.13
+    }
+
+    virtual_ipaddress {
+        192.168.10.100
+    }
+
+    track_script {
+        chk_nginx_service
+        # chk_second_script     # 可以有多个check脚本(简单的和复杂的)
+    }
+
+    notify "/usr/lib/keepalived/nginx-ha-notify"
+}
+
+vrrp_instance VI_2 {
+    interface         eth0
+    state             BACKUP
+    priority          100
+    virtual_router_id 61
+    advert_int        1
+    accept
+    unicast_src_ip    192.168.10.10
+
+    unicast_peer {
+        192.168.10.11
+        192.168.10.12
+        192.168.10.13
+    }
+
+    virtual_ipaddress {
+        192.168.10.101
+    }
+
+    track_script {
+        chk_nginx_service
+    }
+
+    notify "/usr/lib/keepalived/nginx-ha-notify"
+}
+
+vrrp_instance VI_3 {
+    interface         eth0
+    state             BACKUP
+    priority          99
+    virtual_router_id 71
+    advert_int        1
+    accept
+    unicast_src_ip    192.168.10.10
+
+    unicast_peer {
+        192.168.10.11
+        192.168.10.12
+        192.168.10.13
+    }
+
+    virtual_ipaddress {
+        192.168.10.102
+    }
+
+    track_script {
+        chk_nginx_service
+    }
+
+    notify "/usr/lib/keepalived/nginx-ha-notify"
+}

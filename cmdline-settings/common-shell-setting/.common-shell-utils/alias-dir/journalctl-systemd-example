@@ -1,0 +1,7 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+journalctl -u     # journalctl -u influxdb.service/mysqld.service
+
+# alias jouruf="journalctl -u  <service>  -f"     # -f 作用类似于tail -f
+
+journalctl -xe

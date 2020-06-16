@@ -1,0 +1,104 @@
+# vim: set ft=conf : vim modeline
+
+# warning: cannot add content end of filename
+# example:  *.pyc   #py2
+# 文件后不能跟 "#" 来注释
+
+# Compiled target
+build/
+*.o
+*.so
+*.class
+a.out
+*.obj
+*.OBJ
+
+
+# linux kernel module build
+*.ko
+.cache.mk
+*.mod.c
+*.order
+*.symvers
+*.cmd
+*.mod
+
+# windows
+
+# Temporary files #
+# swp/swp vim Temporary file
+*~
+
+# ppt, doc等
+.~*
+
+*.swp
+*.swn
+*.swo
+*.tmp
+*.netrwhist
+
+# bochs
+bochsout.txt
+
+# 崩溃文件
+core
+core.*
+!core/
+
+# Logs
+log/
+*.log
+
+# wps tmp file
+.~*.docx
+
+# linux backrun command: nohup <command>  &
+nohup.out
+
+# cmake cache and generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+
+# tag files
+cscope.in.out
+cscope.out
+cscope.po.out
+tags
+tags-ja
+tags-te
+tags-*
+
+# python cache: py2 + py3
+*.pyc
+__pycache__/
+# coverage analysis
+.coverage
+# analysis html
+covhtml/
+# pycharm
+.idea/
+
+# django
+migrations/
+*.sqlite3
+
+
+# 编译生成的可执行文件.
+# 如果真的需要添加, 那么 git add -f 添加.
+main
+!main/
+
+# svn
+.svn/
+
+# 反向, 一定会包含的文件
+!*.gitkeep
+
+# valgrind
+callgrind.out*
+
+!go.mod
+# go.sum

@@ -1,0 +1,9 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+rsync -arv --exclude='data/' user@host:dir/ /tmp        # 支持exclude
+rsync -arvz   uaq@old-jump:7000/tmp/zhouwenfeng ./      # 指定端口7000, 测试未通过
+
+scp -r user@host:dir/ /tmp          # 不支持exclude
+scp -P 7000 -r user@host:dir/ /tmp          # 不支持exclude
+
+scp -l     # limit 限制带宽速率

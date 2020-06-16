@@ -1,0 +1,67 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+#           ------------------- 实验说明 ---------------------
+
+#            +--------+       +---------+        +--------+    +--------+
+#            |        |       | bridge  |        | bridge |    |        |
+#            |   n0   +-------+   n1    +--------+   n2   +----+   n3   |
+#            +--------+-      +---------+        +--------+    +--------+
+#
+#   多个节点之间通过veth pair相连: bridge把两个veth连接起来
+
+
+
+## 添加4个新的网络命名空间
+SUB_NET=192.168.11
+sudo ip netns del myn0
+sudo ip netns del myn1
+sudo ip netns del myn2
+sudo ip netns del myn3
+
+sudo ip netns add myn0
+sudo ip netns add myn1
+sudo ip netns add myn2
+sudo ip netns add myn3
+
+sudo ip netns exec myn1 brctl addbr br1
+sudo ip netns exec myn2 brctl addbr br2
+
+# 3根网线
+
+## 网线0-1
+sudo ip link add eth01-0 type veth peer name eth01-1
+sudo ip link set eth01-0 netns myn0
+sudo ip link set eth01-1 netns myn1
+sudo ip netns exec myn0 ifconfig eth01-0 ${SUB_NET}.1      # n1节点ip
+
+
+## 网线1-2
+sudo ip link add eth12-1 type veth peer name eth12-2
+sudo ip link set eth12-1 netns myn1
+sudo ip link set eth12-2 netns myn2
+
+
+## 网线2-3
+sudo ip link add eth23-2 type veth peer name eth23-3
+sudo ip link set eth23-2 netns myn2
+sudo ip link set eth23-3 netns myn3
+sudo ip netns exec myn3 ifconfig eth23-3 ${SUB_NET}.4       # n3节点ip
+
+
+## n1节点的bridge和ip
+sudo ip netns exec myn1 ifconfig br1 ${SUB_NET}.2
+sudo ip netns exec myn1 ifconfig eth01-1 0.0.0.0
+sudo ip netns exec myn1 ifconfig eth12-1 0.0.0.0
+sudo ip netns exec myn1 brctl addif br1 eth01-1
+sudo ip netns exec myn1 brctl addif br1 eth12-1
+
+## n2节点的bridge和ip
+sudo ip netns exec myn2 ifconfig br2 ${SUB_NET}.3
+sudo ip netns exec myn2 ifconfig eth12-2 0.0.0.0
+sudo ip netns exec myn2 ifconfig eth23-2 0.0.0.0
+sudo ip netns exec myn2 brctl addif br2 eth12-2
+sudo ip netns exec myn2 brctl addif br2 eth23-2
+
+## 测试
+sudo ip netns exec myn3 ping ${SUB_NET}.1
+sudo ip netns exec myn3 arp -n

@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 指定配置文件, 指定用户名密码
+# NOTE: 一定需要sudo, 因为需要为vpn添加路由表
+sudo openvpn --config ./HangZhouYueQing_dengchangsong.ovpn  --auth-user-pass pass.txt

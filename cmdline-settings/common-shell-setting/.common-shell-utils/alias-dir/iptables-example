@@ -1,0 +1,169 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+
+# ------------------- 教训 NOTE: WARNING ---------------------
+# WARNING: 这种操作千万不能远程操作, 会导致ssh和所有INPUT流量立马断开(如果INPUT默认policy是DROP)
+sudo iptables -F INPUT
+
+
+# ------------------- Normal: 常规用法  ---------------------
+sudo iptables -I INPUT -p tcp --dport 22 -m state NEW,ESTABLISHED,RELATED --state -m recent --set
+sudo iptables -I INPUT -p udp --sport 53  -j ACCEPT                          # udp没有状态, 只能通过端口允许进来的流量(DNS)
+sudo iptables -I INPUT -p tcp -m state --state ESTABLISHED,RELATED -j ACCEPT # NOTE: 对established连接支持(允许进入)
+sudo iptables -I INPUT -i lo  -j ACCEPT                                      # 接收 loopback 的流量
+# sudo iptables -I INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+
+# ------------------- 通过NAT实现负载均衡 ---------------------
+# iptables 通过NAT实现负载均衡:
+# https://blog.csdn.net/weixin_39713646/article/details/89313993
+# 方法1: 可以使用连续ip
+# 方法2: 可以使用probability
+# https://zhaohuabing.com/istio-practice/content/ingress/nodeport.html  # k8s NodePort
+
+
+# ------------------- 查看nat 转发表 ---------------------
+sudo iptables -t nat -vnL --line-numbers        # -v 显示包统计数量, 根据统计排列规则前后顺序
+
+## 添加NAT示例: 原地址是172..., 发送出口是eth1的, 使用NAT
+iptables -t nat -A POSTROUTING -o eth1 -s 172.168.1.0/16 -j MASQUERADE
+
+
+# ------------------- Comment: 添加注释 ---------------------
+# 添加注释comment
+# -m comment --comment "limit ssh access"
+iptables -I INPUT -j DROP -p tcp --dport 22 -m comment --comment "limit ssh access"
+iptables -I INPUT -j ACCEPT -p tcp --dport 22 -m comment --comment "ssh access"
+iptables -I INPUT -j ACCEPT -p tcp --dport 8081 -m comment --comment "flink web-ui access"
+
+
+# ------------------- Policy: 默认策略 ---------------------
+# 设置forward 默认策略: policy
+# NOTE: built-in CHAIN 的默认策略只能是ACCEPT, DROP (自定义Chain可以有其它选择)
+# NOTE: 如果需要REJECT, 直接在chain 最后append REJECT: sudo iptables -A INPUT -j REJECT
+iptables -P INPUT   ACCEPT        # -t fileter表中, INPUT的默认策略(默认策略优先级最低)
+iptables -P FORWARD DROP          # -t fileter表中, FORWARD的默认策略(默认策略优先级最低)
+iptables -P INPUT   DROP          # -t fileter表中, INPUT的默认策略(默认策略优先级最低)
+
+
+# ------------------- Delete: 删除(索引从0开始) ---------------------
+# 删除INPUT第一条
+sudo iptables -D INPUT 1
+
+
+# ------------------- Range: ip, port 范围 ---------------------
+# port range + ip range
+sudo iptables -I INPUT -p tcp -m multiport --dports     1:1024,3389 -j DROP
+sudo iptables -I INPUT -p tcp -m multiport --dports     8080-8090 -j DROP       # [8080, 8090]
+sudo iptables -I INPUT -p tcp -m iprange   --src-range  192.168.1.34-192.168.1.50 -j DROP
+sudo iptables -I INPUT -p tcp -m iprange   --dst-range  192.168.1.34-192.168.1.50 -j DROP
+
+
+# ------------------- mark : 各种mark ---------------------
+# set mark(-j MARK) and match mark
+iptables -A PREROUTING -i eth0 -t mangle -p tcp --dport 22 -j MARK --set-mark 1
+iptables -A PREROUTING -i eth0 -t mangle -p tcp --dport 80 -j MARK --set-mark 1
+iptables -A PREROUTING -i eth0 -t mangle -p tcp --dport 4070 -j MARK --set-mark 1
+iptables -A FORWARD -i eth0 -p tcp --syn -m mark  --mark 0x3 -j REJECT --reject-with tcp-reset
+iptables -A INPUT -i eth0 -p tcp --syn -m mark  --mark 0x3 -j ACCEPT -m comment --comment '显示mark, comment规则顺序和添加时书写顺序一致'
+
+# https://www.cnblogs.com/tianyublog/p/6897683.html?utm_source=itdadao&utm_medium=referral
+iptables -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER       # HINT: 对于发送给本主机ip的数据包, 尝试DOCKER规则.
+
+
+
+# ------------------- reject with: reject 理由 ---------------------
+sudo iptables -I INPUT -p tcp --dport 3333 -j REJECT
+sudo iptables -I INPUT -p tcp --dport 3333 -j REJECT --reject-with icmp-host-prohibited
+    # all reject reasons
+    # icmp-net-unreachable
+    # icmp-host-unreachable
+    # icmp-port-unreachable
+    # icmp-proto-unreachable
+    # icmp-net-prohibited
+    # icmp-host-prohibited
+    # icmp-admin-prohibited
+    # tcp-reset
+
+
+# ------------------- Common: 常用示例 ---------------------
+# 允许某ip连接
+# -I INPUT 2        # 放在第2条
+sudo iptables -I INPUT 3 -p tcp --source 101.228.83.66 -j ACCEPT
+
+# -I 不加number的话 默认放在第一条, -A放在最后一条
+sudo iptables -I INPUT -p tcp --dport 22 -j ACCEPT
+sudo iptables -I OUTPUT -p tcp --sport 22 -j ACCEPT
+
+
+# ------------------- icmp/ping: ping别人, 别人不能ping自己 ---------------------
+sudo iptables -I INPUT -p icmp -m icmp --icmp-type echo-request -j DROP
+# 使自己可以ping通别人(允许收到echo-reply包)
+sudo iptables -I INPUT -p icmp -m icmp --icmp-type echo-reply -j ACCEPT
+
+iptables -p icmp -h            #   查看icmp相关帮助
+
+
+# ------------------- new chain: 添加chain ---------------------
+# ------------------- Practice: 实现k8s service ip:port ---------------------
+# http://linux-ip.net/html/nat-dnat.html        # DNAT 教程
+sudo iptables -N  MY-SVC-111 \
+        -t nat
+
+# 放在 OUTPUT chain中的规则, 是用来本地host访问的.
+# 本地是相对于iptables所在主机
+# NOTE: 这也是为什么k8s 的 service ip不支持ping的原因所在
+# 10.100.208.118:19999 service的ip和port
+sudo iptables -t nat -I OUTPUT -p tcp                   \
+        -d 10.100.208.118                               \
+        --dport 19999                                   \
+        -m comment --comment "service ip and port DNAT" \
+        -j MY-SVC-111
+
+# 放在 PREROUTING chain中的规则, 是用来被外地(或者内部容器)访问的.
+sudo iptables -t nat -I PREROUTING -p tcp               \
+        -d 10.100.208.118                               \
+        --dport 19999                                   \
+        -m comment --comment "service ip and port DNAT" \
+        -j MY-SVC-111
+
+# 172.17.0.2:8888 pod的ip和端口(可以使用docker启动busybox模拟)
+sudo iptables -I MY-SVC-111 \
+        -t nat              \
+        -p tcp              \
+        -j DNAT             \
+        --to-destination 172.17.0.2:8888
+
+# 在本地访问service(走POSTROUTING)
+nc 10.100.208.118 19999 -v
+
+# 在本地某busybox容器访问service(走PREROUTING)
+nc 10.100.208.118 19999 -v
+
+
+# ------------------- iptables 负载均衡: 根据 SourceIp ---------------------
+# k8s的service "SessionAffinity: ClientIp"是这么实现的吗
+# https://stackoverflow.com/questions/38241686/load-balancing-udp-on-localhost-by-source-ip
+
+iptables -A PREROUTING -t mangle -p udp --dport 1194 -j HMARK \
+             --hmark-tuple src,sport --hmark-mod 2 \
+                      --hmark-rnd 0xcafeface --hmark-offset 0x8000
+
+iptables -A PREROUTING -t nat -p udp -m mark --mark 0x8000 \
+             -j DNAT --to-destination 127.0.0.1:8000
+
+iptables -A PREROUTING -t nat -p udp -m mark --mark 0x8001 \
+             -j DNAT --to-destination 127.0.0.1:8001
+
+
+# ------------------- Misc ---------------------
+# NOTE: ping包类型分为echo-request + echo-reply:
+# 可以根据此设置: a ---OK---> b, b ---X---> a
+
+
+# netfilter/iptables 有两个维度: 协议 + 动作(input/output/route)
+# iptables = IP(协议)--对协议进行处理
+#           +
+#           tables(filter, nat, mangle)--对动作进行处理
+
+# 如果使用linux作为服务器, 对filter FORWARD链 做文章, 可以做出很多事来.

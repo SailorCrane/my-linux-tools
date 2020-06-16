@@ -1,0 +1,91 @@
+# vim: set filetype=sh  foldlevel=2: vim modeline( set )
+# python库 (机器学习库等): pip install
+
+pip               # (先使用easy_install安装pip, 再用pip安装其它库), 不需要了. python-pip包中就自带了
+pip3
+
+wheel             # pip安装这个后, 就可以 "pip file.whl" 直接安装wheel文件
+
+
+shadowsocks       # server(include bin file)
+shadowsocks-gtk   # client(gtk client)
+
+numpy
+scipy
+matplotlib        # (画图库)
+sympy
+
+jieba
+zmq               # (要编译安装, 说是python库, 不如说是C++库, 同时支持Python )
+
+thefuck           # zsh thefuck插件依赖(pip3安装)
+
+unittest
+Faker             # data faker
+line_profiler     #
+coverage          # 覆盖测试分析
+nosetests         # unittest wrapper
+
+github-cli        # github cli search, issue, show
+
+# 区分大小写
+mysql-connector-python # 是MySQL官方的纯Python驱动
+MySQL-python           # 是封装了MySQL C驱动的Python驱动
+mysqlclient            # 分不清这个和上面区别, django驱动安装这个即可(apt install libmysqld-dev)
+
+
+pycscope          # python cscope
+
+xlrd              # excel operation lib
+
+PyDictionary      # words dictionary for python
+
+GitPython         # interact with git by python
+
+
+sqlobject         # pipi3 : configparser, mysqlclient, sqlobject
+                  # pipi2 : configparser, mysql-python, sqlobject
+mysqlclient       # pipi2
+
+# pipi3(最好用的3个库)
+pymysql     # mysql
+pymongo     # mongodb
+redis       # redis
+
+configparser
+
+sqlalchemy        # like sqlobject(ORM lib)
+
+jupyter     # apt-get install python-setuptools/python3-setuptools, 需要卸载ipython/ipython3(jupyter要安装一个ipython)
+
+requests
+"requests[socks]"  # http ------> socks(proxy)
+
+selenium          # sudo apt-get install chromium-chromedriver: ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/
+
+# proxies = {
+#     'socks5': 'socks5://localhost:1080',
+#     # 'http':   'http://localhost:8123',   # polipo proxy
+#     # 'https':  'https://localhost:8123',  # polipo https proxy
+
+#     'http':   'socks5://localhost:1080', # http  ------> socks proxy(pip install 'requests[socks]')
+#     'https':  'socks5://localhost:1080', # https ------> socks proxy(pip install 'requests[socks]')
+# }
+
+# django
+django
+django-simple-captcha
+xadmin                  # based on admin
+
+# flask
+flask
+wtforms
+
+pptree          # 输出树型结构
+
+python-etcd     # etcd client: py2 + py3
+
+pick            # curses based interactive selection
+
+youtube-dl      # youtube downloader
+you-get         # 下载bilibili b站/ youtube(需要在终端开启https proxy)

@@ -1,0 +1,348 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# sudo ip link del vxlan0
+# http://tinyurl.com/yyu65jm2      # flannel 几个版本详细分析
+
+# =================== case1: 点对点vxlan =====================
+# NOTE: 如果不通, 使用tcpdump -i enp2s0 -p icmp 查看原因
+# NOTE: 发现是admin prohibited, 是因为iptables 防火墙的原因
+# NOTE: 查看iptables INPUT 和 FORWARD filter table
+
+sudo ip link del vxlan0
+
+sudo ip link add vxlan0  \
+    type vxlan           \
+    id 42                \
+    dstport 4789         \
+    remote 192.168.1.152 \
+    local 10.10.21.28    \
+    dev enp2s0
+
+# NOTE: vxlan0的地址, 需要和另一个节点vxlan0的地址, 在同一个网段(掩码mask 位数很重要)
+# sudo ip addr add 172.19.1.2/16 dev vxlan0
+sudo ip addr add 172.19.1.2/22 dev vxlan0
+sudo ip link set vxlan0 up
+
+# ------------------- another ---------------------
+sudo ip link del vxlan0
+
+sudo ip link add vxlan0 \
+    type vxlan          \
+    id 42               \
+    dstport 4789        \
+    remote 10.10.21.28  \
+    local 192.168.1.152 \
+    dev p4p1
+
+# NOTE: vxlan0的地址, 需要和另一个节点vxlan0的地址, 在同一个网段(掩码mask 位数很重要)
+sudo ip addr add 172.19.2.2/22 dev vxlan0
+sudo ip link set vxlan0 up
+
+# =================== case2: 使用 containerIp ==arp==> macAddr ==bridgeFdb==> remoteIp =====================
+## NOTE: 对每个新容器, 都要添加 arp, fdb条目
+sudo ip link del br0
+sudo ip link del vxlan0
+sudo ip link del veth1
+
+sudo ip link add br0 type bridge
+sudo ip addr add 172.19.1.1/24 dev br0
+sudo ip link set br0 up
+
+sudo ip link add veth0 address 00:00:00:00:00:01 type veth peer name veth1
+
+sudo ip link set dev veth1 master br0
+sudo ip link set dev veth1 up
+
+# sudo ip netns add host1
+sudo ip link set dev veth0 netns host1
+sudo ip netns exec host1 ip link set dev veth0 up       # 后面不能有换行符
+sudo ip netns exec host1 ip addr add 172.19.1.2/24 dev veth0
+sudo ip netns exec host1 ip link set lo up
+
+# vxlan
+#sudo ip link add vxlan0 type vxlan id 100 dstport 4789 dev enp2s0 nolearning proxy l2miss l3miss
+sudo ip link add vxlan0 type vxlan id 100 dstport 4789 dev enp2s0
+# sudo ip addr add 172.19.1.33/24 dev vxlan0
+# sudo ip addr del 172.19.1.33/24 dev vxlan0
+sudo ip addr add 172.19.1.33/16 dev vxlan0
+sudo ip link set vxlan0 master br0      # TODO: 必须有这个, 没想明白为何
+sudo ip link set vxlan0 up
+
+sudo ip netns exec host1 route add default gw 172.19.1.1 veth0
+
+## arp table + bridge fdb table
+sudo ip neigh add 172.19.2.2 lladdr 00:00:00:00:00:02 dev vxlan0        # 另一个主机节点中容器的mac地址
+sudo bridge fdb add 00:00:00:00:00:02 dst 192.168.1.152 dev vxlan0
+
+# ------------------- another节点 ---------------------
+sudo ip link del br0
+sudo ip link del vxlan0
+sudo ip link del veth1
+
+sudo ip link add br0 type bridge
+sudo ip addr add 172.19.2.1/24 dev br0
+sudo ip link set br0 up
+
+sudo ip link add veth0 address 00:00:00:00:00:02 type veth peer name veth1
+
+sudo ip link set dev veth1 master br0
+sudo ip link set dev veth1 up
+
+# sudo ip netns add host1
+sudo ip link set dev veth0 netns host1
+sudo ip netns exec host1 ip link set dev veth0 up       # 后面不能有换行符
+sudo ip netns exec host1 ip addr add 172.19.2.2/24 dev veth0
+sudo ip netns exec host1 ip link set lo up
+
+# vxlan
+#sudo ip link add vxlan0 type vxlan id 100 dstport 4789 dev enp2s0 nolearning proxy l2miss l3miss
+# sudo ip link add vxlan0 type vxlan id 100 dstport 4789 dev enp2s0
+sudo ip link add vxlan0 type vxlan id 100 dstport 4789 dev p4p1
+
+# sudo ip addr add 172.19.2.33/24 dev vxlan0
+# sudo ip addr del 172.19.2.33/24 dev vxlan0
+sudo ip addr add 172.19.2.33/16 dev vxlan0
+sudo ip link set vxlan0 master br0              # TODO: 必须有这个, 没想明白为何
+sudo ip link set vxlan0 up
+
+sudo ip netns exec host1 route add default gw 172.19.2.1 veth0
+
+## arp table + bridge fdb table
+sudo ip neigh add 172.19.1.2 lladdr 00:00:00:00:00:01 dev vxlan0
+sudo bridge fdb add 00:00:00:00:00:01 dst 10.10.21.28 dev vxlan0
+
+# ------------------- arp table + bridge fdb table ---------------------
+## 为第一个主机添加 arp + fdb: 因为vxlan不是广播模式, arp不能通过vxlan0广播获得
+## (如果是广播模式, vxlan0就可以广播arp请求了)
+# sudo ip neigh add 172.19.2.2 lladdr 00:00:00:00:00:02 dev vxlan0
+# sudo bridge fdb add 00:00:00:00:00:02 dst 192.168.1.152 dev vxlan0
+
+## 为另一个主机添加 arp + fdb
+# sudo ip neigh add 172.19.1.2 lladdr 00:00:00:00:00:01 dev vxlan0
+# sudo bridge fdb add 00:00:00:00:00:01 dst 10.10.21.28 dev vxlan0
+
+# sudo ip link set vxlan0 master br0        # 必须有这个
+
+# =================== case3: 使用 vxlan ==arp==> macAddr ==bridgeFdb==> remoteIp =====================
+# The latest version of the vxlan backend  removes the need for the l2miss too, which means that the Flannel deamon is not
+# listening for any netlink messages anymore. This improves reliability (no problems with timeouts if
+# Flannel crashes or restarts) and simplifies upgrades.
+
+## NOTE: 千万不要把vxlan0 加入 bridge中作为slave(如果这样做了, 导致overlay网络不通)
+## NOTE: 发现这个是通过找了一个k8s, 查看bridge fdb 的mac, 通过mac 查看bridge设备.
+## NOTE: 然后brctl show, 发现cni0 没有 flannel.1 作为slave. 意识到可能这里出了问题.
+
+## TODO: 但原因不知(猜测可能是路由到vxlan0的包(无论进出), 会被交给bridge, 导致vxlan0无法正常工作)
+## TODO: 但case2中, vxlan0加入bridge br0, 为何可以?
+## TODO: 这个疑问留待以后解决.
+
+sudo ip link del br0
+sudo ip link del vxlan0
+sudo ip link del veth1
+
+sudo ip link add br0 type bridge
+sudo ip addr add 172.19.1.1/24 dev br0
+sudo ip link set br0 up
+
+sudo ip link add veth0 type veth peer name veth1
+
+sudo ip link set dev veth1 master br0
+sudo ip link set dev veth1 up
+
+# sudo ip netns add host1
+sudo ip link set dev veth0 netns host1
+sudo ip netns exec host1 ip link set dev veth0 up       # 后面不能有换行符
+sudo ip netns exec host1 ip addr add 172.19.1.2/24 dev veth0
+sudo ip netns exec host1 ip link set lo up
+
+# vxlan
+#sudo ip link add vxlan0 type vxlan id 100 dstport 4789 dev enp2s0 nolearning proxy l2miss l3miss
+# 指定mac
+sudo ip link add vxlan0           \
+        address 00:00:00:00:00:01 \
+        type vxlan                \
+        id 100                    \
+        dstport 4789              \
+        dev enp2s0
+
+# 无论是/16, /24, /32, 都可以(导致route 表项的不同, 但一点不影响).
+# vxlan0地址也可以为 172.19.1.0 (这样另一个节点的路由表中也可以:via 172.19.1.0)
+sudo ip addr add 172.19.1.33/16 dev vxlan0
+# sudo ip link set vxlan0 master br0        # WARNING: case3 千万情况不要把vxlan放到br0 slaves中
+sudo ip link set vxlan0 up
+
+# 为host1 ns添加默认网关 (否则无法ping通外网). 相当于容器的默认网关
+sudo ip netns exec host1 route add default gw 172.19.1.1 veth0
+
+### route table + arp table + bridge fdb table
+sudo ip route add 172.19.2.0/24 via 172.19.2.33 dev vxlan0 onlink       # 2.33是另一个vxlan的ip
+sudo ip neigh add 172.19.2.33 lladdr 00:00:00:00:00:02 dev vxlan0       # 另一个节点vxlan的mac
+sudo bridge fdb add 00:00:00:00:00:02 dst 192.168.1.152 dev vxlan0      # 另一个节点的物理ip
+
+# ------------------- another ---------------------
+sudo ip link del br0
+sudo ip link del vxlan0
+sudo ip link del veth1
+
+sudo ip link add br0 type bridge
+sudo ip addr add 172.19.2.1/24 dev br0
+sudo ip link set br0 up
+
+sudo ip link add veth0 type veth peer name veth1
+
+sudo ip link set dev veth1 master br0
+sudo ip link set dev veth1 up
+
+# sudo ip netns add host1
+sudo ip link set dev veth0 netns host1
+sudo ip netns exec host1 ip link set dev veth0 up       # 后面不能有换行符
+sudo ip netns exec host1 ip addr add 172.19.2.2/24 dev veth0
+sudo ip netns exec host1 ip link set lo up
+
+# vxlan
+#sudo ip link add vxlan0 type vxlan id 100 dstport 4789 dev enp2s0 nolearning proxy l2miss l3miss
+# sudo ip link add vxlan0 type vxlan id 100 dstport 4789 dev p4p1
+sudo ip link add vxlan0           \
+        address 00:00:00:00:00:02 \
+        type vxlan                \
+        id 100                    \
+        dstport 4789              \
+        dev p4p1
+
+sudo ip addr add 172.19.2.33/16 dev vxlan0      # 无论是/16, /24, /32, 都可以(导致route 表项的不同, 但一点不影响)
+# sudo ip link set vxlan0 master br0
+sudo ip link set vxlan0 up
+
+sudo ip netns exec host1 route add default gw 172.19.2.1 veth0
+
+### route table + arp table + bridge fdb table
+sudo ip route add 172.19.1.0/24 via 172.19.1.33 dev vxlan0 onlink
+sudo ip neigh add 172.19.1.33 lladdr 00:00:00:00:00:01 dev vxlan0
+sudo bridge fdb add 00:00:00:00:00:01 dst 10.10.21.28 dev vxlan0
+
+## 添加另一个命名空间host2: 模拟多容器下, 只需要一个route table host条目(route via onlink)
+# sudo ip netns add host2
+# sudo ip link add veth2 type veth peer name veth3
+# sudo ip link set dev veth3 master br0
+# sudo ip link set dev veth3 up
+# sudo ip link set dev veth2 netns host2
+# sudo ip netns exec host2 ip link set dev veth2 up       # 后面不能有换行符
+# sudo ip netns exec host2 ip addr add 172.19.2.3/24 dev veth2
+
+# ------------------- 添加 router, arp, bridge ---------------------
+
+### arp table + bridge fdb table
+## 为第一个主机/节点/物理节点 添加 arp + fdb: 因为vxlan不是广播模式, arp不能通过vxlan0广播获得
+## (如果是广播模式, vxlan0就可以广播arp请求了)
+# sudo ip route add 172.19.2.0/24 via 172.19.2.33 dev vxlan0 onlink       # 2.33是另一个vxlan的ip
+# sudo ip neigh add 172.19.2.33 lladdr 00:00:00:00:00:02 dev vxlan0       # 另一个节点vxlan的mac
+# sudo bridge fdb add 00:00:00:00:00:02 dst 192.168.1.152 dev vxlan0      # 另一个节点的物理ip
+
+# ## 为另一个主机/节点/物理节点 添加 arp + fdb
+# sudo ip route add 172.19.1.0/24 via 172.19.1.33 dev vxlan0 onlink
+# sudo ip neigh add 172.19.1.33 lladdr 00:00:00:00:00:01 dev vxlan0
+# sudo bridge fdb add 00:00:00:00:00:01 dst 10.10.21.28 dev vxlan0
+
+
+# =================== case4: host-gw =====================
+## 不需要vxlan
+
+sudo ip link del br0
+sudo ip link del veth1
+
+sudo ip link add br0 type bridge
+sudo ip addr add 172.19.1.1/24 dev br0
+sudo ip link set br0 up
+
+sudo ip link add veth0 type veth peer name veth1
+
+sudo ip link set dev veth1 master br0
+sudo ip link set dev veth1 up
+
+sudo ip netns add host1
+sudo ip link set dev veth0 netns host1
+sudo ip netns exec host1 ip link set dev veth0 up       # 后面不能有换行符
+sudo ip netns exec host1 ip addr add 172.19.1.2/24 dev veth0
+sudo ip netns exec host1 ip link set lo up
+
+# 为host1 ns添加默认网关 (否则无法ping通外网). 相当于容器的默认网关
+sudo ip netns exec host1 route add default gw 172.19.1.1 veth0
+
+### host-gw : route table
+## 因为这里10.10.21.28 和 192.168.1.152不在同一个局域网: 所以这种方式无法工作
+## 因为via 192.168.1.152 会直接路由到 192.168.1.152, 会通过arp获取192.168.1.152的mac.
+## 然后把包直接投递给192.168.1.152(类似于默认网关). 但是无法获取192.168.1.152的mac(非局域网)
+## NOTE, arp -n 结果如此: 192.168.1.152                    (incomplete)                              enp2s0
+# sudo ip route add 172.19.2.2/32 via 192.168.1.152  dev p4p1 onlink
+
+## NOTE: 注意: 不要有其它route table entry 和这条路由目的地址冲突
+sudo ip route add 172.19.2.0/24 via 192.168.1.152  dev p4p1 onlink
+
+# ------------------- another ---------------------
+sudo ip link del br0
+sudo ip link del veth1
+
+sudo ip link add br0 type bridge
+sudo ip addr add 172.19.2.1/24 dev br0
+sudo ip link set br0 up
+
+sudo ip link add veth0 type veth peer name veth1
+
+sudo ip link set dev veth1 master br0
+sudo ip link set dev veth1 up
+
+sudo ip netns add host1
+sudo ip link set dev veth0 netns host1
+sudo ip netns exec host1 ip link set dev veth0 up       # 后面不能有换行符
+sudo ip netns exec host1 ip addr add 172.19.2.2/24 dev veth0
+sudo ip netns exec host1 ip link set lo up
+
+
+## NOTE: 注意: 不要有其它route table entry 和这条路由目的地址冲突
+sudo ip netns exec host1 route add default gw 172.19.2.1 veth0
+
+### host-gw : route table
+# sudo ip route add 172.19.1.2/32 via 10.10.21.28 dev p4p1 onlink
+sudo ip route add 172.19.1.0/24 via 192.168.1.151 dev p4p1 onlink
+
+
+# =================== case5: 模拟calico(只使用的veth pair) =====================
+## 类似于 flannel 的 host-gw模式(至少自己看到的教程是这样的)
+
+# https://www.cnblogs.com/ryanyangcs/p/11273040.html
+
+sudo ip link del veth0
+
+sudo ip link add veth0 type veth peer name veth1
+sudo ip netns add host1
+sudo ip link set veth1 netns host1
+
+sudo ip netns exec host1 ip a add 172.19.1.2/24 dev veth1
+sudo ip netns exec host1 ip link set veth1 up
+
+sudo ip netns exec host1 ip route add 169.254.1.1 dev veth1 scope link
+sudo ip netns exec host1 ip route add default via 169.254.1.1 dev veth1
+
+sudo ip link set veth0 up
+sudo ip route add 172.19.1.2 dev veth0 scope link       # 本地路由
+sudo ip route add 172.19.2.0/24 via 192.168.1.152  dev p4p1
+sudo echo 1 > /proc/sys/net/ipv4/conf/veth0/proxy_arp
+
+# ------------------- another ---------------------
+
+sudo ip link del veth0
+
+sudo ip link add veth0 type veth peer name veth1
+sudo ip netns add host1
+sudo ip link set veth1 netns host1
+
+sudo ip netns exec host1 ip a add 172.19.2.2/24 dev veth1
+sudo ip netns exec host1 ip link set veth1 up
+
+sudo ip netns exec host1 ip route add 169.254.1.1 dev veth1 scope link
+sudo ip netns exec host1 ip route add default via 169.254.1.1 dev veth1
+
+sudo ip link set veth0 up
+sudo ip route add 172.19.2.2 dev veth0 scope link       # 本地路由
+sudo ip route add 172.19.1.0/24 via 192.168.1.151  dev p4p1
+sudo echo 1 > /proc/sys/net/ipv4/conf/veth0/proxy_arp

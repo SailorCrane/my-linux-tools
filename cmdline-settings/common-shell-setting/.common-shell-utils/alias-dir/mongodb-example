@@ -1,0 +1,13 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# server mongo & client mongo
+
+# ------------------- js script file ---------------------
+use metrics
+
+db.metric_minute.find().count()
+// 打印所有find() 结果, 默认只打印 DBQuery.shellBatchSize = 300
+db.metric_minute.find({"metric" : "dUsage" }).forEach(function(f){print(tojson(f, '', true));});
+
+# ------------------- mongo command ---------------------
+mongo < my_find.js

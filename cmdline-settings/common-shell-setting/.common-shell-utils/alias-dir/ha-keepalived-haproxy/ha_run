@@ -1,0 +1,30 @@
+#!/bin/bash
+
+check_service() {
+    PNAME=$1
+    ps aux | grep $PNAME -w | grep -v grep 2>&1 >/dev/null
+    # service $PNAME status 2>&1 >/dev/null
+    return $?
+}
+
+service rsyslog start
+service haproxy start
+service keepalived start
+
+sleep 3
+
+
+# 如果检测到任何服务退出, 当前脚本也退出(当前脚本是docker的cmd/entrypoint), 会导致docker也退出.
+while true; do
+    if ! check_service haproxy ; then
+        echo "not exist haproxy"
+        break
+    fi
+
+    if ! check_service keepalived ; then
+        echo "not exist keepalived"
+        break
+    fi
+
+    sleep 3
+done

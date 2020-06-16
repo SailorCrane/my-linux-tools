@@ -1,0 +1,5 @@
+#!/bin/sh
+
+[-e $FilePath] || [ -h $FilePath ]     # 判断文件是否是软链接接, 或者是否是正常文件. 总之是否存在?
+                                       # 等同于ls $FilePath
+                                       # -e 在文件是软连接, 并且broken时, 返回false.

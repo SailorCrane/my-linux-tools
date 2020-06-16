@@ -1,0 +1,17 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 使用nc.openbsd而不是 nc.traditional
+nc.openbsd  -l -p 9200 -k
+nc.openbsd  localhost 9200
+
+
+# 连接 Unix-Domain socket
+nc -lU a.sock       # listen unix-domain socket
+nc -U a.sock        # conn unix-domain socket
+
+
+# 从"重定向stdin"读取内容来替代"屏幕stdin手动输入"
+kafka_read | nc -l 9999 -k      # 这个nc服务端把从kafka读取到的内容, 发送给连接其的客户端
+                                # NOTE: 主要用来调试flink, flink source连接nc server socket, nc server连接kafka stdout
+                                #       用nc调试flink的原因是, nc断了时, 可以方便的发送Finish信号给flink的source
+                                #       使得flink的所有内存中的窗口都被激发(finish不同于cancel)

@@ -1,0 +1,12 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# ------------------- mount ---------------------
+mount -o remount,rw  /dev/xxx  /mnt/point        # remount, 改变文件属性
+
+
+# ------------------- umount ---------------------
+# how to fix :stale nfs umount
+# nfs server 挂了, nfs客户端挂在nfs的目录不能访问, 不能umount. 一访问就会卡(ctrl-c不管用)
+# -l lazy
+# -f force
+umount -l -f /dir  # 卸载, 如果命令行输入/dir 也会卡住, 放入到脚本中

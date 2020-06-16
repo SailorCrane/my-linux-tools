@@ -1,0 +1,43 @@
+#  vim: set ft=sh  :vim modeline
+# 非必备软件, 但是在软件列表中.
+byobu   # 可选, 事tmux的后端
+wireshark
+filezilla  # 也是一个不错的客户端
+leafpad    # 相对于notepad, 可以自动识别文件编码(utf-8)
+okular     # pdf阅读区, Ubuntu默认安装 evince, 所以不需要了, 但是okular可以添加书签
+gnucash
+uget        # 比自带的种子下载工具好
+synaptic    # 新立德
+laptop-mode-tools
+ffmpeg          # 命令行工具
+ntopng
+# ntop
+
+glances     # 我也不知道干啥的, 系统监控用
+
+# 桌面
+ubuntu-gnome-desktop
+xfce4   # xfce4 安装后, 自动安装gnome
+gnome-session-flashback             # gnome桌面
+compizconfig-settings-manager       # 设置compize 3D效果
+
+tsung # 网络安全?
+
+# C/C++库: 注意这些lib库, 既可以使用apt安装, 也可以手动编译安装
+libqt4-dev          # qt库
+libboost-dev        # boost库
+libboost-all-dev    # boost库, 所有. (cmake 应该是可以使用findpackage() 找到boost了.)
+
+libgoogle-glog-dev  # glob库
+
+libdb-dev           # berkeley db库(C库)
+libdb++-dev         # berkeley db(C++库)
+
+libprotobuf-dev     # protobuf 库
+libopencv-dev       # opencv 库
+
+libprotobuf-dev     # probobuf 编译库
+protobuf-compiler   # protobuf 编译器: protoc
+protobuf-c-compiler # protoc-c: protobuf 的 c编译器, 但是没有用过.
+
+gabedit         # 化学软件gab edit

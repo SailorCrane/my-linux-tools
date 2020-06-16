@@ -1,0 +1,4 @@
+
+1: terminal vim可以使用molokai模式, 不会有什么问题了.
+2: evince, 可以使用d 双页显示, hljk 上下左右移动.
+3: nautilus自带open-terminal

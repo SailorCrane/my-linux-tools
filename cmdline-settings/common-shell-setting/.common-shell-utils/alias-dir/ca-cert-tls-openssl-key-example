@@ -1,0 +1,102 @@
+# vim: set filetype=sh  foldlevel=0:
+
+# 1: Ubuntu 操作系统更新根证书步骤:  系统
+sudo mkdir -p /usr/local/share/ca-certificates/extra
+sudo cp  my_ca.crt  /usr/local/share/ca-certificates/extra -f
+sudo cp  ~/Desktop/ubuntu.crt  /usr/local/share/ca-certificates/extra -f
+sudo update-ca-certificates
+cat /etc/ssl/certs/ca-certificates.crt              # 更新之后, 根证书内容就会到里面, 表示根证书生效了
+
+# 2: NOTE: WARNING: chrome or firefox,  Ubuntu下的chrome和firefox不跟随使用系统根证书(和windows不同)
+# 所以需要浏览器手动导入根证书, 但是普通用户导入根证书: 不会起作用(除非普通用户安装 apt-get install libnss3-tools )
+# 或者使用root运行chrome, 在settings中导入根证书
+# 方式1: 安装 libnss3-tools, 普通用户也可以在chrome settins也可以导入根证书
+# 方式2: 不安装libnss3-tools, root 运行chrome, 然后在settings导入根证书
+
+# 3: 关于客户端所用证书(用于双向验证的): 是给浏览器或者其它客户端用的, 此类证书和系统无关
+# 如果浏览器要用这类证书, 只能在浏览器中导入cert
+
+
+
+# =================== rsa =====================
+alias rsa_key_gen='openssl genrsa -out key.pem'                      # 和 ca_key 一样的
+alias rsa_pub_out='openssl  rsa -in key.pem -pubout -out public.pem' # 从 key.pem提取public.pem
+alias rsa_key_show='openssl rsa -in key.pem -text -noout'            # -noout不再输出key内容, 否则输出key内容
+alias rsa_key_enc='openssl rsa -in key.pem -des3 -out enc_key.pem'   # 对私钥进行加密保护(加密时指定key string, 使用时需要输入des key string)
+
+# rsa非对称加密解密
+# NOTE: -pubin: by default a private key is read from the input file: with this option a public key is read instead.
+alias rsa_cipher='openssl   rsautl -encrypt -in msg -out enc -inkey public.pem -pubin' # 使用public.pem 加密
+alias rsa_decipher='openssl rsautl -decrypt -in enc -out rec -inkey key.pem'           # 使用key.pem 解密
+#alias rsa_decipher='openssl rsautl -decrypt -in enc -out rec -inkey enc_key.pem '      # 使用加密的私钥解密(需要输入私钥密码)
+
+
+# rsa数字签名
+alias rsa_sign='openssl rsautl     -sign -in msg    -out signed      -inkey key.pem'           # 使用私钥签名
+#alias rsa_sign='openssl rsautl     -sign -in msg    -out signed      -inkey enc_key.pem'      # 使用加密的私钥签名(需要输入私钥密码)
+alias rsa_verify='openssl rsautl -verify -in signed -out verify_sign -inkey public.pem -pubin' # 使用公钥验证签名
+
+
+# =================== openssl command =====================
+alias ssl_ciphers="openssl  list -cipher-commands"
+
+# 读取pem格式的证书信息 : -text输出info, -noout不再输出crt的本来信息: info_crt /tmp/my_server.[pem/crt]
+alias info_crt="openssl x509 -text -noout -in "
+# 查看key内容(), -noout不再输出key内容, 否则输出key内容
+alias info_key='openssl rsa  -text -noout -in'
+
+
+# 不使用base64的话, 加密输出是二进制文件, 解密需要输入二进制文件.
+# 加密过程中需要输入密码: 就是aes加密的key
+alias aes_cipher='openssl   enc -aes-256-cbc -base64 -in '       # 后面接文件名: aes_cipher   msg(aes_cipher   msg -out enc)
+alias aes_decipher='openssl enc -aes-256-cbc -d -base64 -in'     # 后面接文件名: aes_decipher end(aes_decipher end -out msg)
+
+
+
+#=================== CA and server key Example  =====================
+## 1: CA
+openssl genrsa -out ca.key 2048     # ca.key
+
+## 生成x509 格式证书
+openssl req -x509 -new -nodes -key ca.key \
+    -subj "/CN=hispc"                     \
+    -days 5000                            \
+    -out ca.crt
+
+
+## 2: server key + crt(通过ca生成服务端所需的crt)
+openssl genrsa -out server.key 2048
+
+openssl req -new -key server.key  \
+    -subj "/CN=sailorcrane.com"   \
+    -config master_server_ssl.cnf \
+    -out server.csr
+
+openssl x509 -req -in server.csr   \
+    -CA ca.crt                     \
+    -CAkey ca.key                  \
+    -CAcreateserial                \
+    -days 5000                     \
+    -extensions v3_req             \
+    -extfile master_server_ssl.cnf \
+    -out server.crt
+
+## 3: client
+#openssl genrsa -out client.key 2048
+
+#openssl req -new -key client.key \
+#    -subj "/CN=hispc"           \
+#    -out   client.csr
+
+#openssl x509 -req -in  client.csr \
+#    -CA ca.crt                    \
+#    -CAkey ca.key                 \
+#    -CAcreateserial               \
+#    -days 5000                    \
+#    -out client.crt
+
+#=================== CA and server key Example  =====================
+
+# =================== chrome export symmetric key  =====================
+# export不应该写在这里, 应该在profile中
+export SSLKEYLOGFILE="$HOME/log/sslkeylog.log"

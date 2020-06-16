@@ -1,0 +1,45 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+# Copyright © 2018 crane <crane@crane-pc>
+#
+# Distributed under terms of the MIT license.
+
+"""
+
+"""
+# import PyDictionary
+from PyDictionary import PyDictionary
+import sys
+from pprint import pprint
+import utils
+
+def main():
+    argv_msg =  "must input a 'word' as argument"
+    if not utils.param_need(sys.argv, 1, argv_msg):
+        return
+
+    word = sys.argv[1]
+    dictionary = PyDictionary(word)
+
+    # meaning = dictionary.meaning(word)
+    # synonym = dictionary.synonym(word)
+    # antonym = dictionary.antonym(word)
+    meaning = dictionary.printMeanings()
+    synonym = dictionary.getMeanings()
+    antonym = dictionary.getSynonyms()
+
+    print (dictionary.translateTo("hi"))
+
+    output_info('meaning', meaning)
+    output_info('synonym', synonym)
+    output_info('antonym', antonym)
+
+
+def output_info(msg, proposal):
+    print(msg)
+    pprint(proposal)
+    print()
+
+
+if __name__ == "__main__":
+    main()

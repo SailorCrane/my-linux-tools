@@ -1,0 +1,16 @@
+# vim: set filetype=dockefile  foldlevel=0: vim modeline( set )
+
+# FROM ubuntu:16.04
+FROM myhabase
+
+
+ADD config_haproxy.conf        /etc/haproxy/haproxy.cfg
+ADD config_keepalived_d1.conf  /etc/keepalived/keepalived.conf
+
+ADD ha_checkhaproxy  /bin/check_haproxy.sh
+ADD ha_run           /bin/run.sh
+
+RUN chmod +x /bin/check_haproxy.sh
+RUN chmod +x /bin/run.sh
+
+ENTRYPOINT ["/bin/run.sh"]

@@ -1,0 +1,57 @@
+#!/bin/bash
+sudo ip netns del myn0
+sudo ip netns del myn1
+sudo ip netns del myn2
+sudo ip netns del myn3
+
+sudo ip netns add myn0
+sudo ip netns add myn1
+sudo ip netns add myn2
+sudo ip netns add myn3
+
+#veth add and set
+sudo ip link add veth01-0 type veth peer name veth01-1
+sudo ip link set veth01-0 netns myn0
+sudo ip link set veth01-1 netns myn1
+sudo ip netns exec myn0 ifconfig veth01-0 up
+sudo ip netns exec myn1 ifconfig veth01-1 up
+
+sudo ip link add veth12-1 type veth peer name veth12-2
+sudo ip link set veth12-1 netns myn1
+sudo ip link set veth12-2 netns myn2
+sudo ip netns exec myn1 ifconfig veth12-1 up
+sudo ip netns exec myn2 ifconfig veth12-2 up
+
+sudo ip link add veth23-2 type veth peer name veth23-3
+sudo ip link set veth23-2 netns myn2
+sudo ip link set veth23-3 netns myn3
+sudo ip netns exec myn2 ifconfig veth23-2 up
+sudo ip netns exec myn3 ifconfig veth23-3 up
+
+sudo ip link add veth30-3 type veth peer name veth30-0
+sudo ip link set veth30-3 netns myn3
+sudo ip link set veth30-0 netns myn0
+sudo ip netns exec myn3 ifconfig veth30-3 up
+sudo ip netns exec myn0 ifconfig veth30-0 up
+
+#bridge add and set
+sudo ip netns exec myn0 brctl addbr br0
+sudo ip netns exec myn0 brctl addif br0 veth30-0
+sudo ip netns exec myn0 brctl addif br0 veth01-0
+sudo ip netns exec myn0 ifconfig br0 192.168.11.1
+
+sudo ip netns exec myn1 brctl addbr br1
+sudo ip netns exec myn1 brctl addif br1 veth01-1
+sudo ip netns exec myn1 brctl addif br1 veth12-1
+sudo ip netns exec myn1 ifconfig br1 192.168.11.2
+
+sudo ip netns exec myn2 brctl addbr br2
+sudo ip netns exec myn2 brctl addif br2 veth12-2
+sudo ip netns exec myn2 brctl addif br2 veth23-2
+sudo ip netns exec myn2 ifconfig br2 192.168.11.3
+
+sudo ip netns exec myn3 brctl addbr br3
+sudo ip netns exec myn3 brctl addif br3 veth23-3
+sudo ip netns exec myn3 brctl addif br3 veth30-3
+sudo ip netns exec myn3 ifconfig br3 192.168.11.4
+

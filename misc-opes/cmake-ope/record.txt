@@ -1,0 +1,18 @@
+1: 如果进行out-of-source build, 但是source下已经有CMakeLists生成的相应缓存了.
+   要先删除: CMakefiles/, CMakeCache.txt
+   然后再cd build/; cmake ../
+
+1-2: 如果当前目录已经有了Cmake cache, 并且移动目录后, 删除cache目录内容, 然后再cmake ../
+
+2: add_library() 既可以生成静态库, 也可以生成动态库.
+
+3: install() 中可以指定绝对安装路径,  也可以使用$ENV{} 指定绝对路径.
+
+   指定的相对路径, 默认相对于/usr/local.
+
+   当然也可以使用在CMakeList 中set(CMAKE_INSTALL_PREFIX  ./usr)  #设置CMAKE_INSTALL_PREFIX
+   也可以在cmake命令中使用 -DCMAKE_INSTALL_PREFIX= 指定
+
+
+4: set_target_properties( COMPILE_FLAGS ) 的 所有flags, 要写在一个"" 中, 而不是追加多个参数.
+    set_target_properties(main  PROPERTIES COMPILE_FLAGS "-std=c++11 -g")

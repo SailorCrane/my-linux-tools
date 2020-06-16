@@ -1,0 +1,7 @@
+
+source ~/.myProfile.d/base      # Trick: 先source base, 让其它脚本可以使用其中的函数
+
+for file in ~/.myProfile.d/*.sh
+do
+    source ${file}
+done

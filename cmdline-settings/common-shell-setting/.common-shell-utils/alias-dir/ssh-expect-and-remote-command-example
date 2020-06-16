@@ -1,0 +1,86 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+SLAVES=(10.10.25.50  10.10.25.51  10.10.25.52  10.10.25.53  10.10.25.54)
+
+    PORT=22
+    for slave in ${SLAVES[@]}; do
+
+        # ------------------- mkdir/scp ---------------------
+        COPYDIR="/home/itom"
+        ssh -n -p $PORT root@$slave "mkdir -p $COPYDIR"
+        scp -P $PORT -r /home/uaq/itom/flink root@$slave:$COPYDIR
+
+        # ------------------- expect and 公钥相互信任(两两之间) ---------------------
+        scp -P $PORT ./gen_ssh_key.sh root@$slave:/tmp/                 # 判断是否存在公钥, 不存在, 就生成. 上面的gen_ssh_key()函数
+        scp -P $PORT loop-expect-ssh-copy-id.sh root@$slave:/tmp/       # 内部是下面的expect loop脚本
+        ssh -n -p $PORT root@$slave "yum install expect"                # 安装expect 工具
+
+        ssh -n -p $PORT root@$slave "/tmp/gen_ssh_key.sh"               # 执行gen key
+        ssh -n -p $PORT root@$slave "/tmp/loop-expect-ssh-copy-id.sh"   # 执行loop ssh-copy-id + expect
+
+        # ------------------- sed/replace ---------------------
+        NUM=128
+        FILENAME="/home/uaq/itom/flink/conf/flink-conf.yaml"
+        RUNCMD="sed -i -r \"s@^taskmanager.numberOfTaskSlots:.*@taskmanager.numberOfTaskSlots: $NUM@g\" $FILENAME"
+        ssh -n -p $PORT root@$slave "$RUNCMD"
+
+
+        # ------------------- install ---------------------
+        ssh -n -p $PORT root@$slave "yum install -y ack"   # 在每个远程地址安装ack
+
+
+        # ------------------- hostname ---------------------
+        RUNCMD="hostname $(echo $slave | sed -r 's@\.@-@g')"    # 修改"." 为"-", 因为terminal不能很好展示"."
+        ssh -n -p $PORT root@$slave "$RUNCMD"                   # 修改每个服务器的hostname为10-10-25-25之类的格式
+
+        # ------------------- append new file ---------------------
+        FILE_APPEND="/home/test_append"
+        ssh -n -p $PORT root@$slave "echo 10.10.25.50 >  ${FILE_APPEND}"
+        ssh -n -p $PORT root@$slave "echo 10.10.25.51 >> ${FILE_APPEND}"
+        ssh -n -p $PORT root@$slave "echo 10.10.25.52 >> ${FILE_APPEND}"
+        ssh -n -p $PORT root@$slave "echo 10.10.25.53 >> ${FILE_APPEND}"
+        ssh -n -p $PORT root@$slave "echo 10.10.25.54 >> ${FILE_APPEND}"
+
+done
+
+
+gen_ssh_key() {
+    # 不存在公钥时, 才生成. NOTE: 不用交互输入rsa, 密码, 路径
+    if ! [ -e $HOME/.ssh/id_rsa.pub ] ; then
+        echo "not exist"
+        ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+    else
+        echo "WARNING: Already exist ssh rsa key, Do not generate!"
+    fi
+}
+
+# ------------------- ssh公钥生成 + expect脚本自动上传公钥 ---------------------
+# gen_ssh_pub     # 首先调用函数
+
+#!/usr/bin/expect
+# ------------------- 循环版 ---------------------
+set passwd root@asdf
+set hosts {22 24 25 50 51 52 53 54}
+foreach host $hosts {
+    puts "==> $host\t"
+    spawn ssh-copy-id -p 7777 root@10.10.25.$host
+    expect {
+     "yes/no"        { send "yes\r"; exp_continue }
+      password:      { send "$passwd\r"}
+    }
+}
+
+
+#!/usr/bin/expect
+# ------------------- 非循环版/命令行参数版 ---------------------
+set host [lindex $argv 0];
+set port [lindex $argv 1];
+puts "=>$host"
+puts "=>$port"
+spawn ssh-copy-id -p $port root@$host
+expect {
+ "yes/no"        { send "yes\r"; exp_continue }
+  password:      {send root@asdf\r}
+}
+interact
+

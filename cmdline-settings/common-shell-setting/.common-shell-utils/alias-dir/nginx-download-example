@@ -1,0 +1,24 @@
+server {
+        listen  80;
+        listen 18080;
+        # server_name downloadtest.mmtrix.com 10.10.25.230
+        server_name localhost 127.0.0.1
+
+        client_max_body_size 4G;
+
+        root /home/uaq/itom/nginx/;
+
+        access_log  /var/log/nginx/download_test_access.log  json;
+        error_log   /var/log/nginx/download_test_error.log;
+
+        location / {
+
+                if ($request_filename ~* ^.*?\.(txt|pdf|doc|xls)$){
+                add_header Content-Disposition 'attachment;';
+                }
+                autoindex on;
+                autoindex_exact_size on;
+                autoindex_localtime on;
+        }
+
+}

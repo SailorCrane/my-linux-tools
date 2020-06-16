@@ -1,0 +1,16 @@
+install-crx-教程.txt
+
+:Author: crane
+:Email: crane@crane-pc
+:Date: 2017-10-13 17:37
+
+
+1. Rename the downloaded file to .zip and unpack it to a directory
+(you might get a warning about a corrupt zip header, but most unpacker will continue anyway)
+
+2. deleted/renamed "_metadata"
+
+3. Go to Settings -> Tools -> Extentions
+4. Enable developer mode
+5. Click "Load unpacked extention"
+6. Browse to the unpacked folder and install your extention

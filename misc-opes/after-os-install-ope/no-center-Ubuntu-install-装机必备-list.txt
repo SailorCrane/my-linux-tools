@@ -1,0 +1,58 @@
+#  vim: set ft=sh  :vim modeline
+# 基础
+sogou 输入法        # (官网下载)
+wps                 # (官网下载)
+
+# 数据库软件
+sqldeveloper  # Oracle官方客户端, 需要java环境支持即可
+eclipse       # 官网下载, c++ IDE, 需要java环境支持
+
+
+# 软件库: 如果编译需要, 手动编译安装
+cmake      # 源码, github
+boost
+glog
+gtest
+zmq
+
+
+# 音乐
+网易音乐播放器   # 自己找官网Ubuntu deb, easynet
+kugou            # kugou.deb, gdebi 可以把依赖都安装. 不好用.鸡肋
+
+# ss 客户端
+shadowsocks-qt5
+
+# 云盘
+坚果云          # 官网下载deb包
+
+# 工作
+virtual box         # 官网下载deb包
+
+
+# 主题
+numix # (下载后, 用tweak theme设置)
+
+
+# Unity 桌面切换
+
+# sublime
+sublime     # 到官网下载sublime deb即可
+
+
+# YouDao 有道词典Ubuntu版本官网 http://cidian.youdao.com/index-linux.html
+# 1: 安装方法: gdebi  youdao*.deb  # 失败, 提示qml-module-qtquick-controls缺失
+# 2: sudo  apt-get  -f  install    # 注意install后面什么都不带
+# 3: sudo  dpkg -i  youdao*.deb
+# 4: sudo  apt-get  -f  install    # 然后就可以从dash启动了
+# 5: 奇怪, 下次apt-get install, 必须将上次的youdao-dict删除
+youdao-dict     # 自己找deb包, 有依赖不好解决.
+
+
+#
+4k video    # 下载youtube, 官方提供deb包(支持字幕下载)
+clipgrab    # 下载youtube, 支持代理
+
+
+franz       # 聊天框架(im), support wechat
+

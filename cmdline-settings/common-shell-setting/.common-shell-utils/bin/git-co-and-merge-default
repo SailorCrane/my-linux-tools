@@ -1,0 +1,13 @@
+#! /bin/sh
+#
+# git-co-default.sh
+# Copyright (C) 2017 crane <crane@crane-pc>
+#
+# Distributed under terms of the MIT license.
+
+# 目的是为了解决: detached HEAD的问题, 顺利切换到默认分线
+
+# 1: checkout default
+# 2: merge (merge remote)
+
+git-co-default && git merge

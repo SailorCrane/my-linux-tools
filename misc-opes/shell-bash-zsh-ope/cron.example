@@ -1,0 +1,22 @@
+# vim: set filetype=crontab  foldlevel=2: vim modeline( set )
+
+# m   h  dom mon  dow  user  command
+#17 *    * *    *   root    cd / && run-parts --report /etc/cron.hourly
+#25 6    * *    *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+#47 6    * *    7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
+#52 6    1 *    *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+
+# 每周4 + 每周5 的 17:20, 以crane用户 运行命令.
+20    17 *    *   4,5   crane    echo a >> /tmp/cron-test
+
+*/5   *  *    *   *    # 每五分钟执行
+
+0     *  *    *   *    # 每小时执行
+
+0     0  *    *   *    # 每天执行
+
+0     0  *    *   0    # 每周执行
+
+0     0  1    *   *    # 每月执行
+
+0     0  1    1   *    # 每年执行

@@ -1,0 +1,21 @@
+[keybindings]
+zoom-out='<Primary>minus'
+zoom-in='<Primary>equal'
+close-window='<Primary>q'
+
+[profiles:]
+list=['b1dcc9dd-5262-4d8d-a863-c897e6d979b9', '499ebe42-03b9-4e99-8d1b-bfb49a1cb160']
+default='499ebe42-03b9-4e99-8d1b-bfb49a1cb160'
+
+[profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+use-system-font=false
+visible-name='myprofile'
+font='Monospace 16'
+
+[profiles:/:499ebe42-03b9-4e99-8d1b-bfb49a1cb160]
+use-system-font=false
+visible-name='my1'
+font='Monospace 16'
+
+[/]
+schema-version=uint32 3

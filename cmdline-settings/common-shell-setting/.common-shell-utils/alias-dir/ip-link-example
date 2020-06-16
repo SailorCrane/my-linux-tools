@@ -1,0 +1,37 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+## 添加设备
+sudo ip link add ethA type veth peer name ethB
+sudo ip link del ethA
+sudo ifconfig ethA 172.20.1.1
+sudo ifconfig ethB 172.20.1.2
+
+suod sysctl -w net.ipv4.conf.ethA.accept_local=0 # NOTE: 这个完全不影响ping本地主机
+sudo sysctl -w net.ipv4.conf.ethB.rp_filter=0    # ip fiter
+sudo sysctl -w net.ipv4.conf.ethB.arp_filter=0   # arp filter
+
+## 设置up/down
+sudo ip link set ethA down           # down
+sudo ip link set down dev ethA       # down(两种写法相同)
+
+## 设置mac地址
+ip link set dev eth0 address 11:22:33:11:22:33
+
+## mtu
+ip link set dev eth0 mtu 1500
+
+## 设置名字
+sudo ip link set ethA name eth0     # 设置名字
+sudo ip link set name eth0 dev ethA # 设置名字(和上面不带"dev"效果一样)
+
+sudo ip link set ethA up             # up
+sudo ip link set up dev ethA         # up
+
+## 设置网卡arp
+sudo ip link set arp off  dev eth0       # 禁止arp缓存
+sudo ip link set ethA arp off
+sudo ip link set ethA arp on
+
+## 设置网卡netns: 只支持移动veth pair设备到命名空间,
+# 其它类型设备需要到相应netns下添加.
+sudo ip link set vethA netns ns1

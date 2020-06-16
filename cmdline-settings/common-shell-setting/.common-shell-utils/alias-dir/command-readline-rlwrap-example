@@ -1,0 +1,6 @@
+# vim: set filetype=sh  foldlevel=0:
+
+rlwrap telnet                           # 更好的使用telnet
+rlwrap md5sum
+
+rlwrap kafka-console-consumer.sh        # 更好的使用kafka

@@ -1,0 +1,8 @@
+#! /bin/sh
+
+CMD=$*
+#echo $CMD
+
+# {}没什么用
+#xargs  $CMD {}
+xargs  $CMD

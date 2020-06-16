@@ -1,0 +1,9 @@
+#! /bin/sh
+
+
+#scriptPath=$(env which ss_server)
+DIR_NAME=$(dirname $0)
+config_name=server-ss.json
+
+# 可能会监听443等端口, 所以使用sudo
+sudo ssserver -c  ${DIR_NAME}/${config_name}

@@ -1,0 +1,12 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+ssh -i [private_key] -p [port]  [user]@[host]       # 指定连接服务器时使用的pem-key文件(内含公钥信息)
+
+ssh-keygen -y -f ~/.ssh/id_rsa                      # 提取pem中的公钥, 并输出为ssh服务的格式
+openssl rsa -in ~/.ssh/id_rsa -pubout               # 提取pem中的公钥, 输出为openssl格式
+
+ssh -o StrictHostKeyChecking=no [user]@[host]       # -o 不对服务器的公钥进行签名检查.
+
+ssh-add         # 添加秘钥
+ssh-add -l      # 列出秘钥
+ssh-add -D      # 删除缓存中的秘钥

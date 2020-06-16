@@ -1,0 +1,25 @@
+g-git修改submodule远程仓库地址.txt
+
+:Author: crane
+:Email: crane@crane-pc
+:Date: 2017-09-27 12:16
+
+方法1:(我的molokai现在放在自己的github下, 就是从原作者fork出来, 然后执行如下步骤)
+1: 修改.gitmodule
+2: 修改.git/config
+3: 修改 submodule的config( 位于.git/modules/submodule/config, 注意不再 submodule/.git/config--这里的.git是个类似于软链接的东西 )
+3: 如果是dot-vim, 还要修改Bundle "user/repo" 地址
+
+
+方法2: (from stack overflow)
+These commands will do the work on command prompt without altering any files on local repository
+
+# 前两个命令修改 .gitmodules
+1:
+    git config --file=.gitmodules submodule.Submod.url https://github.com/username/ABC.git
+    git config --file=.gitmodules submodule.Submod.branch Development
+
+2:
+    git submodule sync
+    git submodule update --init --recursive --remote
+3: 如果是dot-vim, 还要修改Bundle "user/repo" 地址

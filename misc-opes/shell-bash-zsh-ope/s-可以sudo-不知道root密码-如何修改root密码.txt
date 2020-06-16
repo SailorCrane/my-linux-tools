@@ -1,0 +1,13 @@
+s-可以sudo-不知道root密码-如何修改root密码.txt
+
+:Author: crane
+:Email: crane@crane-pc
+:Date: 2017-09-25 13:50
+
+
+
+1: 执行$: sudo su(切换到root用户: 我的alias是root)
+
+2: passwd修改密码
+
+

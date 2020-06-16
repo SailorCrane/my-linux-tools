@@ -1,0 +1,34 @@
+cmake_minimum_required(VERSION 2.8)
+
+set(ImagineCpp imagine_interface.cpp)
+
+add_definitions(${DEBUG} -std=c++11 -Wall  -O0)
+
+find_library(DB_CXX
+            NAMES  db_cxx
+            PATHS  /usr/local/BerkeleyDB.6.1/lib)
+
+find_library(CXX_MTS_DB
+            NAMES  cxx_mts_db
+            PATHS  $ENV{CHARLENE_HOME}/lib)
+
+find_library(MYPROC
+            NAMES  MyProC
+            PATHS  $ENV{CHARLENE_HOME}/lib)
+
+#==============so-generate===============
+
+add_library(imagine  SHARED  ${ImagineCpp})     # generate lib
+
+target_link_libraries(imagine  ${CXX_MTS_DB} ${DB_CXX} ${MYPROC})
+
+install(TARGETS  imagine
+        LIBRARY  DESTINATION $ENV{CHARLENE_HOME}/lib )
+
+# install header file
+install(FILES  imagine_interface.h
+        DESTINATION  $ENV{CHARLENE_HOME}/include)
+
+#==============execute-generate===============
+
+#add_library(imagine  SHARED  ${ImagineCpp})     # generate lib

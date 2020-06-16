@@ -1,0 +1,45 @@
+# vim: set filetype=sh  foldlevel=0:
+
+# ------------------- Ubuntu: ---------------------
+vim /etc/network/interfaces
+
+# 注意每行规则后面不能有注释
+iface enp2s0 inet static
+address 10.10.21.59
+netmask 255.255.255.0
+gateway 10.10.21.1
+dns-nameservers 114.114.114.114
+
+sudo systemctl restart networking
+sudo systemctl restart network-manager
+
+# -------------------  CentOS Linux release 7.7.1908 (Core) ---------------------
+
+dir "/etc/sysconfig/network-scripts/"       # 在这个目录中配置 ifcfg-eth0
+
+
+重启网络:
+    /etc/rc.d/init.d/network restart
+    或者
+    systemctl restart network
+    service  network restart
+
+
+/etc/rc.d/init.d/network:
+    调用ifup/ifdown
+
+
+/sbin/ifup:
+    modprobe    # 加载相应设备驱动 driver?
+    /etc/sysconfig/network-scripts/ifup-eth
+
+
+/etc/sysconfig/network-scripts/ifup-eth:
+    ip link up
+    ip addr add
+    ip route replace
+    arping                  # 通知自己的mac地址?
+    /etc/sysconfig/network-scripts/ifup-post        # 在结束的时候调用
+
+/etc/sysconfig/network-scripts/ifup-post:
+    读取DNS, 写入到 /etc/resolv.conf

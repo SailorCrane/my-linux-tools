@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+tail -10000   myfile.log        # 查看最近1w行数据, 调试时使用(效率挺高)
+
+tail -f  myfile.log             # 持续关注, 持续跟踪

@@ -1,0 +1,5 @@
+
+export GOPATH=$HOME/go
+bee new beegoDemo
+bee run beego-demo-ope
+

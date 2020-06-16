@@ -1,0 +1,98 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# https://blog.csdn.net/weixin_30254435/article/details/95178913    (ssh代理相关教程)
+
+# ------------------- remote forward: 将远程端口, 转发到本地端口(通过远程访问[本地服务/局域网服务]) ---------------------
+# NOTE: 在内网机器执行
+# HINT: NOTE: -M 指定autossh的监听端口(注意不是远程主机的sshd服务监听端口)
+
+ssh -p 22  -qngfNTR  \*:{OUT_SEVER_PORT}:localhost:{INNER_SERVER_PORT}   ubuntu@119.28.16.78      # 外网2222到本地22
+
+ssh -p 22  -qngfNTR  \*:2222:localhost:22   ubuntu@119.28.16.78      # 外网2222到本地22
+ssh -p 7777  -qngfNTR  \*:2222:localhost:22   root@flux50      # 外网2222到本地22: flux50:2222  ---> localhost:22
+
+autossh -M 0 -fCNR \*:8888:localhost:8888 root@61.164.142.197    # 8888 ==> 8888
+
+autossh -M 0 -fCNR \*:2222:localhost:22 root@flux50
+
+# autossh -M 6666 -fCNR \*:2222:localhost:2222 crane@ubuntu
+autossh -M 0 -fCNR \*:2222:localhost:2222 crane@ubuntu  -p 7337
+autossh -M 0 -fCNR \*:7092:localhost:7092 crane@ubuntu  -p 7337
+
+
+# ------------------- local forward: 将本地端口, 转发到远程端口(通过本地访问[远程服务]) ---------------------
+#                   [local socket host+port]:[remote socket]
+# NOTE: 如果不加"\*", 只监听localhost
+ssh -p 7777 -qnfNTL  \*:27016:localhost:27017 root@flux53
+ssh -p 7777 -qnfNTL     27016:localhost:27017 root@flux53
+
+#ssh -p 22 -qnfNTL     8080:localhost:8080  crane@ubuntu      # ss代理, 通过ssh连接ss
+# ssh -p 2222 -qnfNTL     8080:localhost:8080  crane@ubuntu      # ss代理, 通过ssh连接ss
+ssh -p 2222 -qnfNTL     8081:localhost:8081  crane@ubuntu      # ss代理, 通过ssh连接ss
+
+ssh -p 7777 -qnfNTL     27017:localhost:27016 root@flux50   # localhost:27017 --> (flux50:22) ----> flux50:27016
+ssh -p 7777 -qnfNTL     27017:flux53:27017 root@flux50      # localhost:27017 --> (flux50:22) ----> flux53:27017
+
+
+# ------------------- remote forward:将远程端口转发到本地 ---------------------
+#autossh -N -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -L 8081:ubuntu:8081 -i ~/.ssh/id_rsa crane@ubuntu
+# -f 表示使用ssh选项(forward)
+
+# >>> ubuntu
+#autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L 8080:localhost:8080 crane@ubuntu -p 7337
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L 8081:localhost:8081 crane@ubuntu -p 7337        # v2ray
+# autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L 1194:localhost:1194 crane@ubuntu -p 7337
+# autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L 8081:localhost:8081 crane@ubuntu -p 7337
+# autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L 8082:localhost:8082 crane@ubuntu -p 7337
+
+
+# >>> pre 预发布环境(100.26)
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:6022:10.10.100.26:22   uaq@oldjump -p 7000 # 预发布 ssh
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:6082:10.10.100.26:8082 uaq@oldjump -p 7000 # flink-web-ui
+
+
+# >>> flux50, flux51(25.50). 乐清测试环境
+#autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:5022:10.10.25.50:7777 uaq@localhost -p 6022 # flux50 ssh
+# autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:5082:10.10.25.50:8082 uaq@localhost -p 6022 # flux50 flink
+# autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:5083:10.10.25.51:8082 uaq@localhost -p 6022 # flux51 flink
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:5022:10.10.25.50:7777 uaq@oldjump -p 7000 # flux50 ssh
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:5082:10.10.25.50:8082 uaq@oldjump -p 7000 # flux50 flink
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:5083:10.10.25.51:8082 uaq@oldjump -p 7000 # flux51 flink
+
+
+# >>> 发布环境(13, 18)
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:3022:10.10.100.13:22   uaq@oldjump -p 7000  # 13 ssh
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:3082:10.10.100.13:8082 uaq@oldjump -p 7000  # 13 flink
+
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:3023:10.10.100.18:22   uaq@oldjump -p 7000  # 18 ssh
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:3083:10.10.100.18:8082 uaq@oldjump -p 7000  # 18 flink
+# autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L 9092:10.10.100.26:8082 uaq@oldjump -p 7000
+
+
+# >>> flux22, (22). 乐清测试环境
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:2022:10.10.25.22:7777 uaq@oldjump -p 7000 # flux50 ssh
+autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:2082:10.10.25.22:8082 uaq@oldjump -p 7000 # flux50 flink
+# autossh -M 0 -q -f -N -o "ServerAliveInterval 10" -o "ServerAliveCountMax 3" -L \*:2082:10.10.25.22:8082 uaq@localhost -p 6022 # flux50 flink
+
+
+
+
+
+## ------------------- 说明 ---------------------
+
+# -L, -R 分别对应本地转发与远程转发
+
+-q Quite mode, Causes most warning and diagnostic messages to be suppressed.
+-N Do not execute a remote command.  This is useful for just forwarding ports.
+
+-n Redirects stdin from /dev/null (actually, prevents reading from stdin).  This must be used when ssh is run in the background.  A
+     common trick is to use this to run X11 programs on a remote machine.  For example, ssh -n shadows.cs.hut.fi emacs & will start an
+     emacs on shadows.cs.hut.fi, and the X11 connection will be automatically forwarded over an encrypted channel.  The ssh program
+     will be put in the background.  (This does not work if ssh needs to ask for a password or passphrase; see also the -f option.)
+
+# HINT: background
+-f      Requests ssh to go to background just before command execution.  This is useful if ssh is going to ask for passwords or
+ passphrases, but the user wants it in the background.  This implies -n.  The recommended way to start X11 programs at a remote
+ site is with something like ssh -f host xterm.
+
+-T      Disable pseudo-terminal allocation.

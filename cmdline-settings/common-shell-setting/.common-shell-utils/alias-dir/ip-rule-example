@@ -1,0 +1,11 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+ip rule     # ip ru/ ip rule list
+
+sudo ip rule add pref 1000 tab local
+sudo ip rule del pref 1000 tab local
+
+sudo ip rule add pref 100 tab 100        # 添加rule和新table(table名只能用数字)
+sudo ip rule add pref 100 tab 531        # table名只能用数字
+
+ip route show table local        # 查看路由表

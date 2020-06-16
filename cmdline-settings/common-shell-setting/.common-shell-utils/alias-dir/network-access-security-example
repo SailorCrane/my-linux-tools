@@ -1,0 +1,20 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# https://securitytrails.com/blog/mitigating-ssh-based-attacks-top-15-best-security-practices
+
+
+ipset
+fail2ban        # 记录失败的ip, 次数足够多时, 放入 iptables或者 hosts.deny
+iptables        # 只开放允许的端口, 并且使用-m state 计数然后drop
+                # 只开放特定的ip (视场景而定)
+
+ssh             # 不允许root远程登录.
+                # 不使用22端口, 使用其它端口, 2222/3333
+                # 禁止特殊用户登录(一般是知名用户, 会被扫描, 例如"ubuntu").
+                # 只允许公钥登录.
+
+hosts.allow     #
+hosts.deny
+
+lastb           # 查看失败登录历史
+last            # 查看所有成功登录

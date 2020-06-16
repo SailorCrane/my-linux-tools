@@ -1,0 +1,21 @@
+
+# 1: 百度搜索amazon如何卸载， 搜索到卸载unity-webapps-common
+dpkg -L unity-webapps-common
+
+# 2:
+dpkg -L unity-webapps-common | grep amazon
+找到了/usr/share/applications/ubuntu-amazon-default.desktop
+
+# gedit 的桌面配置文件也在相同的目录下:
+/usr/share/applications/gedit.desktop
+
+# 3: /usr/share/applications/ubuntu-amazon-default.desktop 内容为
+[Desktop Entry]
+Name=Amazon
+Type=Application
+Icon=amazon-store
+Exec=unity-webapps-runner --amazon --app-id=ubuntu-amazon-default
+
+# 4: dpkg -S $(which unity-webapps-runner) 找到另一个包(不是unity-webapps-common)
+    包名为: unity-webapps-service
+

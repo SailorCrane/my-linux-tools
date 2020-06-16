@@ -1,0 +1,33 @@
+# vim: set filetype=dockefile  foldlevel=0: vim modeline( set )
+
+# FROM ubuntu:16.04
+
+# 这样一些包就不用下载了: file, netcat-openbsd
+FROM mync
+
+# netcat-openbsd: nc命令
+# iproutes :  ip addr show 查看绑定的float ip
+# rsyslog :  查看 /var/log/syslog中Keepalived log(启动失败原因)
+# iputils-ping :  ping命令
+
+RUN \
+  apt-get update && \
+  apt-get install -y netcat-openbsd && \
+  apt-get install -y file           && \
+  apt-get install -y net-tools      && \
+  apt-get install -y less           && \
+  apt-get install -y iproute2       && \
+  apt-get install -y iputils-ping   && \
+  apt-get install -y haproxy        && \
+  apt-get install -y rsyslog        && \
+  apt-get install -y keepalived
+
+# ADD config_haproxy.conf        /etc/haproxy/haproxy.cfg
+
+# ADD ha_checkhaproxy  /bin/check_haproxy.sh
+# ADD ha_run           /bin/run.sh
+
+# RUN chmod +x /bin/checkhaproxy
+# RUN chmod +x /bin/run
+
+ENTRYPOINT ["/bin/run"]

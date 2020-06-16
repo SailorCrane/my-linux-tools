@@ -1,0 +1,51 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+#
+#------------------- busybox: 调试/Debug  ---------------------
+kubectl apply -f https://k8s.io/examples/admin/dns/busybox.yaml
+
+# 如果无法启动, 那么先wget文件, 再apply
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: busybox
+#   namespace: default
+# spec:
+#   containers:
+#   - name: busybox
+#     image: busybox:1.28
+#     command:
+#       - sleep
+#       - "3600"
+#     imagePullPolicy: IfNotPresent
+#   restartPolicy: Always
+
+
+# ------------------- alpine: 3.9 ---------------------
+kubectl apply -f  alpine.yaml
+# kubectl exec -it alpine sh
+kubectl exec -it alpine -- sh
+apk add --update curl           # 在alpine pod中执行, 添加curl
+
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: alpine
+# spec:
+#   containers:
+#   - name: alpine
+#     image: alpine:3.9
+#     command:
+#       - "sleep"
+#       - "10000"
+
+
+#------------------- exec ---------------------
+kubectl exec -it busybox sh
+kubectl exec -it busybox -- sh
+kubectl exec -it busybox -c container_name -- sh    # 指定pod中具体的container
+
+
+# ------------------- run: 直接运行pod ---------------------
+#kubectl run curl-pod --image=radial/busyboxplus:curl -i --tty --rm
+kubectl run curl-pod --image=radial/busyboxplus:curl -i --tty       # curl-pod 是pod名, 这是一个"curl" image
+kubectl exec curl-pod -it sh

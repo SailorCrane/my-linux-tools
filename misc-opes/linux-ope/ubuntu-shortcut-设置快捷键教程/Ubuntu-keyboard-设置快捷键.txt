@@ -1,0 +1,15 @@
+# Ubuntu 快捷键定义: dash 中搜索keyboark ----> shortcut
+
+# 关于截图, 在shortcut中有一个专门的分组.
+1:  但是也可以自定义, 使用命令截图.
+2:  截图分组: 分为 copy 和 take
+    copy 是截图后, 自动存放到复制缓冲区.
+
+    用了很多: print, super(win) + print, shift + print, ctrl + print, ctrl + shift + print
+
+    同时, 自定义, 我用了 alt + s 执行如下截图命令:
+        gnome-screenshot   -a
+
+
+#
+

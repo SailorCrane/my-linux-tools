@@ -1,0 +1,15 @@
+# vim: set filetype=sudoers  foldlevel=0:
+
+# root : "visudo" 添加sudo成员
+
+# fieldx
+# User privilege specification
+
+
+# NOTE: NOPASSWD, 必须放在所有规则之后?
+%crane  ALL=(ALL)       NOPASSWD: ALL   # 必须放在最后一行
+
+# NOTE: PASSWD
+crane|  ALL=(ALL:ALL) ALL
+crane|  localhost=(ALL:ALL) ALL
+

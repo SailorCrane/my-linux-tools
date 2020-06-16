@@ -1,0 +1,47 @@
+
+1: 如何在CMakeLists.txt 中的可执行文件, 使用当前CMakeLists.txt 生成的.so或者.a (已解决)
+
+    add_dependencies(<target> [<target-dependency>]...) # 可选
+    target_link_libraries( <execTarget>  <libTarget> )  # 即可
+
+2: 关于库名字: add_executable, add_library 这两个命令中第一个参数为target, target在CMakeLists.txt中不能重复.(已解决)
+
+    那么如果两个可执行程序在不同的目录, 如何设置不同的可执行程序名?
+    比如只能用类似于set_property这样麻烦的命令去设置target的输出名吗? 是的!!!
+    CMakeLists.txt中target不能同名, 只能设置target的输出名.
+
+3: 如何自定义命令, 比如: make run可以执行可执行程序. ( 已解决)
+        使用cmake的add_custom_target 命令即可
+        add_custom_target( run
+                          COMMAND ./hisMain )
+
+3-2:  但是如何在add_custom_target 中执行 add_executable中生成的target ??a (已解决)
+      add_custom_target( <csutomTarget>
+                         COMMAND   <executableTarget>)
+
+4: 如果针对不同编译, 使用不同选项. 比如有些使用-g, 有些不使用. ( Maybe )
+   有些使用-std=c++11, 有些则不.add_library(muduo_base ${base_SRCS})
+
+    add_library(muduo_base ${base_SRCS})
+    target_link_libraries(muduo_base pthread rt)
+
+    add_library(muduo_base_cpp11 ${base_SRCS})
+    target_link_libraries(muduo_base_cpp11 pthread rt)
+    set_target_properties(muduo_base_cpp11 PROPERTIES COMPILE_FLAGS "-std=c++0x")   # 可以通过set_target_properties(), 设置某些编译选项
+
+
+5: if(NOT CMAKE_INSTALL_PREFIX)     # 可以工作吗?(不可以, 因为CMAKE_INSTALL_PREFIX永远是有定义的, 即使命令行不指定, 也有默认定义:/usr/local)
+        set(CMAKE_INSTALL_PREFIX ./usr)
+        message("这里永远都不会执行到!!!")
+    endif()
+
+
+6: 不同的目标a, b, c, 依赖相同的源文件s1, s2, s3.
+    那么cmake会分别为a, b, c 缓存s1.o, s2.o, s3.o.
+    第一次编译, 和文件修改后, 针对任何一个改变的s文件, 都要编译3次.o(a, b, c) 3次.
+    有没有指令, 只编译一次?
+
+    使用cmake  Object library 即可. $<TARGET_ OBJECT:objName>
+
+
+

@@ -1,0 +1,5 @@
+# vim: set filetype=sh  foldlevel=0:
+
+ldconfig -p     # 列出所有动态库
+
+ldconfig -p | grep pam     # 列出所有动态库

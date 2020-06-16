@@ -1,0 +1,59 @@
+! vim:set ft=xmodmap foldmethod=marker: vim modeline
+
+!========================================
+! 基本讲解
+! {{{
+
+! 关于xmodmap命令, 可以使用xmodmap -e ""
+! xmodmap -e "", ""中的命令即为~/.Xmodmap文件中的指令
+! keycode  37  =  Caps_Lock  ! 将code 映射为 事件
+! add  control = Caps_Lock   ! 将Caps_Lock事件设置到control modifier
+! 但是注意, 因为Caps_Lock之前属于别的modifier, 在add前, 要先remove
+! remove 格式和add格式相同.
+! 如果没有remove, 那么add后, 同一个keysym, 可能属于两个modifier
+! 那样的话, 按下一个按键, 可能触发两个信号, 同时做两件事.
+! X桌面系统在有modifier的情况下: 针对发生的modifier处理.
+! 如果没有modifier, 针对事件处理.
+! code(37) ----> 事件(keysym Caps_Loc) ------> modifier(control)
+! 单独的 xmodmap 命令, 可以查看 code ---> keysym ----> modifier 关系
+! xev命令, 可以按下某键, 查看相应的keycode和其它信息.(用x event记忆)
+! }}}
+!========================================
+
+!========================================
+!交换caplock 和 control_L
+! {{{
+
+! 现在对于Caplock 和 Ctrl_L 使用硬编码
+! 即使多次执行xmodmap ~/.Xmodmap也不会出现
+! Caplock 和 Ctrl_L 交替切换的问题了.
+! change left control into capslock
+remove control = Control_L
+keycode 37 = Caps_Lock NoSymbol Caps_Lock
+
+remove Lock = Caps_Lock
+keycode 66 = Control_L
+
+add lock = Caps_Lock
+add Control = Control_L
+
+! }}}
+!========================================
+
+!========================================
+! 这是以前使用的切换方式的:xmodmap代码
+! {{{
+
+! 这样没有硬编码: 每次执行ccc, 即xmodmap ~/.Xmodmap时
+! CapLock 和 Ctrl_L 就会切换, 有时不经意也会切换.
+!
+!remove Lock = Caps_Lock
+!remove Control = Control_L
+
+!keysym Control_L = Caps_Lock
+!keysym Caps_Lock = Control_L
+
+!add Lock = Caps_Lock
+!add Control = Control_L
+! }}}
+!==============================

@@ -1,0 +1,24 @@
+# vim: set filetype=sh  foldlevel=0:
+
+# 指定Method
+curl -X POST     # http POST: hpost -i  'localhost:9999/asdf' --data-binary 'a,agentid=6 value=5'
+
+# 指定header
+curl -H 'Content-Type:'  -v www.baidu.com | head    # header中去除Content-Type
+curl -H 'Content-Type:1' -v www.baidu.com | head    # 设置Content-Type为1
+curl -H 'Content-Type;' -v www.baidu.com  | head    # 设置Content-Type为"empty string", 注意没有":"号
+
+# 指定ca
+curl --cacert /myca_path/myca.crt  https://127.0.0.1:5000
+
+# 下载到文件
+curl www.ip.test --output  same_down_file_name
+
+
+# 变量
+# CURL_CA_BUNDLE="xxx.ca"
+
+# --capath
+# 为ca.crt生成rehash文件, 然后capath指定ca.crt所在dir(不是file路径)
+# for file in *ca.crt; do ln -s $file `openssl x509 -hash -noout -in $file`.0; done
+

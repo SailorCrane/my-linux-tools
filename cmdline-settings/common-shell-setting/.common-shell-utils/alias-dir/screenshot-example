@@ -1,0 +1,11 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# shutter
+shutter -s              # area
+alias screen_all="shutter --full"
+alias screen_window="shutter --window"
+alias screen_window="shutter --active"      # current active window
+alias screen_menu="shutter --menu"      # current active window
+
+# gnome-screenshot
+gnome-screenshot -a         # area
