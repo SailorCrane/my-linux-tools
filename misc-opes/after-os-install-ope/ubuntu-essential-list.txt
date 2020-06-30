@@ -614,6 +614,7 @@ hplip-gui (包含hp-systray命令, 左下角托盘图标)
                     # 6: 选择Network/Ethernet/Wireless network (这个选项是网络打印机)
                     # 7: hide advanced options!
                     # 8: Manual Discovery: 输入驱动地址: 192.168.1.xxx, jetdirectport: 1 不知道, 默认为1, 不用管
+                    # 8-2: 可能需要download plug-in, 选择download即可(需要一会时间, 可能需要翻墙)
                     # 9: 需要等一会才能添加完毕(完毕后会在列表中同时出现: fax和printer两个设备)
                     # 10: 点击printer设备 ==> 点击"print control"选项卡 ==> "printer queue control" ==> "set as default"
                     #      不设置为"default"也没关系
