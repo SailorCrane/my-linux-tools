@@ -10,6 +10,8 @@ Host ubuntu
     Port 7337
     User crane
     IdentityFile /mySaved/work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa
+    IdentityFile ~/.ssh/id_rsa
+    IdentitiesOnly no
 
     ServerAliveInterval 30
 
@@ -43,9 +45,12 @@ Host gitee.com
     PreferredAuthentications publickey
 
     IdentityFile /mySaved/work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa
+    IdentityFile ~/.ssh/id_rsa
+    IdentitiesOnly no
 
 Host github.com
     HostName github.com
     PreferredAuthentications publickey
 
     IdentityFile /mySaved/work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa
+    IdentityFile ~/.ssh/id_rsa
