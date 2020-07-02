@@ -33,9 +33,10 @@ alias gogif="go tool pprof -gif"        # gogif profile6.pprof, gogif -output a.
 alias  goo="GO111MODULE=on go"
 # alias  gof="GO111MODULE=off"
 alias  gom="GO111MODULE=on go mod"
-alias gomi="GO111MODULE=on go mod init"   # 在本地初始化 go.mod
-alias gomb="GO111MODULE=on go build "     # build项目, 如果没有库, 则拉取到 "GOPATH/pkg/mod" 中
-alias gomv="GO111MODULE=on go mod vendor" # 将"GOPATH/pkg/mod" 中 当前所需的pkg拷贝到vendor/中
+alias gomi="GO111MODULE=on go mod init"     # 在本地初始化 go.mod
+alias gomd="GO111MODULE=on go mod download" # 安装go mod 依赖到 ~/go/pkg/mod中
+alias gomb="GO111MODULE=on go build "       # build项目, 如果没有库, 则拉取到 "GOPATH/pkg/mod" 中
+alias gomv="GO111MODULE=on go mod vendor"   # 将"GOPATH/pkg/mod" 中 当前所需的pkg拷贝到vendor/中
 
 
 # Golang包的查找顺序:
