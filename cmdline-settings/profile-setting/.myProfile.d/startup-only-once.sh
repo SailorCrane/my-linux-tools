@@ -22,8 +22,10 @@ clear_depths_for_zsh() {
 }
 
 
-GolangBinPATH() {
-    export PATH=$PATH:$HOME/go/bin
+GolangEnv() {
+    export GOPROXY="https://mirrors.aliyun.com/goproxy/"        # go mod 使用代理
+    export PATH=$PATH:$HOME/go/bin                              #
+    export GO111MODULE=on                                       # 默认开启go mod
 }
 
 V2rayBinPATH() {
@@ -52,7 +54,7 @@ do_start_only_action() {
     clear_depths_for_zsh # clear zsh depth files
 
     PythonBinPATH        # python bin PATH
-    GolangBinPATH        # 设置Golang bin PATH
+    GolangEnv        # 设置Golang bin PATH
     V2rayBinPATH         # v2ray
     CommonBinPATH        # ~/.common-shell-utils/bin 加入PATH
 
