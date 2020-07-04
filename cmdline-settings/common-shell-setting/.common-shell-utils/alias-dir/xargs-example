@@ -1,0 +1,14 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 常规使用
+lsf | grep  a.go --color=no | xargs -rm
+find . -name '*' -type f | grep  a.go --color=no | xargs -rm
+
+
+# 有些命令只支持接收1个参数: xargs -n 可以每次传入n个参数
+find . -name '*' -type f | grep  a.go --color=no | xargs -n 1 cmd
+
+
+# 对文件中的jpg/go/c 打包
+lsf | grep jpg$ --color=no |  xargs tar -czvf images.tar.gz
+find . -type f -name "*.jpg" -print | xargs tar -czvf images.tar.gz
