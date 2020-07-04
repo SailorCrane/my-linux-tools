@@ -23,7 +23,8 @@ tarc() {
 
 tarx() {
     tarz_name=$1
-    extract_dir=${tarz_name%%.*}        # a.b.c ===> a
+    DATE=`date +"%Y-%m-%d-%H:%M:%S"`
+    extract_dir=${tarz_name%%.*}-${DATE}        # a.b.c ===> a
 
     if [[ -e "${extract_dir}" ]] ; then
         extract_dir=${extract_dir}-$(date +"%Y-%m-%d-%H:%M:%S")
