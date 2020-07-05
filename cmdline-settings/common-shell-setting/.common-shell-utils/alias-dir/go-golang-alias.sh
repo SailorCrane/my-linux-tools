@@ -1,5 +1,15 @@
 # vim: set foldmethod=marker  foldlevel=0:
 
+# export
+alias go11="export GO111MODULE=on"
+alias nogo11="export GO111MODULE=off"
+alias is_go11="eval echo '$'GO111MODULE"
+
+alias goproxy="export GOPROXY=https://mirrors.aliyun.com/goproxy/"
+alias nogoproxy="export GOPROXY=''"
+alias is_goproxy="eval echo '$'GOPROXY"
+
+
 # go
 alias gor="go run"
 alias gob="go build"
