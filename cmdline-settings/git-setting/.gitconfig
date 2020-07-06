@@ -124,7 +124,8 @@
     co      = checkout              # checkout from stage/cache
     co-     = checkout -            # last(previous) branch
     coc     = checkout .            # checkout current dir from state(cache)
-    com     = checkout master       # checkout current dir from state(cache)
+    com     = checkout master       # master
+    cod     = checkout develop      # develop
 
     cc      = checkout -b           # NOTE: checkout + create branch
     ch      = checkout HEAD         # checkout from HEAD(git-repo)

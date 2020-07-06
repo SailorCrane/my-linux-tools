@@ -47,7 +47,8 @@ core.*
 !core/
 
 # Logs
-log/
+# log/经常会导致源码中的log/实现忘记提交:*.log足矣
+# log/
 *.log
 
 # wps tmp file
