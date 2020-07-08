@@ -18,7 +18,9 @@ tarc() {
     # TODO check file exist
     echo "=== will tar to >> ${tarz_name}"
     tar -czvf ${tarz_name} $*
-    echo "=== has tared to >> ${tarz_name}"
+
+    # 在服务端输出绝对路径, 方便其它主机scp绝对路径
+    echo "=== has tared to >>" $(readlink -f ${tarz_name})
 }
 
 tarx() {
