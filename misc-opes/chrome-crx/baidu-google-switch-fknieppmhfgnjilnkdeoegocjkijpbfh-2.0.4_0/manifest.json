@@ -1,0 +1,23 @@
+{
+   "background": {
+      "page": "background.html"
+   },
+   "content_scripts": [  ],
+   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+   "description": "网站间的快速切换，保留搜索内容继续搜索",
+   "icons": {
+      "128": "icon128.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDUZSRWDF000DbPM+bcnHyq59oh3YX2jBl8wsjvxWQNezFfmirYuDU6DYJYhBm2FiaIs54H6wNBTHJl5k5ijdbrDNdN8nq+/fzVKfy4WTAHsCOC6mVUqFZdhxZQ+7ApjmCCXbQsW1wbaMwOgK/I9ZOS7yZFUB0NZ58uUAxdY8VcOQIDAQAB",
+   "manifest_version": 2,
+   "name": "一键切换",
+   "options_page": "options.html",
+   "page_action": {
+      "default_icon": "icon/baidu.png",
+      "default_name": "百度一下"
+   },
+   "permissions": [ "tabs", "activeTab", "*://*/*", "chrome://favicon/" ],
+   "short_name": "一键切换",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.0.4"
+}
