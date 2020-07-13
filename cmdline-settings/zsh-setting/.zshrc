@@ -87,6 +87,8 @@ plugins=(git
          zsh-syntax-highlighting
          command-not-found
          golang
+         git-flow-avh
+         git-flow-aliases
          #thefuck
          )
 
