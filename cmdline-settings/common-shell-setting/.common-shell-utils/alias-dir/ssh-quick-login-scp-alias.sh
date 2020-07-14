@@ -40,7 +40,8 @@ quick_pull() {
     # shift 2
     RemotePath=$3     # 可以是文件或者目录
 
-    LocalPath="/tmp"
+    #LocalPath="/tmp"
+    LocalPath="./"
     if [[ $# == 4 ]] ;then
         LocalPath=$4
         # echo "$#"
@@ -48,6 +49,7 @@ quick_pull() {
     echo "localPath is $LocalPath"
 
     scp -r -P $Port $Url:$RemotePath $LocalPath
+    echo "Pull remote file [${RemotePath}] into local path [${LocalPath}]"
 }
 
 
