@@ -147,6 +147,7 @@ qt-sdk              # 可能类似与build-essential. 仅仅是依赖. 也可能
 
 
 # 翻墙专用浏览器, firefox用来非翻墙使用
+chrome                # 插件本地path:
 chromium-browser      # ss-qt5 + switcy-omega
 chromium-chromedriver # chromedriver: sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/
 # libnss3-tools       # NOTE: 安装这个包后, chrome普通用户可以导入根证书(否则只能root运行chrome导入根证书)
