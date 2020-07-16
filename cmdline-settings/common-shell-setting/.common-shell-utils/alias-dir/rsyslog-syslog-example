@@ -1,0 +1,23 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 1.
+rsyslog/syslog 是一个服务, 可以调用这个服务来写日志. 一般写在/var/log/message, /var/log/syslog 等文件
+
+# 2.
+具体写在哪里, 查看 /etc/rsyslog.conf, /etc/rsyslog.d/xxx.conf 看配置文件中"/var/log"配置
+
+# 3.
+systemctl status syslog
+
+# 4. 配置在哪个文件, 是在配置文件中的
+cat /var/log/message | grep [process_name]
+cat /var/log/syslog | grep [process_name]
+
+# 5.
+journalctl  -t  [process_name]      # journal程序会把不同类别的文件写入到 /var/log/journal 下的分门别类中
+
+# 6. 一个iptables log的示例: iptables的内容是写到"kern" 中的
+    1. sudo iptables -A INPUT ! -s 169.254.0.0/16 -j LOG --log-prefix "iptables-log "
+    2. 查看 /etc/rsyslog.conf 中 "kern" 域的写入位置
+        kern.*  -/var/log/kern.log
+    3.  cat /var/log/kern.log | grep 'iptables-log'
