@@ -1,14 +1,20 @@
 # vim: set filetype=sh  foldlevel=0: vim modeline( set )
 
-# 常规使用
-lsf | grep  a.go --color=no | xargs -rm
-find . -name '*' -type f | grep  a.go --color=no | xargs -rm
+# 1. 常规使用
+lsf | grep  a.go --color=no | xargs rm
+find . -name '*' -type f | grep  a.go --color=no | xargs rm
 
 
-# 有些命令只支持接收1个参数: xargs -n 可以每次传入n个参数
-find . -name '*' -type f | grep  a.go --color=no | xargs -n 1 cmd
+# 2. 有些命令只支持接收1个参数: xargs -n 可以每次传入n个参数
+find . -name '*' -type f | grep  a.go --color=no | xargs -n 1  [cmd]
 
 
-# 对文件中的jpg/go/c 打包
+# 3. 对文件中的jpg/go/c 打包
 lsf | grep jpg$ --color=no |  xargs tar -czvf images.tar.gz
 find . -type f -name "*.jpg" -print | xargs tar -czvf images.tar.gz
+
+
+# 4. 移动文件, 需要文件作为参数(使用-I 替换符号)
+# NOTE: 注意如果使用了ls, grep, ack:  需要 ls --color=no, grep --color=no, ack --no-color
+find /tmp/ -ctime -1 -name "x*" | xargs -I '{}' echo '{}'        # 先'echo'打印测试一下, 确保无误
+find /tmp/ -ctime -1 -name "x*" | xargs -I '{}' mv '{}' ~/play/
