@@ -27,5 +27,5 @@ alias dig_ip="dig -t a game.hehemiao.cn"            # host -t a game.hehemiao.cn
 DNS_FILE="/etc/resolv.conf"                 # DNS server配置列表
 DNS_PRECEDENCE="/etc/nsswitch.conf"         # domain 解析顺序(hosts, dns)
 #alias dns_servers="cat $DNS_FILE"
-alias dns_servers="nmcli | grep DNS -i -C 30"
+alias dns_servers="cat /etc/resolv.conf ; echo '======= above is /etc/resolv.conf ==========' ; nmcli | grep DNS -i -C 30"
 alias dns_precedence="cat $DNS_PRECEDENCE"
