@@ -12,10 +12,15 @@ c_sql_passwd=passwd_13579  # crane mysql passwd
 # NOTE: 使用 和 busy相同的net和container
 # docker run --pid=container:busy --net=container:busy --name mybusy -itd busybox
 
-alias dmysql="sudo docker run --name first-mysql --pid host -p ${c_sql_port}:3306 -e MYSQL\_ROOT\_PASSWORD=${c_sql_passwd} -d mysql"
+alias dmysql="sudo docker run --name first-mysql \
+                --pid host \
+                -p ${c_sql_port}:3306 \
+                -e MYSQL\_ROOT\_PASSWORD=${c_sql_passwd} \
+                -d mysql"
 
 
-alias cmysql="mysql -h127.0.0.1 -P${c_sql_port} -uroot -p${c_sql_passwd}" # cmsyql : stand for connect
+# cmsyql : stand for connect
+alias cmysql="mysql -h127.0.0.1 -P${c_sql_port} -uroot -p${c_sql_passwd}"
 alias denter-mysql="denter first-mysql"
 
 # =================== 部署docker registry =====================
@@ -135,11 +140,16 @@ alias dqq="sudo docker run -d --name qq-im \
 alias dvolume="drunitd -v /tmp/test --name data-c ubuntu true"
 # --volumes-from
 
+
 # =================== redis: mater, slave =====================
+# 注意redis的版本, 如果需要主从同步: 需要保证master和slave的server版本一致, 否则可能有问题.
 alias dredis="sudo docker run -p 6379:6379 -v $PWD/data:/data \
-                    -d redis:3.2 redis-server \
-                    --appendonly yes \
-                    --cluster-enabled yes"
+                    --name redis                              \
+                    -d redis:4.0 redis-server                 \
+                    --appendonly yes"
+                    # --cluster-enabled yes"
+                    # -d redis:3.2 redis-server                 \
+
 
 # =================== gitlab =====================
 # 连接localhost:80　gitlab, 密码还不知
