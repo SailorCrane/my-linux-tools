@@ -5,7 +5,9 @@ alias ubuntu="ssh -p 7337 ubuntu"                   # ubuntu
 alias jump="ssh wanghe@jump.mminternal.com -p 6666" # jump定义在"work项目"中的 hosts中.
 #alias old="ssh uaq@101.71.28.84 -p 7000"           # test old
 alias old="ssh uaq@oldjump -p 7000"                 # test old
-alias pre26="ssh -p 6022 uaq@localhost"             # 预发布, 需要通过oldjump跳转. 需要通过oldjump做 remote-forward
+#alias pre26="ssh -p 6022 uaq@localhost"             # 预发布, 需要通过oldjump跳转. 需要通过oldjump做 remote-forward
+alias pre26="ssh -p 6022 dev@localhost"             # 预发布, 需要通过oldjump跳转. 需要通过oldjump做 remote-forward
+alias    26="ssh -p 6022 dev@localhost"             # 预发布, 需要通过oldjump跳转. 需要通过oldjump做 remote-forward
 
 Ssh50Port="5022"
 Ssh50Host="crane@localhost"
