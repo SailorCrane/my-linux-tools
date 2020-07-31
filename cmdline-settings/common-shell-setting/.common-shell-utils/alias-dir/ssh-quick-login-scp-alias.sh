@@ -73,3 +73,5 @@ alias oldl="quick_pull uaq@101.71.28.84 7000"
 alias pre26l="quick_pull uaq@localhost 6022"
 alias 13l="quick_pull dev@localhost 3022"
 alias 18l="quick_pull dev@localhost 3023"
+
+alias 26l="quick_pull dev@localhost 6022"
