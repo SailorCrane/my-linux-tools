@@ -1,0 +1,14 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# sysctl 配置目录
+/etc/sysctl.d/
+
+# 使/etc/sysctl.conf生效
+sysctl -p
+
+# 使/etc/sysctl.d/ 下所有conf 生效("How to reload /etc/sysctl.d/")
+## 方式1
+systemctl restart procps
+
+## 方式2 (见: /etc/init/procps-instance.conf)
+cat /etc/sysctl.d/*.conf /etc/sysctl.conf | sysctl -e -p -
