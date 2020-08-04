@@ -6,7 +6,7 @@ alias jump="ssh wanghe@jump.mminternal.com -p 6666" # jump定义在"work项目"�
 #alias old="ssh uaq@101.71.28.84 -p 7000"           # test old
 alias old="ssh uaq@oldjump -p 7000"                 # test old
 #alias pre26="ssh -p 6022 uaq@localhost"             # 预发布, 需要通过oldjump跳转. 需要通过oldjump做 remote-forward
-alias pre26="ssh -p 6022 dev@localhost"             # 预发布, 需要通过oldjump跳转. 需要通过oldjump做 remote-forward
+alias pre26="ssh -p 6022 uaq@localhost"             # 预发布, 需要通过oldjump跳转. 需要通过oldjump做 remote-forward
 alias    26="ssh -p 6022 dev@localhost"             # 预发布, 需要通过oldjump跳转. 需要通过oldjump做 remote-forward
 
 Ssh50Port="5022"
@@ -64,6 +64,7 @@ alias pre26p="quick_push uaq@localhost 6022"
 alias 13p="quick_push dev@localhost 3022"
 #alias 18p="quick_push uaq@localhost 3023"
 alias 18p="quick_push dev@localhost 3023"
+alias 26p="quick_push uaq@localhost 6022"
 
 
 alias ubuntul="quick_pull crane@ubuntu 7337"
@@ -74,4 +75,4 @@ alias pre26l="quick_pull uaq@localhost 6022"
 alias 13l="quick_pull dev@localhost 3022"
 alias 18l="quick_pull dev@localhost 3023"
 
-alias 26l="quick_pull dev@localhost 6022"
+alias 26l="quick_pull uaq@localhost 6022"

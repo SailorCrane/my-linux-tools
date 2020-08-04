@@ -31,7 +31,8 @@ alias f="file"
 alias fl="file -L"      # fl : --dereference, 跳过soft link, 直接解析出最终文件
 
 # 类似于Python : os.path.realpath('path')
-alias at="readlink -f"   # 链接解析到底
+# alias at="readlink -f"   # 链接解析到底
+alias at="realpath"   # 获取绝对路径
 
 alias tf="tail -f"    # NOTE: "tail follow" output, 一直跟踪后续新的文件内容
 alias tailf="tail -f" # NOTE: "tail follow" output, 一直跟踪后续新的文件内容
