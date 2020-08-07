@@ -1,6 +1,6 @@
 [submodule "picture-images"]
 	path = picture-images
-	url = git@gitee.com:CraneAgain/picture-images
+	url = git@gitee.com:CraneAgain/my-picture-images
 
 [submodule "v2ray-ope"]
 	path = misc-opes/v2ray-ope
