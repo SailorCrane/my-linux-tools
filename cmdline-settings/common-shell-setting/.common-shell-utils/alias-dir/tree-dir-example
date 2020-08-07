@@ -1,0 +1,3 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+tree -L 2       # 以树的方式, 显示出2层的当前目录
