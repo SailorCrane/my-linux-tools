@@ -37,7 +37,7 @@ do_ssh_local_forward() {
     ssh_local_forward   localhost:6022 10.10.100.26:22   uaq@oldjump  7000   # 预发布 ssh
     ssh_local_forward   localhost:6082 10.10.100.26:8082 uaq@oldjump  7000   # flink-web-ui
 
-    ssh_local_forward   localhost:27017 10.10.25.53:27017  uaq@oldjump  7000   # flux50 ssh
+    # ssh_local_forward   localhost:27017 10.10.25.50:27017  uaq@oldjump  7000   # flux50 ssh
     ssh_local_forward   localhost:8086 10.10.25.50:8086  uaq@oldjump  7000   # flux50 ssh
     ssh_local_forward   localhost:2181 10.10.25.50:2181  uaq@oldjump  7000   # flux50 ssh
     ssh_local_forward   localhost:5022 10.10.25.50:7777  uaq@oldjump  7000   # flux50 ssh
