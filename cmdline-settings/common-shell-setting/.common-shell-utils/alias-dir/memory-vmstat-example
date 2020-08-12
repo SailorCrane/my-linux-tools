@@ -1,0 +1,7 @@
+# vim: set ft=sh  foldlevel=0:
+
+vmstat -f       # 查看系统启动以来的历史fork数
+
+vmstat -a  -S M # 活跃数和非活跃数, -S 指定显示单位
+
+sudo vmstat -m  # 显示slab info, 需要sudo(高权限命令)
