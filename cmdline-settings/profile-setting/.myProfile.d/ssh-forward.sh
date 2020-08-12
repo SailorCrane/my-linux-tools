@@ -53,6 +53,7 @@ do_ssh_local_forward() {
 
     ssh_local_forward   localhost:3023 10.10.100.18:22   uaq@oldjump  7000 # 18 ssh
     ssh_local_forward   localhost:3083 10.10.100.18:8082 uaq@oldjump  7000 # 18 flink
+    ssh_local_forward   localhost:3086 10.10.100.18:8086 uaq@oldjump  7000 # 18 influxdb profile
 
     ssh_local_forward   localhost:2022 10.10.25.22:7777  uaq@oldjump  7000 # flux50 ssh
     ssh_local_forward   localhost:2082 10.10.25.22:8082  uaq@oldjump  7000 # flux50 flink
