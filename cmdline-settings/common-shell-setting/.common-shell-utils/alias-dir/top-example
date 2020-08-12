@@ -1,0 +1,7 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 1. cpu
+top # 按下"shift + P", 可以查看cpu排名
+top # 按下"shift + M", 可以查看 memory 排名
+
+top # 按下"x" , "b", "M", 对"memory"列进行高亮
