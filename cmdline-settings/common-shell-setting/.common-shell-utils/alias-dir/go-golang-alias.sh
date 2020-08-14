@@ -1,5 +1,9 @@
 # vim: set foldmethod=marker  foldlevel=0:
 
+# project
+alias goproj="mkdir -p go_proj/{bin,build,cmd,doc,pkg,misc}"
+
+
 # export
 alias go11="export GO111MODULE=on"
 alias nogo11="export GO111MODULE=off"
