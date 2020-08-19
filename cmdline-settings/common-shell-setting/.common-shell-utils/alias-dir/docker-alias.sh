@@ -13,7 +13,9 @@ dli="/var/lib/docker"           # 持久化数据(包括创建的容器数据, �
 
 # docker
 alias dhe="sudo docker help"
+alias dlogs="sudo docker logs -f"
 alias dlog="sudo docker logs -f"
+alias dlogt="sudo docker logs -f --tail=100"
 alias dlogin="sudo docker login"
 alias dpsra='eval sudo docker rm "$""(sudo docker ps -a -q)"'       # dpsra, NOTE: 因为没有指定 -f, 所以只删除不再运行的container(不影响运行中的container)
 alias dpsraf='eval sudo docker rm "$""(sudo docker ps -a -q) -f"'      # dpsraf, remove all forve
