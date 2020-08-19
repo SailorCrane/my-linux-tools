@@ -1,0 +1,6 @@
+# vim: set filetype=sh  foldlevel=0:
+
+top
+htop
+
+sar

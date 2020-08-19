@@ -1,0 +1,10 @@
+# vim: set filetype=sh  foldlevel=0:
+
+iostat -x       # 输出当前io 统计, 查看 %util
+iostat -x 1 3   # 输出当前io 统计, 每1秒中1次, 总共3次
+
+
+# https://community.hpe.com/t5/system-administration/quot-sar-d-quot-devices-how-to-map-to-dev-sdnnn-devices/td-p/4649777#.XzzEiXX7TmE
+# https://askubuntu.com/questions/839795/cannot-open-var-log-sysstat-sa20-no-such-file-or-directory
+# Cannot open /var/log/sysstat/sa20: No such file or directory, 编辑 /etc/default/sysstat, 设置'ENABLED="true"'
+sar -d          # 查看设备, 类似于iostat(设备号 dev8-0相当于sda1)

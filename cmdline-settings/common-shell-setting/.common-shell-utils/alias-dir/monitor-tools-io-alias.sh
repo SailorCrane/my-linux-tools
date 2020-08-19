@@ -1,0 +1,2 @@
+
+alias io="iostat -x "
