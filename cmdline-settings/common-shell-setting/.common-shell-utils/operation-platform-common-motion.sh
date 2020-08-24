@@ -6,13 +6,11 @@ alias se=search
 
 # =================== function  =====================
 install() {
-    # if is_ubuntu; then
     if is_ubuntu; then
         apt_install $@
         return
     fi
 
-    #if is_redhat; then
     if is_redhat; then
         yum_install $@
     fi
@@ -31,6 +29,21 @@ uninstall() {
     if is_redhat; then
         yum_uninstall $@
         return
+    fi
+}
+
+list() {
+    if is_ubuntu; then
+        dpkg -l
+        return
+    fi
+
+    if is_redhat; then
+        rpm -qa
+    fi
+
+    if is_mac; then
+        brew list
     fi
 }
 
