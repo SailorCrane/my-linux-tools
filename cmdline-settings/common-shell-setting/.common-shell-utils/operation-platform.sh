@@ -4,7 +4,7 @@ platform() {
     #local issue_file="/etc/issue"      # deprecated
     local RELEASE_FILE="/etc/os-release"
 
-    if env grep 'ID_LIKE' ${RELEASE_FILE} >/dev/null ; then
+    if env grep 'ID_LIKE' ${RELEASE_FILE} >/dev/null 2>/dev/null; then
         # 存在ID_LIKE
         LIKE_INFO=$(env grep 'ID_LIKE' ${RELEASE_FILE})
 
@@ -28,7 +28,7 @@ platform() {
 
     else
         # 不存在ID_LIKE, 直接输出ID: 例如arch, gentoo
-        env grep '^ID=' $RELEASE_FILE | awk -F "="  '{print $2}'
+        env grep '^ID=' $RELEASE_FILE 2>/dev/null | awk -F "="  '{print $2}'
     fi
 }
 
@@ -37,7 +37,11 @@ platform() {
 # =================== is-platform check functions =====================
 # homebrew
 is_mac() {
-    return -1
+    if uname | env grep darwin -i >/dev/null 2>/dev/null ; then 
+        return 0
+    else 
+        return -1
+    fi
 }
 
 # apt-get
@@ -63,6 +67,8 @@ is_redhat() {
         return -1
     fi
 }
+
+
 
 # pacman
 is_arch() {

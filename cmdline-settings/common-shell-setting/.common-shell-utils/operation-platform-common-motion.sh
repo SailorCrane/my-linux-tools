@@ -16,6 +16,10 @@ install() {
     if is_redhat; then
         yum_install $@
     fi
+
+    if is_mac; then
+        brew cask install $@ || brew install $@
+    fi
 }
 
 uninstall() {
@@ -38,6 +42,11 @@ search() {
 
     if is_redhat; then
         yum_search $@
+        return
+    fi
+
+    if is_mac; then
+        brew search $@
         return
     fi
 }
