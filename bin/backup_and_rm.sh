@@ -5,7 +5,7 @@
 # vim:set fdm=marker  fdl=0: vim modeline
 
 backupDir=./.backupSetting
-backupDir=$(readlink -f ${backupDir})   # get absolute path, used for message output
+# backupDir=$(readlink -f ${backupDir})   # get absolute path, used for message output
 
 regular_back_files=(
 #{{{

@@ -2,7 +2,8 @@
 # vim:set fdm=marker  fdl=0: vim modeline
 
 
-toolsHome=$(readlink -f ../cmdline-settings)    # 用变量代表上层目录, 绝对路径
+# toolsHome=$(readlink -f ../cmdline-settings)    # 用变量代表上层目录, 绝对路径
+toolsHome=$(realpath ../cmdline-settings)    # 用变量代表上层目录, 绝对路径
 
 # add function link dir
 link_dir() {
