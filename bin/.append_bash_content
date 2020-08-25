@@ -5,3 +5,19 @@ done
 for file in ~/.bash-utils/*sh ; do
     source $file
 done
+
+
+is_mac () {
+        if uname | env grep darwin -i > /dev/null 2> /dev/null
+        then
+                return 0
+        else
+                return -1
+        fi
+}
+
+if is_mac; then
+    for file in ~/.mac-utils/*sh ; do
+        source $file
+    done
+fi

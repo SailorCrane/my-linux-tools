@@ -44,17 +44,14 @@ sudo_link_dir() {
 
 
 LocalCustom="local-custom.sh"
-# 1: bash-setting/profile/下的软链接设置
-# {{{
+# 1. bash-setting/profile/下的软链接设置
     myprofdir=".myProfile.d"
     homeProfDir=${HOME}/${myprofdir}
 
     link_dir  ${toolsHome}/profile-setting/${myprofdir}  ${homeProfDir}
     touch ~/${myprofdir}/${LocalCustom}
-# }}}
 
-# 2: common-shell-setting
-#{{{
+# 2-1. common-shell-setting
     common_dir=".common-shell-utils"
     homeSubdir="${HOME}/${subdir}"
     link_dir  ${toolsHome}/common-shell-setting/${common_dir}  ~/${common_dir}
@@ -64,22 +61,25 @@ LocalCustom="local-custom.sh"
     touch ~/${common_dir}/${LocalCustom}           # 此脚本仅仅包含针对当前主机的东西(所以不加入版本控制)
     touch ~/${common_dir}/bin/${LocalCustom}       # bin下的脚本, 不加入版本控制
     touch ~/${common_dir}/alias-dir/${LocalCustom} # alias下的脚本, 不加入版本控制
-#}}}
 
-# 2: bash-setting/subdir/下的软链接设置
-# {{{
+# 2-2. bash-setting/subdir/下的软链接设置
     subdir=".bash-utils"
     homeSubdir="${HOME}/${subdir}"
 
     link_dir  ${toolsHome}/bash-setting/${subdir}  ${homeSubdir}
-# }}}
 
-# 3: .zshrc + .oh-my-zsh/软链接设置
-# {{{
+
+# 2-3. .zshrc + .oh-my-zsh/软链接设置
     ln  -s        ${toolsHome}/zsh-setting/.zshrc       ~/.zshrc
     link_dir      ${toolsHome}/zsh-setting/.oh-my-zsh   ~/.oh-my-zsh
     link_dir      ${toolsHome}/zsh-setting/.zsh-utils   ~/.zsh-utils
-# }}}
+
+# 2-4. mac 软链接
+    subdir=".mac-utils"
+    homeSubdir="${HOME}/${subdir}"
+
+    link_dir  ${toolsHome}/mac-setting/${subdir}  ${homeSubdir}
+
 
 # 4: mess setting: (tmux, Xmodmap, git, gdb, pylintrc)
 #{{{

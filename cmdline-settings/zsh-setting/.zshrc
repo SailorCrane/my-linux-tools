@@ -104,6 +104,22 @@ for i in ~/.zsh-utils/*sh ; do
     source $i
 done
 
+is_mac() {
+        if uname | env grep darwin -i > /dev/null 2> /dev/null
+        then
+                return 0
+        else
+                return -1
+        fi
+}
+
+# mac only utils
+if is_mac ; then
+    for file in ~/.mac-utils/*sh ; do
+        source $file
+    done
+fi
+
 
 bindkey \^U backward-kill-line  # ctrl + u 不删除整行, 仅仅删除到行首.
 
