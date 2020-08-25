@@ -30,6 +30,11 @@ uninstall() {
         yum_uninstall $@
         return
     fi
+
+    if is_mac; then
+        brew uninstall $@
+        return
+    fi
 }
 
 list() {
