@@ -30,7 +30,7 @@ ssh_local_forward() {
 }
 
 
-do_ssh_local_forward() {
+old_do_ssh_local_forward() {
     ssh_local_forward   localhost:8080 localhost:8080    crane@ubuntu 7337    # v2ray
     # ssh_local_forward     8081 localhost:8081    crane@ubuntu 7337    # v2ray
 
@@ -59,6 +59,9 @@ do_ssh_local_forward() {
     ssh_local_forward   localhost:2082 10.10.25.22:8082  uaq@oldjump  7000 # flux50 flink
 }
 
+do_ssh_local_forward() {
+    ssh_local_forward   localhost:8080 localhost:8080    crane@ubuntu 7337    # v2ray
+}
 
 ssh_remote_forward() {
     # 远程端口转发: 使用远程2222访问本地2222
