@@ -2,6 +2,8 @@
 # =================== vim + gvim =====================
 alias gvm="gvim -u NONE -c 'source ~/.vimrc'"
 alias gv="gvim"
+
+# alias vi="vim --clean"
 #alias vi="vim"
 
 # =================== profile vim start file =====================
@@ -24,6 +26,7 @@ alias vid="sudo visudo"     # visudo, edit /etc/sudoers
 #alias via="vim ~/.common-shell-utils/myAlias.sh"
 alias via="vim ~/.common-shell-utils/alias-dir/aaa-basic-alias.sh"
 alias vin="vim -u NONE"                             # bare vim run
+alias vic="vim --clean"                             # bare vim (on mac)
 alias viu="vim -u ~/.vim/vim-scripts/essential.vim" # vimbare + essential
 alias vig="git config -e --global"                  # 系统git设置: ~/.gitconfig
 alias viG="git config -e --local"                   # 项目./git/config
