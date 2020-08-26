@@ -35,6 +35,7 @@ alias fl="file -L"      # fl : --dereference, 跳过soft link, 直接解析出�
 alias at="realpath"   # 获取绝对路径
 
 alias tf="tail -f"    # NOTE: "tail follow" output, 一直跟踪后续新的文件内容
+alias taif="tail -f"    # NOTE: "tail follow" output, 一直跟踪后续新的文件内容
 alias tailf="tail -f" # NOTE: "tail follow" output, 一直跟踪后续新的文件内容
 
 alias uppercase="tr a-z A-Z <"
