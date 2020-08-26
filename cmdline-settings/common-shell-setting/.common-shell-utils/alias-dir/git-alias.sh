@@ -78,3 +78,5 @@ alias gus="git stash && git pull --rebase ; git stash pop"      # NOTE: 无论pu
 
 # NOTE: 更新所有的子模块(foreach git pull)
 #git submodule update --recursive --remote
+
+alias git_no_filemode="git config core.fileMode false"

@@ -280,6 +280,7 @@
     # 全局过滤文件
     excludesfile = ~/.gitignore
     editor  = vi
+    # fileMode = false      # 可执行权限是否提交: True提交, False不提交
 
     # pager = less  # 分页器默认使用less
 
