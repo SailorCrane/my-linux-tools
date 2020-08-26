@@ -57,7 +57,7 @@ ssh_local_forward() {
 # }
 
 ubuntu_ssh_forward() {
-    ssh_local_forward   localhost:8080 localhost:8080    crane@ubuntu 7337    # v2ray
+    ssh_local_forward   localhost:8081 localhost:8080    crane@ubuntu 7337    # v2ray
 }
 
 do_ssh_local_forward() {
