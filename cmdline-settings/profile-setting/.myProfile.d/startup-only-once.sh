@@ -48,8 +48,16 @@ ssClientRun() {
     ss_client >/dev/null 2>&1       # NOTE: 必须放在CommonBinPATH之后, 此时才能找到ss_client
 }
 
+run_xmodmap() {
+    if env which xmodmap 1>/dev/null 2>/dev/null; then
+        xmodmap   ~/.Xmodmap # for mint(交换Ctrl和CapsLock键), WARNING: 为什么不起作用(在gosun主机上)?
+    else
+        echo "[xmodmap] do not exist!"
+    fi
+}
+
 do_start_only_action() {
-    xmodmap   ~/.Xmodmap # for mint(交换Ctrl和CapsLock键), WARNING: 为什么不起作用(在gosun主机上)?
+    run_xmodmap
 
     clear_depths_for_zsh # clear zsh depth files
 
