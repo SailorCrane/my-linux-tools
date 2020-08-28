@@ -37,7 +37,8 @@ uninstall() {
     fi
 }
 
-list() {
+list_all_packages() {
+    # 1. list all the packages
     if is_ubuntu; then
         dpkg -l
         return
@@ -49,6 +50,31 @@ list() {
 
     if is_mac; then
         brew list
+    fi
+}
+
+list_specific_package_files() {
+    # 2. list the specific package all files
+    if is_ubuntu; then
+        dpkg -S $*
+        return
+    fi
+
+    if is_redhat; then
+        rpm -ql $*
+    fi
+
+    if is_mac; then
+        brew list $*
+    fi
+}
+
+list() {
+    # echo $#
+    if [ $# -eq 0 ]; then       # -ge stand for : greator or equal
+        list_all_packages
+    else
+        list_specific_package_files $*
     fi
 }
 
