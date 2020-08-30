@@ -1,8 +1,10 @@
+# vim: set filetype=nginx  foldlevel=0: vim modeline( set )
+
 server {
         listen  80;
         listen 18080;
         # server_name downloadtest.mmtrix.com 10.10.25.230
-        server_name localhost 127.0.0.1
+        server_name localhost 127.0.0.1;
 
         client_max_body_size 4G;
 
