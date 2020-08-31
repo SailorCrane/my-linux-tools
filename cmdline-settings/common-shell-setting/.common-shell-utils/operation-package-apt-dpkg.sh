@@ -76,33 +76,13 @@ function apt_rdepends {     # search: dont need root
 # 在filep 中, 也应该使用参数, 区分 bin, etc 和 list等功能
 #                                  -b,  -c/-e, -l
 # 而不是为每个功能各写一个函数, 以后注意吧
-function  filep {
-    # {{{
-    UsageMsg="filep <cmd | absolute_file_path>"
+apt_filep() {
+    local _file=$1
 
-    if ! ParaUsage "${UsageMsg}" 1 $* ; then        # if 可以直接判断命令执行结果
-        return -1
-    fi
-
-    local cmd=$1
-
-    if ! is_absolute_path $cmd; then
-        # get absolute file path of $cmd
-        # HINT: 禁止输出which结果, 防止输出干扰
-        if ! env which $cmd > /dev/null 2>&1; then
-            echo "$cmd is not in path"
-            return -1
-        else
-            cmd=$(env which ${cmd})
-        fi
-    fi
-
-    # Ubuntu
-    dpkg -S $cmd
+    dpkg -S $_file
 
     # CentOs
     #rpm  -qf  $cmd
-    # }}}
 }
 
 
@@ -114,7 +94,7 @@ function  filep {
 # 比如 filepl  /tmp可以正确执行, 但是filepl /bin则不可以
 # 不知道dpkg -S 有没有专门针对目录的选项, 类似于 ls -d这样, 查看man page
 # 注意每次修改完本源文件后, source  ~/.bashrc 使之生效, 或者执行 sb (这是自定义的source ~/.bashrc 的alias)
-function  filepl {
+apt_filepl() {
     # HINT: 输入的fileName在$PATH中, 或者是绝对路径都可以!
     # HINT: filep 会处理非绝对路径的filename
     UsageMsg='filepl  <fileName: [in $PATH]/[absolute path]  >'
@@ -135,55 +115,12 @@ function  filepl {
 }
 
 
-# obsolete function
-function  fileplOld {
-    # {{{
-    UsageMsg="filepl  <fileName>"
-
-    if ! ParaUsage "${UsageMsg}" 1 $* ; then        # if 可以直接判断命令执行结果
-        return -1
-    fi
-
-    fileName=$1
-
-    # Ubuntu
-    packageInfo=$(dpkg -S $fileName)
-
-    # 如果文件并不属于某个包: 或者其它错误导致返回值不为0, 打印错误信息, 并退出
-    if [ $? != 0 ]
-    then
-        # 如果出错, 那么错误输出到了stderr, 所以packageInfo 不会获取到字符串
-        #echo "$packageInfo"
-        return -1
-    fi
-
-    # 由所属包信息中提取包名: 使用awk过滤":" 之前的字符串即可
-    packageName=$(echo $packageInfo | awk -F: '{print $1}')
-    #echo $packageName
-
-    # 列出包中所有的文件
-    dpkg -L $packageName
-
-    # CentOS 使用 rpm -qf, 和 rpm -ql
-    #packageInfo=$(rpm -qf $fileName)
-
-    #if [ $? != 0 ]
-    #then
-        #return
-    #fi
-
-    #packageName=$(echo $packageInfo | awk -F: '{print $1}')
-
-    #rpm -ql $packageName
-    # }}}
-}
-
 
 # filepb
 # 列出文件所属包中的/bin 文件, 可执行文件
 # dpkg -S, dpkg -L, grep /bin
 # pb stand for package binary
-function  filepb {
+apt_filepb() {
     # {{{
     UsageMsg="filepb  <fileName>"
 
@@ -203,7 +140,7 @@ function  filepb {
 # pe stand for package etc(etc)
 # filepc 和 filepb 结构几乎相同, 以后如果有
 # 大量这样的功能需求, 可以提取出公共部分
-function  filepe {
+apt_filepe() {
     # {{{
     UsageMsg="filepe  <fileName>"
 
@@ -251,4 +188,3 @@ function  apt-interest {
 # }}}
 }
 alias apt-moo=apt-interest
-

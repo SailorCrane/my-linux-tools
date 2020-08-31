@@ -56,7 +56,7 @@ list_all_packages() {
 list_specific_package_files() {
     # 2. list the specific package all files
     if is_ubuntu; then
-        dpkg -S $*
+        dpkg -L $*
         return
     fi
 
@@ -107,6 +107,7 @@ depends() {
     fi
 }
 
+# 反向依赖: 谁依赖自己
 rdepends() {
     if is_ubuntu; then
         apt_rdepends $@
@@ -117,4 +118,38 @@ rdepends() {
         yum_rdepends $@
         return
     fi
+}
+
+
+# the specific file is from which package?
+filep() {
+    UsageMsg="filep <cmd | absolute_file_path>"
+
+    if ! ParaUsage "${UsageMsg}" 1 $* ; then        # if 可以直接判断命令执行结果
+        return -1
+    fi
+
+    # 获取绝对路径
+    local abs_path_of_cmd=$(abs_path_of_file $1)
+    if ! is_absolute_path $abs_path_of_cmd; then
+        echo "$1 is not in \$PATH"
+        return -1
+    fi
+
+    if is_ubuntu; then
+        apt_filep $abs_path_of_cmd
+        return
+    fi
+
+    if is_redhat; then
+        yum_filep $abs_path_of_cmd
+        return
+    fi
+
+    # if is_mac; then
+    #     brew search $@
+    #     return
+    # fi
+
+    echo "Don't support this operation for this platform"
 }

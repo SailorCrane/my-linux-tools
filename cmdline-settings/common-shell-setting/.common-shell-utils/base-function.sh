@@ -157,6 +157,24 @@ is_absolute_path()
 #}}}
 }
 
+abs_path_of_file() {
+    local cmd=$1
+    if ! is_absolute_path $cmd; then
+        # get absolute file path of $cmd
+        # HINT: 禁止输出which结果, 防止输出干扰
+        if ! env which $cmd > /dev/null 2>&1; then
+            # echo "$cmd is not in path"
+            echo ""
+            return -1
+        else
+            # echo "here"
+            cmd=$(env which ${cmd})
+        fi
+    fi
+
+    echo $cmd
+}
+
 
 isfile()
 {
