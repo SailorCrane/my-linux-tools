@@ -1,0 +1,7 @@
+
+alias ntest='sudo nginx -t'         # test配置文件正确性
+alias nv='sudo nginx -V 2>&1'       # 查看编译启动的模块(比如stub_statue)
+
+nginx -t        # 检测配置文件正确性(并输出配置文件路径)
+nginx -c        # 指定配置文件, 并启动
+nginx -c -t     # 指定配置文件, 并检测配置文件正确性
