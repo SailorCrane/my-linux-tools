@@ -1,0 +1,17 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# Copyright (C) 2020 crane <crane@cranedeMacBook-Pro.local>
+#
+# Distributed under terms of the MIT license.
+#
+
+rm -rf src/ dest/
+
+mkdir -p src/{b1,b2}/{c1,c2}/
+mkdir -p dest/{b1,b2}/{c1,c2}/
+
+touch src/{b1,b2}/{c1,c2}/file_a1
+touch dest/{b1,b2}/{c1,c2}/file_a2
+
+# rsync -a src dest     # 没有slash是copy进入
+rsync -a src// dest      # 有slash是merge
