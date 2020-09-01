@@ -1,0 +1,12 @@
+#! /bin/sh
+#
+# tmp.sh
+# Copyright (C) 2020 crane <crane@cranedeMacBook-Pro.local>
+#
+# Distributed under terms of the MIT license.
+#
+
+_file="~/Desktop/tmp.txt"
+
+touch $_file
+gvim  $_file
