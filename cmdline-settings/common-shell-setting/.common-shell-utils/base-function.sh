@@ -138,10 +138,19 @@ shuc()
     shutdown -c
 }
 
-re()
-{
+re() {
     UsageMsg='shut <minutes>'
-    shutdown -r $1
+    if [ $# -eq 0 ] ; then
+        local _seconds=now
+    else
+        local _seconds=$1
+    fi
+
+    if is_mac; then
+        sudo shutdown -r $_seconds
+    else
+        shutdown -r $_seconds
+    fi
 }
 
 is_absolute_path()
