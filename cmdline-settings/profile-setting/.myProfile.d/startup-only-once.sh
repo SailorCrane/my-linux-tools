@@ -23,9 +23,11 @@ clear_depths_for_zsh() {
 
 
 GolangEnv() {
-    export GOPROXY="https://mirrors.aliyun.com/goproxy/"        # go mod 使用代理
     export PATH=$PATH:$HOME/go/bin                              #
-    export GO111MODULE=on                                       # 默认开启go mod
+    export GOPATH=$HOME/go/        #
+
+    # export GO111MODULE=on                                       # 默认开启go mod
+    # export GOPROXY="https://mirrors.aliyun.com/goproxy/"        # go mod 使用代理
 }
 
 V2rayBinPATH() {
