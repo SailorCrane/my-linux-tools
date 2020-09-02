@@ -153,10 +153,15 @@ apt_filepe() {
     # }}}
 }
 
+# apt_downgrade iproute2=4.15.0-2ubuntu1.2
+# apt_downgrade [package_name]=[version]
+apt_downgrade() {
+    sudo apt-get install -y --allow-downgrades $1
+}
 
 
 # show aptitude moo, an interesting thing
-function  apt-interest {
+apt_interest() {
 # {{{
     echo "aptitude -v moo"
     aptitude -v moo
@@ -188,3 +193,5 @@ function  apt-interest {
 # }}}
 }
 alias apt-moo=apt-interest
+
+
