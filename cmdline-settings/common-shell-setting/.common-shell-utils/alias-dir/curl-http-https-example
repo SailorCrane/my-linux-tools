@@ -14,6 +14,10 @@ curl --cacert /myca_path/myca.crt  https://127.0.0.1:5000
 # 下载到文件
 curl www.ip.test --output  same_down_file_name
 
+# 保存cookie, 读取cookie
+curl <url> -c  <save_cookie_file>        # 保存cookie
+curl <url> -b  <save_cookie_file>        # 指定发送的cookie文件
+curl  --cookie "SERVERID=xxx-web1" <url> # 指定cookie
 
 # 变量
 # CURL_CA_BUNDLE="xxx.ca"
