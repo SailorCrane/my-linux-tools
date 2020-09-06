@@ -7,6 +7,9 @@
 
 # NOTE: 开机后, 只运行一次的功能(根据环境变量判断)
 
+source /Users/crane/.myProfile.d/base
+
+
 clear_depths_for_zsh() {
     # zsh 在*无法匹配时, 会有问题.
     # 不过此函数只在系统启动时执行一次
@@ -21,9 +24,9 @@ clear_depths_for_zsh() {
     #env rm -rf  ~/.zsh_depth/*
 }
 
-
 GolangEnv() {
-    export PATH=$PATH:$HOME/go/bin                              #
+    # export PATH=$PATH:$HOME/go/bin                              #
+    AppendPathIfNotExist $HOME/go/bin
     export GOPATH=$HOME/go/        #
 
     # export GO111MODULE=on                                       # 默认开启go mod
@@ -31,7 +34,8 @@ GolangEnv() {
 }
 
 Php_ComposerPATH() {
-    export PATH=$PATH:$HOME/.composer/vendor/bin
+    # export PATH=$PATH:$HOME/.composer/vendor/bin
+    AppendPathIfNotExist $HOME/.composer/vendor/bin
 }
 
 NvmPATH() {
@@ -42,17 +46,20 @@ NvmPATH() {
 }
 
 V2rayBinPATH() {
-    export PATH=$PATH:/usr/bin/v2ray/
+    # export PATH=$PATH:/usr/bin/v2ray/
+    AppendPathIfNotExist /usr/bin/v2ray/
 }
 
 PythonBinPATH() {
     #export PATH=$PATH:$HOME/.local/bin/
-    export PATH=$PATH:$HOME/.local/bin          # 去掉末尾的"/"
+    # export PATH=$PATH:$HOME/.local/bin          # 去掉末尾的"/"
+    AppendPathIfNotExist $HOME/.local/bin
 }
 
 
 CommonBinPATH() {
-    export PATH=$PATH:~/.common-shell-utils/bin
+    # export PATH=$PATH:$HOME/.common-shell-utils/bin
+    AppendPathIfNotExist $HOME/.common-shell-utils/bin
 }
 
 
@@ -84,7 +91,6 @@ do_start_only_action() {
 
     # ssClientRun          # 必须放在CommonBinPATH之后, 有了v2ray服务之后, 这个就不需要了
 }
-
 
 
 # 如果变量为空, 说明系统刚启动

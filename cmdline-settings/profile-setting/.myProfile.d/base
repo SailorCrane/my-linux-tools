@@ -49,3 +49,32 @@ FileHasNotRuned() {
 
     return $Ret
 }
+
+AllPath() {
+    # env echo -e ${PATH//:/\\n}
+    echo -e ${PATH//:/\\n}
+}
+
+IsExistPath() {
+    local New_Path=$1
+    # -x 匹配一行, -F 把字符串当做"plain text"
+    if AllPath | env grep -xF $New_Path 1>/dev/null 2>/dev/null; then
+        return 0
+    # elif AllPath | env grep -xF $New_Path 1>/dev/null 2>/dev/null; then
+    #     local New_Path="$New_Path/"
+    #     return 0
+    else
+        return -1
+    fi
+}
+
+AppendPathIfNotExist() {
+    local New_Path=$1
+    if IsExistPath $New_Path; then
+        echo "Already Exist [$New_Path] in \$PATH"
+        return
+    else
+        export PATH=$PATH:$New_Path
+    fi
+
+}
