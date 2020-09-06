@@ -6,6 +6,13 @@
 [user]
     name  = Crane
     email = myemail@gmail.com
+    fileMode = false    # 是否保存可执行文件的执行位状态
+    # ignorecase = true
+
+[http]
+    # git config --global http.proxy socks5://127.0.0.1:1080
+    # git config --global --unset http.proxy
+	# proxy = socks5://127.0.0.1:1080
 
 [alias]
 
