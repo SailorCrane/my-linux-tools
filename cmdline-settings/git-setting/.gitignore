@@ -79,8 +79,9 @@ __pycache__/
 .coverage
 # analysis html
 covhtml/
+
 # pycharm
-.idea/
+# .idea/
 
 # django
 migrations/

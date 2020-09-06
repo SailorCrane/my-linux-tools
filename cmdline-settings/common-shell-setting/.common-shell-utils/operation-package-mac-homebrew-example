@@ -1,0 +1,4 @@
+# vim: set filetype=sh  foldlevel=0: vim modeline( set )
+
+# 1. brew cmd path
+# /usr/local/Homebrew/Library/Homebrew/cmd/
