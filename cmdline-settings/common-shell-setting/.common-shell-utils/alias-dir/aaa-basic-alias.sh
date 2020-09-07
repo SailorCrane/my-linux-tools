@@ -31,6 +31,7 @@ alias hashclear="hash -r"       # 清除对于命令的hash: 如果调用某命�
 alias lz="ps aux | grep -v grep |  grep defunct"        # list zombie
 
 alias path='echo -e ${PATH//:/\\n}'
+alias pathg='echo -e ${PATH//:/\\n} | env grep --color '
 alias now='date +"%T"'
 alias nowtime='now'                 # time
 alias nowdate='date +"%d-%m-%Y"'    # date

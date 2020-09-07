@@ -7,7 +7,7 @@
 
 # NOTE: 开机后, 只运行一次的功能(根据环境变量判断)
 
-source /Users/crane/.myProfile.d/base
+source $HOME/.myProfile.d/base
 
 
 clear_depths_for_zsh() {
