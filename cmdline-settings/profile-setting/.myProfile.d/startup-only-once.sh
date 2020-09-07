@@ -63,6 +63,19 @@ CommonBinPATH() {
 }
 
 
+HomeBrewCommandNotFound() {
+    # NOTE: neew  "brew tap homebrew/command-not-found"
+    if is_mac; then
+        local HB_CNF_HANDLER="$(brew --prefix)/Homebrew/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+        if [ -f "$HB_CNF_HANDLER" ]; then
+            source "$HB_CNF_HANDLER";
+        else
+            echo "Do not exist [homebrew-command-not-found], need exec [brew tap homebrew/command-not-found]"
+        fi
+    fi
+}
+
+
 ssClientRun() {
     # TODO: 弄成service也可以
     ss_client >/dev/null 2>&1       # NOTE: 必须放在CommonBinPATH之后, 此时才能找到ss_client
@@ -90,6 +103,8 @@ do_start_only_action() {
     CommonBinPATH        # ~/.common-shell-utils/bin 加入PATH
 
     # ssClientRun          # 必须放在CommonBinPATH之后, 有了v2ray服务之后, 这个就不需要了
+
+    HomeBrewCommandNotFound
 }
 
 

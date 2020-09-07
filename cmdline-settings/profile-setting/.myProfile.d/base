@@ -26,6 +26,14 @@ IsZsh() {
     fi
 }
 
+is_mac() {
+        if uname | env grep darwin -i > /dev/null 2> /dev/null
+        then
+                return 0
+        else
+                return -1
+        fi
+}
 
 FileHasNotRuned() {
     local DirName=$(basename -s .sh $0)        # 用路径名, 作为变量名(有点嵌套的意思)
