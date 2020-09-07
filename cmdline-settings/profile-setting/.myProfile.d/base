@@ -82,7 +82,7 @@ AppendPathIfNotExist() {
         echo "Already Exist [$New_Path] in \$PATH"
         return
     else
-        export PATH=$PATH:$New_Path
+        export PATH=$New_Path:$PATH
     fi
 
 }

@@ -151,5 +151,3 @@ bindkey \^U backward-kill-line  # ctrl + u 不删除整行, 仅仅删除到行�
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-export PATH="/usr/local/opt/php@7.1/bin:$PATH"
-export PATH="/usr/local/opt/php@7.1/sbin:$PATH"
