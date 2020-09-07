@@ -11,12 +11,12 @@ c_sql_passwd=passwd_13579  # crane mysql passwd
 
 # NOTE: 使用 和 busy相同的net和container
 # docker run --pid=container:busy --net=container:busy --name mybusy -itd busybox
-
+# 使用MySQL 5.6
 alias dmysql="sudo docker run --name first-mysql \
                 --pid host \
                 -p ${c_sql_port}:3306 \
                 -e MYSQL\_ROOT\_PASSWORD=${c_sql_passwd} \
-                -d mysql"
+                -d mysql:5.6"
 
 
 # cmsyql : stand for connect

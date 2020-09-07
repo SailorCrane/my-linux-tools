@@ -1,0 +1,7 @@
+
+php artisan make:controller --resource HelloController
+
+./artisan make:model MyModel
+
+php artisan make:model  Models/User -m      # 创建model, 同时生成migration
+php artisan migrate     # 创建表
