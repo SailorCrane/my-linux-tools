@@ -69,5 +69,12 @@ zipc() {
 }
 
 alias zipx="unzip"
-
 alias zipt="unzip -t"
+
+rarx() {
+    local rar_file=$1
+
+    local e_dir="/tmp/rar_dir"
+    mkdir -p $e_dir
+    env unrar e $rar_file $e_dir
+}
