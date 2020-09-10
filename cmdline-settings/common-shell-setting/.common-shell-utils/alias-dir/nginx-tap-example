@@ -1,0 +1,67 @@
+server {
+    listen 80;
+
+    server_name  web.crane.xmxdev.com; # {namespace} 替换为自己的
+
+    #项目public 目录
+    root /Users/crane/projects/cloud/public;
+
+    index index.php index.html;
+
+    client_max_body_size 10m;
+
+
+    location /_nuxt/ {
+        proxy_pass http://localhost:8989;
+    }
+
+    location /__webpack_hmr/ {
+        proxy_pass http://localhost:8989;
+    }
+
+    location /_loading/ {
+        proxy_pass http://localhost:8989;
+    }
+    # web-app 正在开发的url
+    location ~ ^/video/?$  {
+        proxy_pass http://localhost:8989;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
+
+    location ~ ^/video/\d+$  {
+        proxy_pass http://localhost:8989;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
+
+    location / {
+        # try_files $uri $uri/ /index.php$is_args;
+        try_files $uri $uri/ /index.php$is_args$query_string;
+    }
+
+
+    # location ~ /test/.*\.php$ {
+    #     root /Users/crane/my-all-ope/php-ope/learning
+    #     fastcgi_pass   127.0.0.1:9000;
+    #     fastcgi_index  index.php;
+    #     fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    #     include        fastcgi_params;
+    # }
+
+
+    location ~ \.php$ {
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+
+    # 提前创建好文件, 放开 nginx.conf 对应的 main log 格式化代码
+    access_log  /usr/local/var/log/nginx/tap.access.log  main;
+    error_log  /usr/local/var/log/nginx/tap.error.log info;
+}
