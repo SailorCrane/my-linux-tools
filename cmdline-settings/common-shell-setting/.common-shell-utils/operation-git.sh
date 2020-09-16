@@ -203,10 +203,10 @@ gitssho()
     # {{{
         CONFIG_PATH=$(git_local_config_path)
         # oschina git
-        # url = git@gitee.com:CraneAgain/some
-        # url = https://gitee.com/CraneAgain/some
+        # url = git@gitee.com:SailorCrane/some
+        # url = https://gitee.com/SailorCrane/some
         # 这里使用"#"作为分割符, 因为正则中既有"@," 又有"/".
-        sed -i -r  "s#https:\/\/gitee.com\/CraneAgain#git@gitee.com:CraneAgain#"  ${CONFIG_PATH}
+        sed -i -r  "s#https:\/\/gitee.com\/SailorCrane#git@gitee.com:SailorCrane#"  ${CONFIG_PATH}
     # }}}
 }
 
@@ -215,10 +215,10 @@ githttpso()
     # {{{
         CONFIG_PATH=$(git_local_config_path)
         # oschina git
-        # url = git@gitee.com:CraneAgain/some
-        # url = https://gitee.com/CraneAgain/some
+        # url = git@gitee.com:SailorCrane/some
+        # url = https://gitee.com/SailorCrane/some
         # 这里使用"#"作为分割符, 因为正则中既有"@," 又有"/".
-        sed -i -r  "s#git@gitee.com:CraneAgain#https:\/\/gitee.com\/CraneAgain#"  ${CONFIG_PATH}
+        sed -i -r  "s#git@gitee.com:SailorCrane#https:\/\/gitee.com\/SailorCrane#"  ${CONFIG_PATH}
     # }}}
 }
 
