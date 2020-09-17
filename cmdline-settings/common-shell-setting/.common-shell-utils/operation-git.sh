@@ -262,8 +262,6 @@ gitpg()
 gitpgf()
 {
 #{{{
-    #local curBranch=$(gitCurrentBranch)
-    #git push  github +${curBranch}
     gitpg -f
 #}}}
 }
@@ -373,7 +371,15 @@ alias gitcb="gitamend"
 git_drop_local_commit()
 {
 #{{{
-    CUR_BRANCH=$(gitCurrentBranch)
+    local CUR_BRANCH=$(gitCurrentBranch)
     git reset --hard origin/${CUR_BRANCH}
 #}}}
+}
+
+git_remove_commits()
+{
+    # 对齐 remote origin分支
+    local CurBranch=$(gitCurrentBranch)
+    local Remote=origin
+    git reset --hard $Remote/$CurBranch
 }
