@@ -24,10 +24,12 @@ a.out
 *.mod
 
 # windows
-
 # Temporary files #
 # swp/swp vim Temporary file
 *~
+
+# macos
+.DS_Store
 
 # ppt, doc等
 .~*
