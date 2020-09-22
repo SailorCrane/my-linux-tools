@@ -45,8 +45,9 @@ alias gtrack_master="git branch --set-upstream-to=origin/master master"     # ma
 alias gl="git pull --rebase"
 
 # 本想用gs, 和ps, pl相对应. 但是gs已经是一个命令了
+# 先pull, 再push, 神作
 alias gp="git pull --rebase && git push"
-                                    # 先pull, 再push, 神作
+# alias gpn="nohup 'git pull --rebase && git push' &"
 
 # 可以针对目录为参数, 写一个函数
 alias gittool="git --git-dir=/mySaved/tools-setting-linux/.git  --work-tree=/mySaved/tools-setting-linux/"
