@@ -56,3 +56,6 @@ alias gomv="GO111MODULE=on go mod vendor"   # 将"GOPATH/pkg/mod" 中 当前所�
 # Golang包的查找顺序:
 # 1. 如果使用了 GO111MODULE=on, 那么都会从GOPATH/pkg/mod 中寻找依赖包.
 # 2. 如果使用了 GO111MODULE=off, 那么都会从 vendor/, 上层vendor/, GOPATH/src, GOROOT 顺序寻找依赖包.
+
+# goland
+# alias goland='goland.sh'

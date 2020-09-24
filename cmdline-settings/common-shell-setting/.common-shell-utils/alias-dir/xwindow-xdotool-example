@@ -1,0 +1,10 @@
+# vim: set ft=sh  foldlevel=0:
+
+#
+xdotool search --name gvim
+xdotool search --name tmp.txt
+xdotool search --pid $(psg gvim |grep tmp)
+
+
+#
+xdotool windowactivate $WindowId
