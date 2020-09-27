@@ -5,7 +5,8 @@
 
 [user]
     name  = Crane
-    email = myemail@gmail.com
+    # email = myemail@gmail.com
+    email = SailorCrane@qq.com
     fileMode = false    # 是否保存可执行文件的执行位状态
     # ignorecase = true
 
