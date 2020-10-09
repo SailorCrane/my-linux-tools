@@ -6,6 +6,7 @@ rsync -arvz   uaq@old-jump:7000/tmp/zhouwenfeng ./      # 指定端口7000, 测�
 
 # ------------------- rsync + ssh协议 ---------------------
 rsync -P --rsh='ssh -p 7337'  [host]:[path]   ./        # -P 支持断点续传, --rsh=[选择协议, 支持ssh]
+rsync -P --rsh='ssh '  tap:/Users/crane/mySaved/grpc-video   ./        # -P 支持断点续传, --rsh=[选择协议, 支持ssh]
 
 # ------------------- ssh ---------------------
 scp -r user@host:dir/ /tmp         # 不支持exclude
