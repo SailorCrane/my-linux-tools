@@ -13,7 +13,7 @@ getXWindowId() {
 
     # 第1次打开的窗口名字是"tmp.txt(~/Desktop/)GVIM", Mint 19
     # 第2次打开的窗口名字是"tmp.txt(~/Desktop/)GVIM1", Mint 19
-    if gvimId=$(xdotool search --name "${fileName}.*${progName}$"); then
+    if gvimId=$(xdotool search --name "${fileName}.*Desktop.*${progName}$"); then
         echo $gvimId
     else
         echo 0
