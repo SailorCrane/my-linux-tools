@@ -145,7 +145,7 @@ alias dvolume="drunitd -v /tmp/test --name data-c ubuntu true"
 # 注意redis的版本, 如果需要主从同步: 需要保证master和slave的server版本一致, 否则可能有问题.
 alias dredis="sudo docker run -p 6379:6379 -v $PWD/data:/data \
                     --name redis                              \
-                    -d redis:4.0 redis-server                 \
+                    -d redis:6.0 redis-server                 \
                     --appendonly yes"
                     # --cluster-enabled yes"
                     # -d redis:3.2 redis-server                 \
