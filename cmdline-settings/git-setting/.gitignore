@@ -5,7 +5,7 @@
 # 文件后不能跟 "#" 来注释
 
 # Compiled target
-build/
+# build/
 *.o
 *.so
 *.class
