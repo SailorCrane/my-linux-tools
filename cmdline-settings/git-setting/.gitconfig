@@ -160,6 +160,7 @@
     # reset HEAD --soft, 没有意义, 因为soft既不改变缓冲区, 又不改变local文件. 仅仅当索引指向非HEAD, 例如HEAD^时, 才有意义
     # git alias 不区分大小写, 所以backHard, backhard都一样.
     # reset 默认HEAD + --mixed
+    to        = reset --hard           # 跳到某个commit(注意: 有remote repo时才是安全的)
     backhard  = reset --hard           # 恢复 "缓冲区 + 本地文件" 和当次提交一模一样, = reset HEAD --hard
     backcache = reset                  # 恢复 "缓冲区" 和当次提交一模一样, = reset HEAD --mixed
     bh        = reset --hard

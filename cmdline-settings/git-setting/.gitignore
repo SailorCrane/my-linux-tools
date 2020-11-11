@@ -83,7 +83,7 @@ __pycache__/
 covhtml/
 
 # pycharm
-# .idea/
+.idea/
 
 # django
 migrations/
