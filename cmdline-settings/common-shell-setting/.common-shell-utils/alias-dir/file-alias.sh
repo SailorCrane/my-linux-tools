@@ -15,6 +15,9 @@ alias len="cat -n | less -R" # number + less
 alias lns="ln -s"       # 快速软链接.
 
 alias cpr="cp -R"       # 递归拷贝目录
+alias cpf="cp -f"       # --force
+
+alias mvf="mv -f"       # --force
 alias rmf="rm -rf"      # 强制删除: rm force
 
 # rm vim swp file

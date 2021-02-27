@@ -87,9 +87,14 @@ quick_pull_partial() {
     fi
     echo "localPath is $LocalPath"
 
-    rsync -rP --rsh="ssh -p$Port" $Url:$RemotePath  $LocalPath
-    # scp -r -P $Port $Url:$RemotePath $LocalPath
     echo "Pull remote file [${RemotePath}] into local path [${LocalPath}], "--partial" option"
+
+    if [[ $# -ge 5 ]] ;then
+        FromFile=$5
+        rsync -rP --files-from=$FromFile --rsh="ssh -p$Port" $Url:$RemotePath  $LocalPath
+    else
+        rsync -rP --rsh="ssh -p$Port" $Url:$RemotePath  $LocalPath
+    fi
 }
 
 
