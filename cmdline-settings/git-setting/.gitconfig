@@ -148,6 +148,7 @@
     brdd = branch -D
     brdr = push --delete        # 删除远程"某指定"仓库中的"某分支": git brdr origin dev
     brdo = push --delete origin # 删除远程origin仓库中的"某分支"  : git brdo dev
+    brdos = push --delete oschina # 删除远程origin仓库中的"某分支"  : git brdo dev
     brv  = branch -vv           # 显示local branch对应的远程branch
     bru  = branch -u            # 设置upstream分支 (git brv  origin/dev)
 
