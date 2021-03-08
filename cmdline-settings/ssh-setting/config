@@ -55,3 +55,21 @@ Host github.com
 #     IdentityFile ~/my-work/gosun/misc-杂/堡垒机-测试环境等-ssh/public-private-ssh-key-公私钥匙/id_rsa
 
 #     ServerAliveInterval 30
+#
+
+# ------------------- tap ---------------------
+Host tap-sh
+    HostName bastion-sh.xmxdev.com
+    Port 2222
+    User wanghe
+    IdentityFile ~/.ssh/id_rsa
+    PreferredAuthentications publickey,keyboard-interactive
+    # PreferredAuthentications publickey
+
+Host tap
+    HostName bastion.xmxdev.com
+    Port 2222
+    User wanghe
+    IdentityFile ~/.ssh/id_rsa
+    PreferredAuthentications publickey,keyboard-interactive
+    # PreferredAuthentications publickey
