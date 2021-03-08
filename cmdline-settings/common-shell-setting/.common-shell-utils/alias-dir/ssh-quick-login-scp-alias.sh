@@ -98,8 +98,8 @@ quick_pull_partial() {
 }
 
 
-alias ubuntup="quick_push crane@ubuntu 7337"
-alias tapp="quick_push crane@tap 22"
+alias ubuntup="quick_push_partial crane@ubuntu 7337"
+alias ubuntul="quick_pull_partial crane@ubuntu 7337"
 # alias 50p="quick_push crane@122.228.212.146 7777"
 #alias 50p="quick_push $Ssh50Host $Ssh50Port"
 #alias 22p="quick_push root@localhost 2022"
@@ -111,11 +111,12 @@ alias tapp="quick_push crane@tap 22"
 #alias 26p="quick_push uaq@localhost 6022"
 
 
-alias ubuntul="quick_pull crane@ubuntu 7337"
-# alias tapl="quick_pull crane@tap 22"
 
 alias tapp="quick_push_partial crane@tap 22"
 alias tapl="quick_pull_partial crane@tap 22"
+# alias tapl="quick_pull crane@tap 22"
+# alias tapp="quick_push crane@tap 22"
+
 # alias 50l="quick_pull $Ssh50Host $Ssh50Port"
 # alias 22l="quick_pull root@localhost 2022"
 # alias oldl="quick_pull uaq@101.71.28.84 7000"
