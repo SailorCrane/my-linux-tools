@@ -101,10 +101,11 @@
     dw  = diff --word-diff
 
     # =================== log =====================
-    l  = log
-    l1 = log --oneline
-    lt = log --stat             # --stat 查看每次提交的文件变更统计, 主要是统计
-    lf = log --follow           # show a file's log history(vs blame)
+    ref = reflog                 # 查看head历史, 可以解决99%的提交丢失的问题. reflog 存的是本地的head历史
+    l   = log
+    l1  = log --oneline
+    lt  = log --stat             # --stat 查看每次提交的文件变更统计, 主要是统计
+    lf  = log --follow           # show a file's log history(vs blame)
 
     # =================== ls-files/ls-tree =====================
     ls  = ls-files               # ls all git files
